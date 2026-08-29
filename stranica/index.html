@@ -22,6 +22,12 @@
    Вёрстка постерная: .stage — фиксированные 1920×1080, JS масштабирует их
    под монитор через transform:scale(). Ничего не грузится по сети.
    Файл собирается в index.html генератором build.py; руками index.html не править.
+
+   Композиция (заход perepridumat-kompoziciyu): страницу дважды отклонили —
+   пустые поля сверху/снизу, отсутствие иерархии, шесть блоков вместо четырёх,
+   половина главного блока под раскрытием. Здесь: лид и «главное» во всю ширину
+   выше по иерархии, чем четыре блока; блоки — цепочкой и целиком, без среза
+   абзацев под клик; пример работы и референс — заметно мельче, это справка.
    ========================================================================== */
 
 :root{
@@ -39,22 +45,24 @@ body{background:var(--paper);color:var(--ink);font-family:var(--serif);
 .viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
   background:var(--paper);overflow:hidden;}
 .stage{width:1920px;height:1080px;flex:0 0 auto;transform-origin:center center;position:relative;
-  overflow:hidden;padding:64px 96px;display:flex;flex-direction:column;}
+  overflow:hidden;padding:40px 96px;display:flex;flex-direction:column;}
 /* Ширина 1728 = 1920 минус штатные padding'и. У референса здесь 1440 центрованных,
    но правило владельца первым номером: текстовая область занимает всю ширину экрана. */
 .block{flex:1 1 auto;display:flex;flex-direction:column;width:1728px;margin:0 auto;
   min-height:0;position:relative;z-index:1;}
 
-.eyebrow{margin:0 0 18px;font-family:var(--sans);font-weight:600;text-transform:uppercase;
-  letter-spacing:.185em;color:var(--muted-strong);font-size:17px;}
-/* 52px — заголовок встаёт в ОДНУ строку с запасом 131px до края. При 56px запас
-   всего 8px: подмени шрифт фолбэком — и заголовок переносится, ломая ритм. */
-h1{margin:0;font-weight:700;line-height:1.04;letter-spacing:-.008em;font-size:52px;}
+.eyebrow{margin:0 0 12px;font-family:var(--sans);font-weight:600;text-transform:uppercase;
+  letter-spacing:.185em;color:var(--muted-strong);font-size:16px;}
+/* 46px — заголовок встаёт в ОДНУ строку с запасом до края. Кегль снижен на
+   круге 2: девять абзацев прозы (лид, главное, четыре блока, справка) не
+   влезали в 1080 при прежних размерах — метка «самый крупный элемент» отдана
+   заголовку, а не абсолютному пикселю. */
+h1{margin:0;font-weight:700;line-height:1.05;letter-spacing:-.006em;font-size:46px;}
 
 /* --- линейка года: четыре события по всей ширине.
        У референса две отметки в начале и стрелка «в будущее»: там год открыт.
        Здесь год замкнут (сентябрь→май), поэтому отметки идут по всей линии. --- */
-.timeline{position:relative;height:74px;margin:30px 0 30px;flex:0 0 auto;}
+.timeline{position:relative;height:58px;margin:20px 0 6px;flex:0 0 auto;}
 .tl-line{position:absolute;left:0;right:22px;bottom:8px;height:1px;background:var(--hair);}
 .tl-arrow{position:absolute;right:0;bottom:2.5px;width:0;height:0;
   border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:14px solid var(--signal);}
@@ -68,51 +76,74 @@ h1{margin:0;font-weight:700;line-height:1.04;letter-spacing:-.008em;font-size:52
   width:11px;height:11px;border-radius:50%;background:var(--signal);}
 .tl-mark.pervaya .tl-dot{left:0;transform:none;}
 
+/* --- лид и «главное»: во всю ширину, выше в иерархии, чем четыре блока —
+       владелец явно просил обе строки не колонкой посреди пустоты, а во весь
+       экран. «Главное» дополнительно выделено вёрсткой: акцентная линия слева,
+       крупнее и жирнее лида, но БЕЗ фона — заливка спорила бы с палитрой сцены. --- */
+.lead{margin:14px 0 0;max-width:1728px;font-size:24px;line-height:1.34;
+  color:var(--ink);text-wrap:pretty;}
+.lead a{color:var(--signal);text-decoration:none;
+  border-bottom:1px solid rgba(239,106,75,.45);padding-bottom:.02em;
+  transition:border-color .18s ease;}
+.lead a:hover{border-bottom-color:var(--signal);}
+.glavnoe{margin:14px 0 0;padding:2px 0 2px 26px;border-left:3px solid var(--signal);
+  font-weight:600;font-size:25px;line-height:1.3;color:var(--ink);letter-spacing:-.004em;}
+
 /* --- тело: узкая правовыровненная колонка меток + широкая колонка прозы.
        Ряды сетки держат метку напротив её собственных абзацев. Растянуты по
        высоте через align-content:space-between — тот же приём, что у референса,
-       только применённый к рядам, а не к двум колонкам по отдельности. --- */
-.body{flex:1 1 auto;display:grid;grid-template-columns:380px 1288px;
-  column-gap:60px;row-gap:22px;align-content:space-between;min-height:0;}
+       только применённый к рядам, а не к двум колонкам по отдельности.
+       Шесть пар метка/блок делят сетку: четыре — цепочка блоков, две —
+       боковая справка (.mini), гружёная тем же механизмом через display:contents
+       у .hvost, чтобы не заводить вложенный грид ради обёртки. --- */
+.body{flex:1 1 auto;display:grid;grid-template-columns:340px 1328px;
+  column-gap:60px;row-gap:11px;align-content:space-between;min-height:0;margin-top:4px;}
+.hvost{display:contents;}
 
 .metka{grid-column:1;justify-self:end;text-align:right;align-self:start;margin:0;
-  font-weight:600;color:var(--accent);font-size:32px;line-height:1.08;letter-spacing:-.008em;
+  font-weight:600;color:var(--accent);font-size:26px;line-height:1.16;letter-spacing:-.006em;
   padding-top:2px;}
-.blok{grid-column:2;display:flex;flex-direction:column;gap:8px;
-  font-size:25px;line-height:1.46;}
+.blok{grid-column:2;display:flex;flex-direction:column;gap:4px;
+  font-size:21px;line-height:1.3;}
 .blok p{margin:0;text-wrap:pretty;}
-.blok.primer p{color:var(--muted);font-size:22px;line-height:1.4;}
 .blok a{color:var(--signal);text-decoration:none;
   border-bottom:1px solid rgba(239,106,75,.45);padding-bottom:.02em;
   transition:border-color .18s ease;}
 .blok a:hover{border-bottom-color:var(--signal);}
-.hvost{gap:14px;}
 
-.ssylki{display:flex;flex-wrap:wrap;gap:6px 40px;font-size:19px;line-height:1.35;
-  color:var(--muted-strong);}
+/* --- боковая справка: заметно мельче основного кегля — это подкрепление,
+       а не сообщение (владелец: пример работы и референс не должны спорить
+       с четырьмя блоками). Метка — строчная, не золотая, чтобы глаз не читал
+       её как пятый блок цепочки. --- */
+.metka.mini{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted-strong);padding-top:4px;}
+.blok.mini{font-size:16px;line-height:1.3;color:var(--muted);}
+.blok.mini a{color:var(--signal);}
 
 .cta{grid-column:1;justify-self:end;text-align:right;align-self:end;margin:0;}
-.cta .knopka{display:inline-block;font-family:var(--sans);font-weight:700;font-size:19px;
+.cta .knopka{display:inline-block;font-family:var(--sans);font-weight:700;font-size:17px;
   letter-spacing:.02em;color:var(--paper);background:var(--signal);text-decoration:none;
-  padding:14px 28px;border-radius:2px;
+  padding:12px 24px;border-radius:2px;
   transition:filter .18s ease,transform .18s ease;}
 .cta .knopka:hover{filter:brightness(1.08);transform:translateY(-1px);}
-.cta .kontakt{display:block;margin-top:16px;font-family:var(--sans);font-weight:600;
-  font-size:19px;letter-spacing:.02em;}
-.cta .kontakt a{color:var(--ink);text-decoration:none;
-  border-bottom:1px solid var(--hair);transition:border-color .18s ease;}
-.cta .kontakt a:hover{border-bottom-color:var(--signal);}
-.cta .podpis{display:block;margin-top:10px;font-style:italic;font-size:18px;line-height:1.34;
+.cta .podpis{display:block;margin-top:10px;font-style:italic;font-size:16px;line-height:1.3;
   color:var(--muted-strong);}
+.cta .podpis a{color:var(--ink);text-decoration:none;font-style:normal;
+  border-bottom:1px solid var(--hair);transition:border-color .18s ease;}
+.cta .podpis a:hover{border-bottom-color:var(--signal);}
 
 /* --- слот параллельного захода: анкета. Пустой — высоты не ест. --- */
 #anketa:empty{display:none;}
 
 /* --- слой раскрытий: в закрытом виде одна строка, открывается панелью ВВЕРХ.
        .stage — фиксированные 1080 с overflow:hidden, поэтому раздвигать поток нельзя:
-       открытое раскрытие обрезало бы низ страницы. --- */
-.raskrytiya{display:flex;gap:34px;flex:0 0 auto;margin-top:4px;padding-top:18px;
+       открытое раскрытие обрезало бы низ страницы. Сейчас у всех трёх пунктов
+       «Под кликами» тело переехало на экран (лид, полный блок 3, справка) —
+       раскрытий не остаётся ни одного, и пустая полоса гасится :empty, а не
+       занимает ряд сетки просто так. --- */
+.raskrytiya{grid-column:1/-1;display:flex;gap:34px;margin-top:4px;padding-top:18px;
   border-top:1px solid var(--hair);}
+.raskrytiya:empty{display:none;padding:0;border:0;margin:0;}
 .raskrytie{position:relative;}
 .raskrytie>summary{list-style:none;cursor:pointer;font-family:var(--sans);font-weight:600;
   text-transform:uppercase;letter-spacing:.1em;font-size:14px;color:var(--muted-strong);
@@ -122,13 +153,12 @@ h1{margin:0;font-weight:700;line-height:1.04;letter-spacing:-.008em;font-size:52
 .raskrytie>summary::before{content:'+ ';color:var(--signal);font-weight:700;}
 .raskrytie[open]>summary{color:var(--ink);border-bottom-color:var(--signal);}
 .raskrytie[open]>summary::before{content:'– ';}
-/* Пока панель открыта, тело под ней гаснет: иначе золотые метки «Итог» и
-   «Пример работы» остаются гореть напротив накрытого панелью чужого текста
-   и читаются как подпись не к своему абзацу (находка верификатора). */
+/* Пока панель открыта, тело под ней гаснет: иначе метки блоков остаются гореть
+   напротив накрытого панелью чужого текста и читаются как подпись не к своему
+   абзацу (находка верификатора прошлого захода). */
 .stage.raskryto .metka,
-.stage.raskryto .blok:not(.hvost),
-.stage.raskryto .ssylki{opacity:.22;}
-.metka,.blok,.ssylki{transition:opacity .2s ease;}
+.stage.raskryto .blok{opacity:.22;}
+.metka,.blok{transition:opacity .2s ease;}
 
 .rask-telo{position:absolute;bottom:100%;left:0;margin-bottom:14px;width:1288px;
   max-height:420px;overflow:auto;z-index:5;
@@ -154,26 +184,30 @@ h1{margin:0;font-weight:700;line-height:1.04;letter-spacing:-.008em;font-size:52
   .m-timeline li::before{content:'';position:absolute;left:-25px;top:5px;
     width:9px;height:9px;border-radius:50%;background:var(--signal);}
   .m-timeline .m-what{color:var(--accent);}
+  .m-lead{margin:0;font-size:16px;line-height:1.5;color:var(--ink);text-wrap:pretty;}
+  .m-lead a{color:var(--signal);text-decoration:none;border-bottom:1px solid rgba(239,106,75,.45);}
+  .m-glavnoe{margin:18px 0 0;padding:2px 0 2px 16px;border-left:3px solid var(--signal);
+    font-weight:600;font-size:17px;line-height:1.38;color:var(--ink);}
   .m-metka{margin:14px 0 -4px;font-weight:600;color:var(--accent);
     font-size:clamp(21px,5.6vw,25px);line-height:1.18;letter-spacing:-.01em;}
+  .m-metka.mini{font-size:13px;color:var(--muted-strong);text-transform:uppercase;
+    letter-spacing:.08em;font-weight:600;}
   .m-text .m-metka:first-child{margin-top:0;}
   .m-rule{height:1px;background:var(--hair);}
   .m-text{display:flex;flex-direction:column;gap:18px;font-size:17px;line-height:1.5;margin:24px 0;}
   .m-text p{margin:0;text-wrap:pretty;}
   .m-text .primer{color:var(--muted);font-size:16px;}
   .m-text a{color:var(--signal);text-decoration:none;border-bottom:1px solid rgba(239,106,75,.45);}
-  .m-ssylki{display:flex;flex-direction:column;gap:8px;font-size:16px;color:var(--muted-strong);margin:20px 0;}
   .m-raskrytiya{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+  .m-raskrytiya:empty{display:none;margin:0;}
   .m-raskrytiya .raskrytie>summary{font-size:12.5px;}
   .m-raskrytiya .rask-telo{position:static;width:auto;max-height:none;margin:12px 0 0;
     font-size:16px;line-height:1.5;padding:18px 20px;box-shadow:none;}
   .m-cta{margin:24px 0 0;}
   .m-cta .knopka{display:inline-block;font-family:var(--sans);font-weight:700;font-size:16px;
     color:var(--paper);background:var(--signal);text-decoration:none;padding:12px 22px;border-radius:2px;}
-  .m-cta .kontakt{display:block;margin-top:14px;font-family:var(--sans);font-weight:600;
-    font-size:16px;color:var(--ink);}
-  .m-cta .kontakt a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--hair);}
-  .m-cta .podpis{display:block;margin-top:8px;font-style:italic;font-size:15px;color:var(--muted-strong);}
+  .m-cta .podpis{display:block;margin-top:14px;font-style:italic;font-size:15px;color:var(--muted-strong);}
+  .m-cta .podpis a{color:var(--ink);text-decoration:none;font-style:normal;border-bottom:1px solid var(--hair);}
 }
 
 /* ============================================================================
@@ -301,56 +335,56 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           <span class="tl-mark" style="left:92.0%"><span class="tl-what">защита</span><span class="tl-when">май</span><span class="tl-dot"></span></span>
         </div>
 
+        <p class="lead">В московской <a href="https://ru.wikipedia.org/wiki/Школа_№_179_(Москва)">школе №179</a> много лет преподают математику по системе <a href="https://ru.wikipedia.org/wiki/Константинов,_Николай_Николаевич_(математик)">Константинова</a>. Здесь давняя традиция: со школьниками работают взрослые математики и аспиранты. В десятом классе к этому добавляются проекты — школьники проводят небольшие исследования</p>
+        <p class="glavnoe">Проект — обязательный предмет в расписании на весь учебный год. Школьники работают поодиночке или небольшими группами, и каждой группе нужен руководитель</p>
+
         <div class="body">
-          <p class="metka">Кто ученики</p>
+          <p class="metka">Как устроен год</p>
           <div class="blok">
-            <p>Десятиклассники математических классов. К десятому классу многие знают начала анализа и линейной алгебры, часть ездит на всероссийскую олимпиаду. Проект у них — предмет в расписании на весь учебный год, а не факультатив. Работают поодиночке или группой в два-три человека</p>
+            <p>Раз в неделю — два урока в школьном расписании: все проекты собираются вместе и рассказывают, что сделали. Ещё примерно раз в неделю группа встречается со своим руководителем</p>
+            <p>Первая предзащита в декабре, вторая в феврале, в мае защита: текст и доклад, из которых видно, что сделал каждый участник группы</p>
+          </div>
+          <p class="metka">Кто ведёт</p>
+          <div class="blok">
+            <p>Руководитель — тот, кто приносит задачу и разбирает её со школьниками. Это может быть преподаватель, аспирант или студент. Возможна пара: задачу ставит преподаватель, с группой работает его аспирант — тогда задача может быть частью аспирантского исследования, и школьники двигают его вместе с ним</p>
+            <p>Работать можно вживую или дистанционно</p>
+            <p>Расписание, сроки и отчётность — на школе, за руководителем содержание</p>
           </div>
           <p class="metka">Какая задача годится</p>
           <div class="blok">
             <p>Задача взята из современных исследований, а не придумана для учебных целей</p>
+            <p>У задачи есть начало, которое руководитель знает сам: какие примеры разобрать, какие частные случаи посчитать, чтобы к зиме был первый результат. Что будет дальше, заранее не известно никому</p>
+            <p>Школьник понимает, о каком объекте идёт речь и зачем им заниматься. Что-то придётся выучить по дороге, и это нормально</p>
           </div>
-          <p class="metka">Кто ведёт</p>
+          <p class="metka">Кто ученики</p>
           <div class="blok">
-            <p>Вести может преподаватель, аспирант или студент. Возможна пара: задачу ставит преподаватель, с группой работает его аспирант — тогда задача может быть частью аспирантского исследования, и школьники двигают его вместе с ним</p>
-            <p>Расписание, сроки и отчётность — на школе, за руководителем содержание</p>
+            <p>Десятиклассники математических классов. К десятому классу многие знают начала анализа и линейной алгебры, часть ездит на всероссийскую олимпиаду</p>
           </div>
-          <p class="metka">Ритм недели</p>
-          <div class="blok">
-            <p>Два часа в неделю стоят в школьном расписании: все проекты собираются вместе и рассказывают, что сделали. Своя встреча с руководителем — тоже примерно раз в неделю</p>
+          <div class="hvost">
+          <p class="metka mini">Пример работы</p>
+          <div class="blok mini">
+            <p>В прошлом году десятиклассник 179-й под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника. Работа опубликована в «Математическом просвещении» → <a href="hackevich-mp37.pdf">PDF</a></p>
           </div>
-          <p class="metka">Итог</p>
-          <div class="blok">
-            <p>В мае защита: текст и доклад, из которых видно, что сделал каждый участник группы</p>
+          <p class="metka mini">Референс</p>
+          <div class="blok mini">
+            <p>Ближайший образец жанра — проекты Летней конференции Турнира городов: <a href="https://turgor.ru/lktg/">turgor.ru/lktg/</a></p>
           </div>
-          <p class="metka">Пример работы</p>
-          <div class="blok primer">
-            <p>В. В. Хацкевич, 10 класс. Задача о соединении вершин // Математическое просвещение, сер. 3, вып. 37 (2026), с. 152–159 → <a href="hackevich-mp37.pdf">PDF</a></p>
           </div>
           <p class="cta">
             <button type="button" class="knopka" id="anketa-otkryt"
                     aria-expanded="false" aria-controls="anketa-raskrytie">Предложить задачу</button>
-            <span class="kontakt"><a href="https://t.me/d1_d57">@d1_d57</a></span>
-            <span class="podpis">Иван Яковлев, руководитель математических проектов</span>
+            <span class="podpis">Иван Яковлев → <a href="https://t.me/d1_d57">t.me/d1_d57</a></span>
           </p>
-          <div class="blok hvost">
-            <div class="ssylki">
-              <span>Проекты Летней конференции Турнира городов — <a href="https://turgor.ru/lktg/">turgor.ru/lktg/</a></span>
-              <span>Каталог тем MATh.en.JEANS — <a href="https://mathenjeans.fr/sujets">mathenjeans.fr/sujets</a></span>
-            </div>
-            <div class="raskrytiya">
-              <details class="raskrytie"><summary>Развёрнутый критерий задачи</summary><div class="rask-telo"><p>Школьник понимает, о каком объекте идёт речь и зачем им заниматься. Что-то придётся выучить по дороге, и это нормально</p><p>У задачи есть начало, которое руководитель знает сам: какие примеры разобрать, какие частные случаи посчитать, чтобы к зиме был первый результат. Что будет дальше, заранее не известно никому</p></div></details>
-            </div>
-          </div>
+          <div class="raskrytiya"></div>
 
           <!-- Анкета. Панель поверх прозы, тем же приёмом, что и раскрытия: те же
                .raskrytie/.rask-telo, поэтому даром достаются взаимное исключение с
                раскрытиями и гашение прозы под панелью. Отличие одно — геометрия:
                восьми полям и четырём галочкам нужна вся текстовая зона, а не
-               полоса на 420px. Стоит внутри .body и накрывает ровно его: заголовок
-               и линейка года остаются видны, и открытая анкета читается как та же
-               страница. Из потока сетки выведена position:absolute, поэтому лишней
-               ячейки в .body не создаёт; закрытая — снята display:none.
+               полоса на 420px. Стоит внутри .body и накрывает ровно его: заголовок,
+               линейка года, лид и «главное» остаются видны, и открытая анкета
+               читается как та же страница. Из потока сетки выведена position:absolute,
+               поэтому лишней ячейки в .body не создаёт; закрытая — снята display:none.
                #anketa — место монтажа, скрипт анкеты ищет его по id. -->
           <details class="raskrytie raskrytie-anketa" id="anketa-raskrytie">
             <summary class="anketa-sammari">Предложить задачу</summary>
@@ -379,33 +413,33 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           <li><span class="m-what">защита</span> · май</li>
     </ul>
     <div class="m-rule"></div>
+    <p class="m-lead">В московской <a href="https://ru.wikipedia.org/wiki/Школа_№_179_(Москва)">школе №179</a> много лет преподают математику по системе <a href="https://ru.wikipedia.org/wiki/Константинов,_Николай_Николаевич_(математик)">Константинова</a>. Здесь давняя традиция: со школьниками работают взрослые математики и аспиранты. В десятом классе к этому добавляются проекты — школьники проводят небольшие исследования</p>
+    <p class="m-glavnoe">Проект — обязательный предмет в расписании на весь учебный год. Школьники работают поодиночке или небольшими группами, и каждой группе нужен руководитель</p>
+    <div class="m-rule"></div>
     <div class="m-text">
-      <h2 class="m-metka">Кто ученики</h2>
-      <p>Десятиклассники математических классов. К десятому классу многие знают начала анализа и линейной алгебры, часть ездит на всероссийскую олимпиаду. Проект у них — предмет в расписании на весь учебный год, а не факультатив. Работают поодиночке или группой в два-три человека</p>
+      <h2 class="m-metka">Как устроен год</h2>
+      <p>Раз в неделю — два урока в школьном расписании: все проекты собираются вместе и рассказывают, что сделали. Ещё примерно раз в неделю группа встречается со своим руководителем</p>
+      <p>Первая предзащита в декабре, вторая в феврале, в мае защита: текст и доклад, из которых видно, что сделал каждый участник группы</p>
+      <h2 class="m-metka">Кто ведёт</h2>
+      <p>Руководитель — тот, кто приносит задачу и разбирает её со школьниками. Это может быть преподаватель, аспирант или студент. Возможна пара: задачу ставит преподаватель, с группой работает его аспирант — тогда задача может быть частью аспирантского исследования, и школьники двигают его вместе с ним</p>
+      <p>Работать можно вживую или дистанционно</p>
+      <p>Расписание, сроки и отчётность — на школе, за руководителем содержание</p>
       <h2 class="m-metka">Какая задача годится</h2>
       <p>Задача взята из современных исследований, а не придумана для учебных целей</p>
-      <h2 class="m-metka">Кто ведёт</h2>
-      <p>Вести может преподаватель, аспирант или студент. Возможна пара: задачу ставит преподаватель, с группой работает его аспирант — тогда задача может быть частью аспирантского исследования, и школьники двигают его вместе с ним</p>
-      <p>Расписание, сроки и отчётность — на школе, за руководителем содержание</p>
-      <h2 class="m-metka">Ритм недели</h2>
-      <p>Два часа в неделю стоят в школьном расписании: все проекты собираются вместе и рассказывают, что сделали. Своя встреча с руководителем — тоже примерно раз в неделю</p>
-      <h2 class="m-metka">Итог</h2>
-      <p>В мае защита: текст и доклад, из которых видно, что сделал каждый участник группы</p>
-      <h2 class="m-metka">Пример работы</h2>
-      <p class="primer">В. В. Хацкевич, 10 класс. Задача о соединении вершин // Математическое просвещение, сер. 3, вып. 37 (2026), с. 152–159 → <a href="hackevich-mp37.pdf">PDF</a></p>
+      <p>У задачи есть начало, которое руководитель знает сам: какие примеры разобрать, какие частные случаи посчитать, чтобы к зиме был первый результат. Что будет дальше, заранее не известно никому</p>
+      <p>Школьник понимает, о каком объекте идёт речь и зачем им заниматься. Что-то придётся выучить по дороге, и это нормально</p>
+      <h2 class="m-metka">Кто ученики</h2>
+      <p>Десятиклассники математических классов. К десятому классу многие знают начала анализа и линейной алгебры, часть ездит на всероссийскую олимпиаду</p>
+      <h2 class="m-metka mini">Пример работы</h2>
+      <p class="primer">В прошлом году десятиклассник 179-й под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника. Работа опубликована в «Математическом просвещении» → <a href="hackevich-mp37.pdf">PDF</a></p>
+      <h2 class="m-metka mini">Референс</h2>
+      <p class="primer">Ближайший образец жанра — проекты Летней конференции Турнира городов: <a href="https://turgor.ru/lktg/">turgor.ru/lktg/</a></p>
     </div>
-    <div class="m-ssylki">
-      <span>Проекты Летней конференции Турнира городов — <a href="https://turgor.ru/lktg/">turgor.ru/lktg/</a></span>
-      <span>Каталог тем MATh.en.JEANS — <a href="https://mathenjeans.fr/sujets">mathenjeans.fr/sujets</a></span>
-    </div>
-    <div class="m-raskrytiya">
-      <details class="raskrytie"><summary>Развёрнутый критерий задачи</summary><div class="rask-telo"><p>Школьник понимает, о каком объекте идёт речь и зачем им заниматься. Что-то придётся выучить по дороге, и это нормально</p><p>У задачи есть начало, которое руководитель знает сам: какие примеры разобрать, какие частные случаи посчитать, чтобы к зиме был первый результат. Что будет дальше, заранее не известно никому</p></div></details>
-    </div>
+    <div class="m-raskrytiya"></div>
     <div class="m-rule"></div>
     <p class="m-cta">
-      <a class="knopka" href="https://t.me/d1_d57">Предложить задачу</a>
-      <span class="kontakt"><a href="https://t.me/d1_d57">@d1_d57</a></span>
-      <span class="podpis">Иван Яковлев, руководитель математических проектов</span>
+      <a class="knopka" href="#anketa-raskrytie">Предложить задачу</a>
+      <span class="podpis">Иван Яковлев → <a href="https://t.me/d1_d57">t.me/d1_d57</a></span>
     </p>
   </div>
 
