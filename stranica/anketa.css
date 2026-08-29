@@ -1,0 +1,188 @@
+/* Оформление анкеты. Минимальное и честное: читаемые поля, видимая ошибка, видимый успех.
+   Красоту наводит заход вёрстки — здесь только то, без чего формой нельзя пользоваться.
+   Ни одного имени вне префикса anketa-; всё вложено в .anketa-root, глобальных правил нет. */
+
+.anketa-root {
+  --anketa-tekst: currentColor;
+  --anketa-tishe: color-mix(in srgb, currentColor 62%, transparent);
+  --anketa-ramka: color-mix(in srgb, currentColor 30%, transparent);
+  --anketa-ramka-fokus: currentColor;
+  --anketa-ploxo: #b3261e;
+  --anketa-horosho: #1b6b3a;
+  --anketa-otstup: 1.15rem;
+
+  font: inherit;
+  color: var(--anketa-tekst);
+  text-align: left;
+}
+
+.anketa-root *,
+.anketa-root *::before,
+.anketa-root *::after {
+  box-sizing: border-box;
+}
+
+.anketa-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--anketa-otstup);
+  margin: 0;
+}
+
+.anketa-pole {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.anketa-podpis {
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 0;
+}
+
+.anketa-zvezda {
+  color: var(--anketa-ploxo);
+}
+
+.anketa-hint {
+  font-size: 0.86em;
+  line-height: 1.35;
+  color: var(--anketa-tishe);
+}
+
+.anketa-vvod {
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  padding: 0.6em 0.7em;
+  background: transparent;
+  border: 1px solid var(--anketa-ramka);
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+.anketa-vvod-mnogostrochnyj {
+  resize: vertical;
+  min-height: 6.5em;
+}
+
+.anketa-vvod:focus-visible {
+  outline: 2px solid var(--anketa-ramka-fokus);
+  outline-offset: 1px;
+  border-color: var(--anketa-ramka-fokus);
+}
+
+.anketa-varianty {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1.2em;
+}
+
+.anketa-variant,
+.anketa-galochka {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.anketa-galochka {
+  margin-top: 0.45em;
+}
+
+.anketa-radio,
+.anketa-checkbox {
+  margin: 0.2em 0 0 0;
+  flex: none;
+  accent-color: currentColor;
+}
+
+.anketa-pole-galochki .anketa-podpis {
+  margin-bottom: 0.1em;
+}
+
+.anketa-oshibka-polya:empty {
+  display: none;
+}
+
+.anketa-oshibka-polya {
+  font-size: 0.86em;
+  color: var(--anketa-ploxo);
+}
+
+.anketa-pole-ploxoe .anketa-vvod {
+  border-color: var(--anketa-ploxo);
+}
+
+/* Приманка: уводим за экран, а не прячем display:none — так её видят боты и не видит человек. */
+.anketa-primanka {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.anketa-niz {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.anketa-knopka {
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  padding: 0.65em 1.6em;
+  background: transparent;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.anketa-knopka:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Три видимых состояния. Молчаливого провала быть не должно: пустой статус означает,
+   что отправки ещё не было, любой её исход — текстом. */
+.anketa-status:empty {
+  display: none;
+}
+
+.anketa-status {
+  line-height: 1.4;
+  padding: 0.6em 0.75em;
+  border-left: 3px solid var(--anketa-ramka);
+}
+
+.anketa-status-otpravlyaetsya {
+  color: var(--anketa-tishe);
+}
+
+.anketa-status-otpravleno {
+  color: var(--anketa-horosho);
+  border-left-color: var(--anketa-horosho);
+  font-weight: 600;
+}
+
+.anketa-status-oshibka {
+  color: var(--anketa-ploxo);
+  border-left-color: var(--anketa-ploxo);
+  font-weight: 600;
+}
+
+.anketa-form-otpravleno .anketa-vvod,
+.anketa-form-otpravleno .anketa-radio,
+.anketa-form-otpravleno .anketa-checkbox {
+  pointer-events: none;
+  opacity: 0.55;
+}
