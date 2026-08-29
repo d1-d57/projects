@@ -218,10 +218,13 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 /* Тот же кегль и тот же золотой, что у меток страницы, — панель одного с ней рода. */
 .anketa-titul{margin:0;font-weight:600;color:var(--accent);
   font-size:32px;line-height:1.08;letter-spacing:-.008em;}
+/* Крестик — единственная видимая дверь наружу (вторая, Escape, невидима),
+   поэтому он крупный и с явной областью нажатия, а не значок в углу. */
 .anketa-krestik{flex:0 0 auto;border:0;background:transparent;cursor:pointer;
-  font-family:var(--sans);font-size:34px;line-height:1;color:var(--muted-strong);
-  padding:0 6px;border-radius:2px;transition:color .18s ease;}
-.anketa-krestik:hover{color:var(--signal);}
+  font-family:var(--sans);font-size:30px;line-height:1;color:var(--ink);
+  width:52px;height:52px;padding:0;margin:-8px -10px 0 0;border-radius:2px;
+  transition:color .18s ease,background .18s ease;}
+.anketa-krestik:hover{color:var(--signal);background:rgba(234,241,236,.08);}
 .anketa-krestik:focus-visible{outline:2px solid var(--signal);outline-offset:2px;}
 
 /* Цвета анкеты — токенами страницы. Свои у неё двух видов, и оба на тёмно-зелёном
