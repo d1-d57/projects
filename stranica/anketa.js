@@ -11,11 +11,29 @@
   // именно они станут field_key в базе, их читает владелец через wrangler d1 execute.
   var ANKETA_POLYA = [
     {
-      key: "imya_i_mesto",
-      label: "Имя и где работаете",
+      key: "imya",
+      label: "Имя",
       type: "text",
       required: true,
       autocomplete: "name",
+    },
+    {
+      key: "kto_vy",
+      label: "Кто вы",
+      type: "radio",
+      required: true,
+      options: [
+        "исследователь",
+        "преподаватель математики",
+        "аспирант или магистрант",
+        "студент",
+      ],
+    },
+    {
+      key: "mesto",
+      label: "Место работы или учёбы",
+      type: "text",
+      required: true,
     },
     {
       key: "kontakt",
@@ -30,12 +48,15 @@
       type: "text",
       required: true,
     },
+    // Множественный выбор, а не «сколько школьников готовы взять»: у задачи бывает
+    // и то и другое устройство сразу, и тогда отмечаются оба пункта (решение владельца 30.08).
     {
-      key: "skolko_shkolnikov",
-      label: "Сколько школьников готовы взять",
-      type: "radio",
+      key: "format",
+      label: "Как можно работать над задачей",
+      type: "flazhki",
       required: true,
-      options: ["1", "2", "3"],
+      options: ["в одиночку", "группой"],
+      hint: "Можно отметить оба",
     },
     {
       key: "kto_vedet",
@@ -64,15 +85,11 @@
     {
       key: "samocheck_uprazhneniya",
       label:
-        "Могу сформулировать 5–10 упражнений по теме, ответы на которые знаю сам",
+        "Могу сформулировать 5–10 упражнений по теме и понимаю, как к ответу идти",
     },
     {
       key: "samocheck_otkrytyj_vopros",
       label: "В задаче есть вопрос, ответа на который я не знаю",
-    },
-    {
-      key: "samocheck_chto_vyuchit",
-      label: "Представляю, что школьнику придётся выучить по дороге",
     },
   ];
 
@@ -111,19 +128,23 @@
     return obertka;
   }
 
-  function narisovatRadio(pole) {
+  // Один рисователь на оба выбора: radio — «ровно один», flazhki — «один или оба».
+  // Разница только в типе input; вид, подпись и место ошибки общие.
+  function narisovatVybor(pole) {
+    var mnogo = pole.type === "flazhki";
     var obertka = el("fieldset", "anketa-pole anketa-pole-vybor");
     var podpis = el("legend", "anketa-podpis", pole.label);
     if (pole.required) podpis.appendChild(el("span", "anketa-zvezda", " *"));
     obertka.appendChild(podpis);
+    if (pole.hint) obertka.appendChild(el("div", "anketa-hint", pole.hint));
 
     var ryad = el("div", "anketa-varianty");
     pole.options.forEach(function (option, i) {
       var id = polyaId(pole.key, String(i));
       var punkt = el("label", "anketa-variant");
       punkt.setAttribute("for", id);
-      var vvod = el("input", "anketa-radio");
-      vvod.type = "radio";
+      var vvod = el("input", mnogo ? "anketa-checkbox" : "anketa-radio");
+      vvod.type = mnogo ? "checkbox" : "radio";
       vvod.id = id;
       vvod.name = pole.key;
       vvod.value = option;
@@ -185,7 +206,9 @@
 
     ANKETA_POLYA.forEach(function (pole) {
       form.appendChild(
-        pole.type === "radio" ? narisovatRadio(pole) : narisovatTextovoe(pole)
+        pole.type === "radio" || pole.type === "flazhki"
+          ? narisovatVybor(pole)
+          : narisovatTextovoe(pole)
       );
     });
     form.appendChild(narisovatGalochki());
@@ -209,7 +232,14 @@
     var otvety = { form_id: ANKETA_FORM_ID };
 
     ANKETA_POLYA.forEach(function (pole) {
-      if (pole.type === "radio") {
+      if (pole.type === "flazhki") {
+        // Отмеченные варианты уходят одной строкой через запятую: колонка в базе
+        // остаётся текстовой, как у всех прочих полей, и читается тем же запросом.
+        var vse = form.querySelectorAll('input[name="' + pole.key + '"]:checked');
+        var znacheniya = [];
+        for (var i = 0; i < vse.length; i++) znacheniya.push(vse[i].value);
+        otvety[pole.key] = znacheniya.join(", ");
+      } else if (pole.type === "radio") {
         var vybran = form.querySelector('input[name="' + pole.key + '"]:checked');
         otvety[pole.key] = vybran ? vybran.value : "";
       } else {
@@ -230,7 +260,7 @@
 
     ANKETA_POLYA.forEach(function (pole) {
       var obertka =
-        pole.type === "radio"
+        pole.type === "radio" || pole.type === "flazhki"
           ? form.querySelector('input[name="' + pole.key + '"]').closest(".anketa-pole")
           : form.elements[pole.key].closest(".anketa-pole");
       var mesto = obertka.querySelector(".anketa-oshibka-polya");
