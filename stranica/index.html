@@ -605,6 +605,10 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       var otkryt=document.getElementById('anketa-otkryt');
       var zakryt=document.getElementById('anketa-zakryt');
       if(!panel||!otkryt) return;
+      /* Открытие по якорю: бот шлёт сюда кнопкой web_app с #anketa-raskrytie в адресе,
+         сам якорь <details> не раскрывает — раскрываем явно, дальше её подхватывает
+         тот же 'toggle', что и обычный клик по кнопке. */
+      if(location.hash==='#anketa-raskrytie') panel.open=true;
       otkryt.addEventListener('click',function(){ panel.open=!panel.open; });
       if(zakryt) zakryt.addEventListener('click',function(){ panel.open=false; otkryt.focus(); });
       document.addEventListener('keydown',function(e){
