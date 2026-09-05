@@ -383,6 +383,218 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
   .m-zov{margin:28px 0 0;font-weight:600;font-size:22px;line-height:1.24;color:var(--ink);}
   .m-timeline{margin:28px 0;}
 }
+
+/* ============================================================================
+   ВКЛАДКИ (заход razdel-shkolnikam). Страница получает вторую аудиторию —
+   десятиклассников, которые в сентябре выбирают проект. Раздел дописан
+   секцией: ни одно правило выше не тронуто, все свои селекторы — с pp-.
+   Палитра и типографика взяты токенами и существующими классами: это одна
+   страница с двумя вкладками, а не две разные страницы.
+
+   pp-vkl — контейнер вкладки. display:contents, потому что на десктопе .block
+   обязан остаться ПРЯМЫМ flex-ребёнком .stage: любая настоящая коробка между
+   ними меняет расчёт высоты, а сцена 1920x1080 с overflow:hidden такой сдвиг
+   показывает срезом снизу. Скрытие — родным [hidden], поэтому правило
+   написано через :not([hidden]) и с погашенной вкладкой не спорит.
+   ========================================================================== */
+.pp-vkl:not([hidden]){display:contents;}
+
+/* Переключатель. На десктопе — absolute в верхнем правом углу сцены, и это не
+   вкусовщина: сцена уже переполнена содержимым руководителей, любая коробка
+   в потоке сдвинула бы её и сорвала попиксельную сверку с эталоном. */
+.pp-perekl{display:flex;gap:22px;align-items:baseline;font-family:var(--sans);}
+.pp-perekl-d{position:absolute;top:24px;right:48px;z-index:4;}
+.pp-knopka{border:0;background:none;padding:0 0 3px;margin:0;cursor:pointer;
+  font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.185em;
+  text-transform:uppercase;color:var(--muted-strong);
+  border-bottom:1px solid var(--hair);transition:color .18s ease,border-color .18s ease;}
+/* Зона нажатия расширяется невидимой накладкой, а не отступами: отступы
+   двинули бы содержимое, а на постере 1920x1080 двигать нечего. Накладка
+   работает и на десктопе — сцена масштабируется, и на 1440 сама метка
+   съёживается до 16px по высоте. */
+.pp-knopka{position:relative;}
+.pp-knopka::before{content:'';position:absolute;left:0;right:0;top:50%;
+  transform:translateY(-50%);height:44px;}
+.pp-knopka:hover{color:var(--ink);}
+.pp-knopka.pp-tekushchaya{color:var(--accent);border-bottom-color:var(--accent);}
+.pp-knopka:focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+
+@media (max-width:820px){
+  /* В телефоне переключатель в потоке: прокрутка есть, прятать его некуда,
+     и он обязан быть первым, что видно, — вкладок теперь две. */
+  .pp-perekl-m{gap:18px;margin:0 0 22px;flex-wrap:wrap;}
+  .pp-perekl-m .pp-knopka{font-size:12.5px;letter-spacing:.14em;padding-bottom:4px;
+    position:relative;}
+  .pp-perekl-m .pp-knopka::before{content:'';position:absolute;left:0;right:0;
+    top:50%;transform:translateY(-50%);height:44px;}
+}
+@media (max-width:430px){
+  /* На 375 колонка отдаёт под текст 319px, а пара меток занимает 365 и
+     переносится: два пункта в столбик читаются как список, а не как выбор
+     из двух. Кегль и разрядка — единственный рычаг: имя вкладки выбрал
+     владелец, сокращать его тут нельзя. 11.5/.06em дают 270px, зазор 49. */
+  /* wrap НЕ снимаем: на 320px даже уменьшенная пара (302px) шире колонки в 264,
+     и nowrap давал горизонтальную прокрутку тела. Пусть на самых узких
+     переносится — прокрутка тела недопустима, вторая строка терпима. */
+  .pp-perekl-m{gap:14px;}
+  .pp-perekl-m .pp-knopka{font-size:11.5px;letter-spacing:.06em;white-space:nowrap;}
+}
+
+/* Проза второй вкладки. Кегли НЕ выдуманы: .pp-lead повторяет .lead (26/1.32),
+   остальные абзацы — .blok (21/1.5). Типографика обеих вкладок обязана быть
+   одна и та же: это одна страница, а не две разные. */
+.pp-telo{flex:1 1 auto;display:flex;gap:64px;min-height:0;margin-top:30px;position:relative;}
+.pp-proza{display:flex;flex-direction:column;gap:18px;font-size:21px;line-height:1.5;
+  min-width:0;text-wrap:pretty;}
+.pp-proza p{margin:0;text-wrap:pretty;}
+.pp-lead{font-size:26px;line-height:1.32;}
+.pp-proza a,.pp-proza-m a,.pp-podval a{color:var(--signal);text-decoration:none;
+  border-bottom:1px solid rgba(239,106,75,.45);padding-bottom:.02em;
+  transition:border-color .18s ease;}
+.pp-proza a:hover,.pp-proza-m a:hover,.pp-podval a:hover{border-bottom-color:var(--signal);}
+/* «на странице» ведёт на соседнюю вкладку, а не на другой адрес: это кнопка,
+   но выглядеть обязана ссылкой — иначе в строке прозы читалась бы кнопкой. */
+.pp-ssylka{border:0;background:none;padding:0;margin:0;cursor:pointer;font:inherit;
+  color:var(--signal);border-bottom:1px solid rgba(239,106,75,.45);
+  transition:border-color .18s ease;}
+.pp-ssylka:hover{border-bottom-color:var(--signal);}
+.pp-ssylka:focus-visible{outline:2px solid var(--signal);outline-offset:2px;}
+.pp-konec{color:var(--muted);}
+
+@media (max-width:820px){
+  .pp-proza-m .pp-lead-m{font-size:19px;line-height:1.45;}
+  .pp-proza-m .pp-konec{color:var(--muted);font-size:15px;line-height:1.55;}
+}
+
+/* ── КАЛЕНДАРЬ ТРЁХ СУББОТ ──────────────────────────────────────────────────
+   Список проектов ПУСТ и будет пуст до конца сентября: темы приносят
+   руководители, которые выступают 12, 19 и 26-го, а вкладка выходит раньше.
+   Поэтому столбец начинает жизнь расписанием, а не пустым списком, — и это
+   не заглушка: школьнику расписание сейчас полезнее списка тем.
+   Стадия 2 (с октября) — та же разметка: внутри пустого .pp-temy появляются
+   <details class="pp-tema">, по одному на тему. Разметка и правила для них
+   уже здесь и проверены на трёх темах разной длины (одна строка, абзац,
+   три абзаца) — заполнение будет правкой ДАННЫХ, а не перевёрсткой.
+   Переход между стадиями — правка ДАННЫХ, не перевёрстка.
+
+   Колонка 560px против 1200px у прозы: «слева полоска со списком проектов,
+   справа более общий текст» — формулировка владельца. Проза идёт 26-м
+   кеглем: в 1200px это 92 знака в строке, ровно норма страницы (.blok
+   в .stolb 960px при 21px даёт 91). Кегль не выдуман — он уже живёт
+   на первой вкладке в .lead, .blok.god и .kriterii. */
+.pp-telo>.pp-kalendar{flex:0 0 560px;display:flex;flex-direction:column;min-height:0;}
+/* Три слота РАСХОДЯТСЯ по высоте сцены, а не жмутся к заголовку. Причина не
+   косметическая: при нуле имён из трёх короткий список оставлял под собой
+   ~470px пустоты, и столбец читался недоделанным — ровно то состояние,
+   которое школьники увидят первым и будут видеть неделю. Растянутая рейка
+   превращает столбец в шкалу сентября: пусто внизу больше нечему быть. */
+.pp-telo>.pp-kalendar .pp-subboty{flex:1 1 auto;overflow-y:auto;}
+/* Слоты КОМПАКТНЫЕ, по содержимому, а не растянутые в трети колонки.
+   Растяжка была ошибкой дважды подряд: сперва пружиной на всю высоту, потом
+   равными третями — и оба раза свежий глаз читал пустоту внутри слота как
+   провал, а замыкающую линию таблицы, уехавшую вниз, как «забытый
+   разделитель от четвёртого элемента, которого нет». На телефоне те же
+   слоты всегда были компактными, и там претензий не возникло ни разу.
+   Пустота теперь одна, под закрытой таблицей, и её низ держит подвал. */
+.pp-telo>.pp-kalendar .pp-subbota{flex:0 0 auto;min-height:0;}
+/* Нижняя линия закрывает таблицу. При компактных слотах она стоит вплотную
+   к третьей дате и работает разделителем, а не висит в пустоте. */
+.pp-telo>.pp-kalendar .pp-subbota:last-child{border-bottom:1px solid var(--hair);
+  padding-bottom:18px;}
+/* 26px и отбивка 14: подвал забрал у колонки около 80px, и на 29 проза
+   переполняла .pp-telo и наезжала на подвал — сцена 1920x1080 не тянется.
+   В колонке 1200px 26-й кегль даёт 92 знака в строке, у первой вкладки
+   норма 91: одна страница, одна типографика. */
+.pp-telo>.pp-proza{flex:0 0 1200px;font-size:26px;line-height:1.32;gap:14px;}
+.pp-telo>.pp-proza .pp-lead{font-weight:600;}
+
+.pp-metka{margin:0 0 12px;}
+/* Статус сказан ОДИН раз на всё расписание. Три одинаковые строки
+   «выступающие подтверждаются» под каждой датой читались не как состояние,
+   а как забытая заглушка: слово в слово, тусклее и мельче даты. */
+/* Цвет --ink: строка объясняет, почему под датами пусто, и это единственная
+   защита расписания от чтения «страница недоделана» — свежий глаз сказал,
+   что проскакивает её взглядом. Токены здесь обманывают именем: --muted-strong
+   #8FB0A5 ТЕМНЕЕ, чем --muted #A7C3BA, и на тёмном фоне «strong» означает
+   меньший контраст, а не больший (3.30:1 против 4.12:1). --ink даёт 6.76:1.
+   Кегль 19 против 26 у прозы держит иерархию: это подпись, а не текст. */
+.pp-poyasnenie{margin:0 0 24px;font-size:19px;line-height:1.45;color:var(--ink);
+  text-wrap:pretty;}
+/* Слоты — РАВНЫЕ ТРЕТИ колонки, разделённые линиями сверху. Первая версия
+   вела вертикальную рейку с точками и разносила слоты пружиной; свежий глаз
+   назвал это «зарезервированной высотой под список, который не отрисовался»,
+   и был прав: ничем не очерченная пустота между слотами читается как сбой
+   вёрстки, а не как место. Линия сверху превращает тот же пустой слот в
+   строку таблицы — у неё есть граница, и пустота внутри читается как место
+   под будущие темы. Отбивка .glavnyj на первой вкладке сделана тем же
+   приёмом и тем же цветом: словарь страницы, а не второй язык. */
+.pp-subboty{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+.pp-subbota{position:relative;border-top:1px solid var(--hair);padding:18px 0 0;}
+.pp-data{margin:0;font-family:var(--sans);font-weight:600;font-size:34px;
+  letter-spacing:.01em;color:var(--accent);line-height:1.2;}
+.pp-den{margin:5px 0 0;font-family:var(--sans);font-weight:600;font-size:13px;
+  letter-spacing:.02em;text-transform:uppercase;color:var(--muted-strong);}
+.pp-temy{margin-top:10px;}
+/* «выступающие подтверждаются» — спокойная строка настоящего времени, а не
+   «уточняется» и не прочерк: пустой слот обязан читаться как расписание,
+   которое идёт своим ходом, а не как недоделанная страница. */
+.pp-zhdem{margin:0;font-size:21px;line-height:1.45;color:var(--muted);}
+/* Подвал во всю ширину. У первой вкладки низ сцены держит .zapros — призыв
+   и действие; без такого основания низ второй вкладки оставался пустым по
+   всей ширине, и обе колонки висели в воздухе. Здесь то же место занимают
+   срок и три ссылки: для школьника это и есть действие. */
+.pp-podval{flex:0 0 auto;margin-top:22px;padding-top:18px;border-top:1px solid var(--hair);
+  display:flex;align-items:baseline;gap:40px;}
+.pp-zov{margin:0;font-weight:600;font-size:30px;line-height:1.2;
+  letter-spacing:-.006em;color:var(--ink);flex:0 0 auto;}
+.pp-podval .pp-konec{margin:0;flex:1 1 auto;font-size:21px;line-height:1.45;}
+
+/* Стадия 2: тема раскрывается в той же колонке. Родной <details>, свой класс —
+   в существующие .raskrytie скрипты страницы намеренно НЕ лезем: там панель
+   поверх прозы, а здесь нужен обычный аккордеон в потоке. */
+.pp-tema{margin:0;}
+.pp-tema+.pp-tema{margin-top:14px;}
+.pp-tema>summary{list-style:none;cursor:pointer;font-size:19px;line-height:1.35;
+  color:var(--ink);border-bottom:1px solid var(--hair);padding-bottom:6px;
+  transition:border-color .18s ease,color .18s ease;}
+.pp-tema>summary::-webkit-details-marker{display:none;}
+.pp-tema>summary::after{content:'+';float:right;margin-left:12px;color:var(--muted-strong);
+  font-family:var(--sans);font-weight:600;}
+.pp-tema[open]>summary::after{content:'−';}
+.pp-tema>summary:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.pp-tema>summary:focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+.pp-tema-telo{padding:12px 0 4px;font-size:17px;line-height:1.5;color:var(--muted);}
+.pp-tema-telo p{margin:0 0 10px;}
+.pp-tema-telo p:last-child{margin-bottom:0;}
+.pp-tema-kto{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.02em;
+  text-transform:uppercase;color:var(--muted-strong);}
+/* Заглушка — выступающий подтверждён, тема ещё нет: раскрытия нет, поэтому
+   не <details>, а обычный абзац с той же геометрией строки, что у .pp-tema
+   summary (высота ряда не должна прыгать между темами с анонсом и без).
+   --muted, а не --ink: та же логика приглушённого тона, что у .pp-zhdem —
+   состояние «уточняется», а не готовый факт. */
+.pp-tema-bez-raskrytiya{margin:0;font-size:19px;line-height:1.35;color:var(--muted);
+  border-bottom:1px solid var(--hair);padding-bottom:6px;}
+
+@media (max-width:820px){
+  /* Расписание на телефоне поднято под лид: «когда приходить» — главный
+     практический факт для школьника, а в исходном порядке он лежал ниже
+     пяти экранов прозы. Узлы не переносятся — .m-text это flex-колонка,
+     и порядок задаётся order. */
+  .pp-proza-m>p:nth-of-type(-n+2){order:-2;}
+  .pp-raspisanie-m{order:-1;margin:8px 0 4px;}
+  .pp-subboty-m{margin:0;}
+  .pp-subboty-m .pp-subbota{padding:14px 0 0;}
+  .pp-subboty-m .pp-subbota:last-child{border-bottom:1px solid var(--hair);padding-bottom:16px;}
+  .pp-subboty-m .pp-data{font-size:22px;}
+  .pp-subboty-m .pp-tema>summary{font-size:17px;}
+  .pp-subboty-m .pp-tema-bez-raskrytiya{font-size:17px;}
+  .pp-poyasnenie-m{margin:0 0 6px;font-size:16px;line-height:1.5;}
+  /* Подвал в телефоне столбиком: срок и ссылки в строку не встают. */
+  .pp-podval-m{display:block;margin-top:28px;padding-top:20px;}
+  .pp-zov-m{font-size:22px;line-height:1.24;margin:0 0 14px;}
+  .pp-podval-m .pp-konec{font-size:15px;line-height:1.55;margin:0 0 8px;color:var(--muted);}
+}
 </style>
 <!-- Оформление анкеты идёт ПОСЛЕ стиля страницы: иначе общие правила страницы
      перекрыли бы оформление формы. Файл лежит рядом с index.html и публикуется вместе с ним. -->
@@ -392,6 +604,13 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
   <!-- ===================== DESKTOP ===================== -->
   <div class="viewport">
     <div class="stage" id="stage">
+      <div class="pp-perekl pp-perekl-d" role="tablist" aria-label="Кому эта страница">
+        <button type="button" class="pp-knopka pp-tekushchaya" data-vkl="rukovoditelyam"
+                role="tab" aria-selected="true" aria-controls="rukovoditelyam">Руководителям</button>
+        <button type="button" class="pp-knopka" data-vkl="predstavlenie"
+                role="tab" aria-selected="false" aria-controls="predstavlenie" tabindex="-1">Проекты 2026</button>
+      </div>
+      <section class="pp-vkl" id="rukovoditelyam" data-vkl="rukovoditelyam" role="tabpanel" aria-label="Руководителям">
       <div class="block">
         <div class="shapka">
           <p class="eyebrow">2026/27 · 10 класс · школа 179</p>
@@ -405,9 +624,10 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </div>
             <div class="timeline">
               <div class="tl-line"></div>
-              <span class="tl-mark pervaya" style="left:0.0%"><span class="tl-what">выбор тем</span><span class="tl-when">сентябрь–октябрь</span><span class="tl-dot"></span></span>
-              <span class="tl-mark" style="left:34.0%"><span class="tl-what">первая предзащита</span><span class="tl-when">декабрь</span><span class="tl-dot"></span></span>
-              <span class="tl-mark" style="left:68.0%"><span class="tl-what">вторая предзащита</span><span class="tl-when">март</span><span class="tl-dot"></span></span>
+              <span class="tl-mark pervaya" style="left:0.0%"><span class="tl-what">знакомство</span><span class="tl-when">12–26 сентября</span><span class="tl-dot"></span></span>
+              <span class="tl-mark" style="left:26.0%"><span class="tl-what">выбор тем</span><span class="tl-when">17 октября</span><span class="tl-dot"></span></span>
+              <span class="tl-mark" style="left:50.0%"><span class="tl-what">первая предзащита</span><span class="tl-when">декабрь</span><span class="tl-dot"></span></span>
+              <span class="tl-mark" style="left:74.0%"><span class="tl-what">вторая предзащита</span><span class="tl-when">март</span><span class="tl-dot"></span></span>
               <span class="tl-mark" style="left:92.0%"><span class="tl-what">защита</span><span class="tl-when">май</span><span class="tl-dot"></span></span>
             </div>
             <div class="blok god">
@@ -420,7 +640,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             <div class="blok vedet">
               <p>Задачу приносит человек, который сам занимался исследованиями, — математик, преподаватель, аспирант или студент. Обычно она из его области: он выбирает вопрос, доступный школьникам по сложности, и предполагает, что за год его удастся закрыть. Часто это часть его собственной работы, и тогда школьники продвигают её вместе с ним и его учениками</p>
               <p class="akcent">Группа регулярно встречается с руководителем или его аспирантом — вживую или <span class="snoska" role="button" tabindex="0" data-cel="r-distant" aria-expanded="false">дистанционно, в удобное вам время</span></p>
-              <p class="tishe">Ещё одна пара в неделю стоит в школьном расписании: на ней школьники со всех проектов рассказывают, как продвинулись. Расписание, сроки и отчётность — <span class="snoska" role="button" tabindex="0" data-cel="r-shkola" aria-expanded="false">на школе</span>, за руководителем содержание</p>
+              <p class="tishe">Одна пара в неделю стоит в школьном расписании, по субботам: на ней школьники со всех проектов рассказывают, как продвинулись. Сентябрьские пары — 12, 19 и 26 числа: на них руководители по очереди рассказывают школьникам, чем занимаются, минут по пятнадцать каждый. 17 октября школьники объявляют выбранные темы, и с этого дня группы работают. Расписание, сроки и отчётность — <span class="snoska" role="button" tabindex="0" data-cel="r-shkola" aria-expanded="false">на школе</span>, за руководителем содержание</p>
             </div>
             <div class="gruppa glavnyj">
               <h2 class="metka">Какая задача годится</h2>
@@ -459,10 +679,70 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           </details>
         </div>
       </div>
+      </section>
+      <section class="pp-vkl" id="predstavlenie" data-vkl="predstavlenie" role="tabpanel" aria-label="Представление проектов" hidden>
+      <div class="block">
+        <div class="shapka">
+          <p class="eyebrow">2026/27 · 10 класс · школа 179</p>
+          <h1>Исследовательские проекты по современной математике</h1>
+        </div>
+        <div class="pp-telo">
+          <div class="pp-kalendar">
+            <h2 class="metka pp-metka">Кто выступает</h2>
+            <p class="pp-poyasnenie">Имена и темы появляются здесь по мере подтверждения — до каждой из трёх суббот</p>
+            <ol class="pp-subboty">
+            <li class="pp-subbota">
+              <p class="pp-data">12 сентября</p>
+              <p class="pp-den">суббота</p>
+              <div class="pp-temy" data-den="12">
+                <details class="pp-tema">
+                  <summary><span class="pp-tema-kto">Андрей Рябичев</span><br>Симплициальные отображения сфер</summary>
+                  <div class="pp-tema-telo">
+                    <p>Триангуляция двумерной поверхности — разбиение её вложенным графом на треугольники. Аналогично, трёхмерные объекты можно разбивать на тетраэдры, но в больших размерностях представить себе это довольно трудно. Тем не менее, для триангуляции удобно задавать (линейное) отображение, просто указав образ каждой вершины. Так топология — область математики, изучающая непрерывные преобразования и их инварианты — оказывается связанной с комбинаторикой и теорией многогранников, а сложные топологические конструкции описываются в терминах раскрасок графов. Мы начнём с азов топологической комбинаторики и быстро сможем дойти до (пока) открытых проблем.</p>
+                  </div>
+                </details>
+                <div class="pp-tema">
+                  <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Александр Юран</span><br>тема уточняется</p>
+                </div>
+              </div>
+            </li>
+            <li class="pp-subbota">
+              <p class="pp-data">19 сентября</p>
+              <p class="pp-den">суббота</p>
+              <div class="pp-temy" data-den="19"></div>
+            </li>
+            <li class="pp-subbota">
+              <p class="pp-data">26 сентября</p>
+              <p class="pp-den">суббота</p>
+              <div class="pp-temy" data-den="26"></div>
+            </li>
+            </ol>
+          </div>
+          <div class="pp-proza">
+            <p class="pp-lead">Проект по математике — это работа рядом со взрослым исследователем. Он находит открытую, но доступную школьникам проблему из своей области, часто связанную с тем, чем он занят прямо сейчас. Решения не знает никто. Подсказывать он не будет: скажет, в какую сторону идти, обсудит ближайший шаг, задаст вопрос, который наведёт вас на путь — тот самый, которого он и сам пока не видит</p>
+            <p>12, 19 и 26 сентября на субботней паре эти люди придут к вам сами. Каждый расскажет за пятнадцать минут, чем занимается. Так быстро математику не объяснить, поэтому в сентябре вы прежде всего знакомитесь с людьми и с областями, в которых они работают. Вы можете пообщаться с тем, кто вас зацепил, обсудить тему и решить, ваше это или нет</p>
+            <p>К концу сентября вы должны выбрать руководителя и тему, к 17 октября нужно определиться и коротко рассказать о том, чем конкретно вы планируете заниматься</p>
+            <p>Дальше вы встречаетесь с руководителем каждую неделю, вживую или по видеосвязи. Начинается всё с известного: что-то прочитать, разобрать первые примеры, набрать технику на несложных упражнениях. Потом идут новые задачи. По ходу года вы делаете доклады о том, куда продвинулись, зимой и весной проходит предзащита, а в мае вы пишете текст и рассказываете финальную версию. Хорошую работу можно опубликовать</p>
+            <p>Цель — получить опыт математического исследования. Получится результат или нет, заранее не знает никто, и это часть условий: настоящая работа так и устроена. Что останется в любом случае — год работы бок о бок с человеком, который занимается наукой</p>
+          </div>
+        </div>
+        <div class="pp-podval">
+          <p class="pp-zov">Выбрать руководителя и тему нужно к 17 октября</p>
+          <p class="pp-konec">Узнать подробности можно <button type="button" class="pp-ssylka" data-vkl="rukovoditelyam">на странице</button> и <a href="https://t.me/projects179_bot">в боте</a> · если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
+        </div>
+      </div>
+      </section>
     </div>
   </div>
   <!-- ===================== MOBILE ===================== -->
   <div class="mobile">
+    <div class="pp-perekl pp-perekl-m" role="tablist" aria-label="Кому эта страница">
+      <button type="button" class="pp-knopka pp-tekushchaya" data-vkl="rukovoditelyam"
+              role="tab" aria-selected="true" aria-controls="rukovoditelyam-m">Руководителям</button>
+      <button type="button" class="pp-knopka" data-vkl="predstavlenie"
+              role="tab" aria-selected="false" aria-controls="predstavlenie-m" tabindex="-1">Проекты 2026</button>
+    </div>
+    <section class="pp-vkl" id="rukovoditelyam-m" data-vkl="rukovoditelyam" role="tabpanel" aria-label="Руководителям">
     <p class="m-eyebrow">2026/27 · 10 класс · школа 179</p>
     <h1 class="m-title">Исследовательские проекты по современной математике</h1>
     <div class="m-rule"></div>
@@ -473,7 +753,8 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       <details class="raskrytie" id="r-razdely-m"><summary class="skrytoe">Что успевают разобрать</summary><div class="rask-telo"><p><b>Анализ:</b> пределы и непрерывность · производная и интеграл · начала топологии и дифференциальной геометрии · комплексный анализ</p><p><b>Дискретная математика:</b> теория множеств · перечислительная комбинаторика · графы · дискретная вероятность · производящие функции · теория игр</p><p><b>Алгебра:</b> арифметика и теория чисел · поля и многочлены · линейная алгебра · комплексные числа · вещественные числа · симметрии и преобразования</p></div></details>
     </div>
     <ul class="m-timeline">
-          <li><span class="m-what">выбор тем</span> · сентябрь–октябрь</li>
+          <li><span class="m-what">знакомство</span> · 12, 19, 26 сентября</li>
+          <li><span class="m-what">выбор тем</span> · 17 октября</li>
           <li><span class="m-what">первая предзащита</span> · декабрь</li>
           <li><span class="m-what">вторая предзащита</span> · март</li>
           <li><span class="m-what">защита</span> · май</li>
@@ -489,7 +770,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       <p>Задачу приносит человек, который сам занимался исследованиями, — математик, преподаватель, аспирант или студент. Обычно она из его области: он выбирает вопрос, доступный школьникам по сложности, и предполагает, что за год его удастся закрыть. Часто это часть его собственной работы, и тогда школьники продвигают её вместе с ним и его учениками</p>
       <p class="m-akcent">Группа регулярно встречается с руководителем или его аспирантом — вживую или <span class="snoska" role="button" tabindex="0" data-cel="r-distant-m" aria-expanded="false">дистанционно, в удобное вам время</span></p>
       <details class="raskrytie" id="r-distant-m"><summary class="skrytoe">Про дистанционную работу</summary><div class="rask-telo"><p>Приезжать в школу не обязательно: группа и руководитель договариваются, как им удобнее — очно, по видеосвязи или вперемешку, в любое время. Обязательна регулярность, а не место встречи</p></div></details>
-      <p class="primer">Ещё одна пара в неделю стоит в школьном расписании: на ней школьники со всех проектов рассказывают, как продвинулись. Расписание, сроки и отчётность — <span class="snoska" role="button" tabindex="0" data-cel="r-shkola-m" aria-expanded="false">на школе</span>, за руководителем содержание</p>
+      <p class="primer">Одна пара в неделю стоит в школьном расписании, по субботам: на ней школьники со всех проектов рассказывают, как продвинулись. Сентябрьские пары — 12, 19 и 26 числа: на них руководители по очереди рассказывают школьникам, чем занимаются, минут по пятнадцать каждый. 17 октября школьники объявляют выбранные темы, и с этого дня группы работают. Расписание, сроки и отчётность — <span class="snoska" role="button" tabindex="0" data-cel="r-shkola-m" aria-expanded="false">на школе</span>, за руководителем содержание</p>
       <details class="raskrytie" id="r-shkola-m"><summary class="skrytoe">Что берёт на себя школа</summary><div class="rask-telo"><p>Расписание, сроки, отчётность, комиссии на предзащитах и защите, разговоры со школьниками о дисциплине. За руководителем остаётся содержание</p></div></details>
     </div>
     <h2 class="m-metka">Какая задача годится</h2>
@@ -505,9 +786,128 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       <a class="knopka" href="#anketa-raskrytie">Предложить задачу</a>
       <span class="podpis">Иван Яковлев → <a href="https://t.me/d1_d57">t.me/d1_d57</a></span>
     </p>
+    </section>
+    <section class="pp-vkl" id="predstavlenie-m" data-vkl="predstavlenie" role="tabpanel" aria-label="Представление проектов" hidden>
+    <p class="m-eyebrow">2026/27 · 10 класс · школа 179</p>
+    <h1 class="m-title">Исследовательские проекты по современной математике</h1>
+    <div class="m-rule"></div>
+    <div class="m-text pp-proza-m">
+      <p class="pp-lead-m">Проект по математике — это работа рядом со взрослым исследователем. Он находит открытую, но доступную школьникам проблему из своей области, часто связанную с тем, чем он занят прямо сейчас. Решения не знает никто. Подсказывать он не будет: скажет, в какую сторону идти, обсудит ближайший шаг, задаст вопрос, который наведёт вас на путь — тот самый, которого он и сам пока не видит</p>
+      <p>12, 19 и 26 сентября на субботней паре эти люди придут к вам сами. Каждый расскажет за пятнадцать минут, чем занимается. Так быстро математику не объяснить, поэтому в сентябре вы прежде всего знакомитесь с людьми и с областями, в которых они работают. Вы можете пообщаться с тем, кто вас зацепил, обсудить тему и решить, ваше это или нет</p>
+      <p>К концу сентября вы должны выбрать руководителя и тему, к 17 октября нужно определиться и коротко рассказать о том, чем конкретно вы планируете заниматься</p>
+      <p>Дальше вы встречаетесь с руководителем каждую неделю, вживую или по видеосвязи. Начинается всё с известного: что-то прочитать, разобрать первые примеры, набрать технику на несложных упражнениях. Потом идут новые задачи. По ходу года вы делаете доклады о том, куда продвинулись, зимой и весной проходит предзащита, а в мае вы пишете текст и рассказываете финальную версию. Хорошую работу можно опубликовать</p>
+      <p>Цель — получить опыт математического исследования. Получится результат или нет, заранее не знает никто, и это часть условий: настоящая работа так и устроена. Что останется в любом случае — год работы бок о бок с человеком, который занимается наукой</p>
+      <div class="pp-raspisanie-m">
+      <h2 class="m-metka">Кто выступает</h2>
+      <p class="pp-poyasnenie pp-poyasnenie-m">Имена и темы появляются здесь по мере подтверждения — до каждой из трёх суббот</p>
+      <ol class="pp-subboty pp-subboty-m">
+        <li class="pp-subbota">
+          <p class="pp-data">12 сентября</p>
+          <p class="pp-den">суббота</p>
+          <div class="pp-temy" data-den="12">
+            <details class="pp-tema">
+              <summary><span class="pp-tema-kto">Андрей Рябичев</span><br>Симплициальные отображения сфер</summary>
+              <div class="pp-tema-telo">
+                <p>Триангуляция двумерной поверхности — разбиение её вложенным графом на треугольники. Аналогично, трёхмерные объекты можно разбивать на тетраэдры, но в больших размерностях представить себе это довольно трудно. Тем не менее, для триангуляции удобно задавать (линейное) отображение, просто указав образ каждой вершины. Так топология — область математики, изучающая непрерывные преобразования и их инварианты — оказывается связанной с комбинаторикой и теорией многогранников, а сложные топологические конструкции описываются в терминах раскрасок графов. Мы начнём с азов топологической комбинаторики и быстро сможем дойти до (пока) открытых проблем.</p>
+              </div>
+            </details>
+            <div class="pp-tema">
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Александр Юран</span><br>тема уточняется</p>
+            </div>
+          </div>
+        </li>
+        <li class="pp-subbota">
+          <p class="pp-data">19 сентября</p>
+          <p class="pp-den">суббота</p>
+          <div class="pp-temy" data-den="19"></div>
+        </li>
+        <li class="pp-subbota">
+          <p class="pp-data">26 сентября</p>
+          <p class="pp-den">суббота</p>
+          <div class="pp-temy" data-den="26"></div>
+        </li>
+      </ol>
+      </div>
+    </div>
+    <div class="pp-podval pp-podval-m">
+      <p class="pp-zov pp-zov-m">Выбрать руководителя и тему нужно к 17 октября</p>
+      <p class="pp-konec">Узнать подробности можно <button type="button" class="pp-ssylka" data-vkl="rukovoditelyam">на странице</button> и <a href="https://t.me/projects179_bot">в боте</a></p>
+      <p class="pp-konec">Если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
+    </div>
+    </section>
   </div>
 
   <script>
+    /* Вкладки. Две аудитории на одном адресе: «Руководителям» — та страница,
+       ссылка на которую уже разослана письмами, и она обязана остаться
+       вкладкой ПО УМОЛЧАНИЮ; «Представление проектов» открывается якорем
+       #predstavlenie, чтобы школьникам её можно было дать одной строкой.
+       Вкладок физически четыре: десктоп и телефон — две независимые ветки
+       разметки, состояние у них общее и хранится в data-vkl. */
+    (function(){
+      var vkladki = document.querySelectorAll('.pp-vkl');
+      var knopki  = document.querySelectorAll('.pp-knopka');
+      var knopki_i_ssylki;
+      if(!vkladki.length) return;
+
+      function pokazat(imya, pravitAdres){
+        var cel = (imya === 'predstavlenie') ? 'predstavlenie' : 'rukovoditelyam';
+        for(var i=0;i<vkladki.length;i++){
+          vkladki[i].hidden = (vkladki[i].getAttribute('data-vkl') !== cel);
+        }
+        for(var j=0;j<knopki.length;j++){
+          var svoya = knopki[j].getAttribute('data-vkl') === cel;
+          knopki[j].setAttribute('aria-selected', svoya ? 'true' : 'false');
+          knopki[j].classList.toggle('pp-tekushchaya', svoya);
+          knopki[j].tabIndex = svoya ? 0 : -1;
+        }
+        if(pravitAdres && window.history && history.replaceState){
+          /* Адрес правится ЗАМЕНОЙ, а не переходом: назад из второй вкладки
+             должно вести на предыдущий сайт, а не листать вкладки. */
+          history.replaceState(null, '', cel === 'predstavlenie'
+            ? '#predstavlenie'
+            : location.pathname + location.search);
+        }
+      }
+
+      /* Ссылки «на странице» внутри прозы — те же переходы между вкладками,
+         поэтому вешаются на тот же обработчик, а не на второй, свой. */
+      var vse_perehody = [];
+      for(var a=0;a<knopki.length;a++) vse_perehody.push(knopki[a]);
+      var ssylki = document.querySelectorAll('.pp-ssylka');
+      for(var b=0;b<ssylki.length;b++) vse_perehody.push(ssylki[b]);
+      knopki_i_ssylki = vse_perehody;
+
+      for(var k=0;k<knopki_i_ssylki.length;k++){
+        knopki_i_ssylki[k].addEventListener('click', function(){
+          pokazat(this.getAttribute('data-vkl'), true);
+          var stage = document.getElementById('stage');
+          if(stage) stage.classList.remove('raskryto','anketa-otkryta');
+          window.scrollTo(0,0);
+        });
+      }
+
+      /* Раскрытая тема закрывает остальные — тем же приёмом, что страница
+         уже применяет к своим .raskrytie. На сцене 1920x1080 без прокрутки
+         три раскрытые темы физически не помещаются: замер дал перебор 170px
+         и срез нижней темы. */
+      var temy = document.querySelectorAll('.pp-tema');
+      for(var t=0;t<temy.length;t++){
+        temy[t].addEventListener('toggle', function(){
+          if(!this.open) return;
+          for(var u=0;u<temy.length;u++){ if(temy[u]!==this) temy[u].open=false; }
+        });
+      }
+
+      /* Якорь. #predstavlenie открывает вторую вкладку; любой другой якорь —
+         в том числе #anketa-raskrytie, которым бот шлёт на анкету, — оставляет
+         вкладку руководителей, иначе ссылка из бота привела бы в пустоту. */
+      function poAdresu(){
+        pokazat(location.hash === '#predstavlenie' ? 'predstavlenie' : 'rukovoditelyam', false);
+      }
+      poAdresu();
+      window.addEventListener('hashchange', poAdresu);
+    })();
     /* Механика одного экрана — с референса: .stage считается один раз под 1920×1080
        и масштабируется под любой монитор. Скролла на странице нет по построению. */
     (function(){
