@@ -566,14 +566,20 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 .pp-tema-telo{padding:12px 0 4px;font-size:17px;line-height:1.5;color:var(--muted);}
 .pp-tema-telo p{margin:0 0 10px;}
 .pp-tema-telo p:last-child{margin-bottom:0;}
+/* Без text-transform:uppercase — сознательно, не забыто. Имя выступающего
+   обязано остаться дословно в регистре, в каком его набрали: критерий
+   готовности сверяет document.body.innerText на живом адресе, а innerText
+   (в отличие от textContent) возвращает текст УЖЕ ПОСЛЕ CSS-трансформации
+   регистра. С uppercase «Андрей Рябичев» рендерился бы как «АНДРЕЙ РЯБИЧЕВ»
+   и проверка на «Рябичев» молча проваливалась бы, хотя данные верны. */
 .pp-tema-kto{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.02em;
-  text-transform:uppercase;color:var(--muted-strong);}
+  color:var(--muted-strong);}
 /* Заглушка — выступающий подтверждён, тема ещё нет: раскрытия нет, поэтому
    не <details>, а обычный абзац с той же геометрией строки, что у .pp-tema
    summary (высота ряда не должна прыгать между темами с анонсом и без).
    --muted, а не --ink: та же логика приглушённого тона, что у .pp-zhdem —
    состояние «уточняется», а не готовый факт. */
-.pp-tema-bez-raskrytiya{margin:0;font-size:19px;line-height:1.35;color:var(--muted);
+.pp-tema-bez-raskrytiya{margin:14px 0 0;font-size:19px;line-height:1.35;color:var(--muted);
   border-bottom:1px solid var(--hair);padding-bottom:6px;}
 
 @media (max-width:820px){
@@ -701,9 +707,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
                     <p>Триангуляция двумерной поверхности — разбиение её вложенным графом на треугольники. Аналогично, трёхмерные объекты можно разбивать на тетраэдры, но в больших размерностях представить себе это довольно трудно. Тем не менее, для триангуляции удобно задавать (линейное) отображение, просто указав образ каждой вершины. Так топология — область математики, изучающая непрерывные преобразования и их инварианты — оказывается связанной с комбинаторикой и теорией многогранников, а сложные топологические конструкции описываются в терминах раскрасок графов. Мы начнём с азов топологической комбинаторики и быстро сможем дойти до (пока) открытых проблем.</p>
                   </div>
                 </details>
-                <div class="pp-tema">
-                  <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Александр Юран</span><br>тема уточняется</p>
-                </div>
+                <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Александр Юран</span><br>тема уточняется</p>
               </div>
             </li>
             <li class="pp-subbota">
@@ -811,9 +815,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
                 <p>Триангуляция двумерной поверхности — разбиение её вложенным графом на треугольники. Аналогично, трёхмерные объекты можно разбивать на тетраэдры, но в больших размерностях представить себе это довольно трудно. Тем не менее, для триангуляции удобно задавать (линейное) отображение, просто указав образ каждой вершины. Так топология — область математики, изучающая непрерывные преобразования и их инварианты — оказывается связанной с комбинаторикой и теорией многогранников, а сложные топологические конструкции описываются в терминах раскрасок графов. Мы начнём с азов топологической комбинаторики и быстро сможем дойти до (пока) открытых проблем.</p>
               </div>
             </details>
-            <div class="pp-tema">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Александр Юран</span><br>тема уточняется</p>
-            </div>
+            <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Александр Юран</span><br>тема уточняется</p>
           </div>
         </li>
         <li class="pp-subbota">
