@@ -500,7 +500,21 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    В колонке 1200px 26-й кегль даёт 92 знака в строке, у первой вкладки
    норма 91: одна страница, одна типографика. */
 .pp-telo>.pp-proza{flex:0 0 1200px;font-size:26px;line-height:1.32;gap:14px;}
-.pp-telo>.pp-proza .pp-lead{font-weight:600;}
+/* 🔴 ЛИД БОЛЬШЕ НЕ ЖИРНЫЙ ЦЕЛИКОМ. Правка владельца 07.09: «весь текст абзаца
+   выделен жирным, и нет выделения другими цветами — выглядит плохо». Жирный
+   абзац целиком не выделяет ничего: выделение работает, когда выделена ЧАСТЬ.
+   Взамен — приём, который на этой странице уже живёт в .rask-telo b: <b>
+   красится акцентом и НЕ утолщается. Два цвета страницы делят работу:
+   --accent #E4CE93 жёлтый держит смысловые опоры внутри прозы,
+   --signal #EF6A4B красный принадлежит только ссылкам и действию. */
+.pp-proza b,.pp-proza-m b,.pp-tema-telo b{font-weight:400;color:var(--accent);}
+/* У тела темы своего правила для ссылок НЕ БЫЛО — ссылка на «Квант»
+   наследовала --muted и читалась серо-зелёной, неотличимо от текста.
+   Тот же вид, что у всех ссылок страницы (.pp-proza a). */
+.pp-tema-telo a{color:var(--signal);text-decoration:none;
+  border-bottom:1px solid rgba(239,106,75,.45);padding-bottom:.02em;
+  transition:border-color .18s ease;}
+.pp-tema-telo a:hover{border-bottom-color:var(--signal);}
 
 .pp-metka{margin:0 0 12px;}
 /* Статус сказан ОДИН раз на всё расписание. Три одинаковые строки
@@ -603,13 +617,13 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
   <!-- ===================== DESKTOP ===================== -->
   <div class="viewport">
     <div class="stage" id="stage">
-      <div class="pp-perekl pp-perekl-d" role="tablist" aria-label="Кому эта страница">
-        <button type="button" class="pp-knopka pp-tekushchaya" data-vkl="rukovoditelyam"
-                role="tab" aria-selected="true" aria-controls="rukovoditelyam">Руководителям</button>
-        <button type="button" class="pp-knopka" data-vkl="predstavlenie"
-                role="tab" aria-selected="false" aria-controls="predstavlenie" tabindex="-1">Проекты 2026</button>
+      <div class="pp-perekl pp-perekl-d" role="tablist" aria-label="Разделы страницы">
+        <button type="button" class="pp-knopka pp-tekushchaya" data-vkl="predstavlenie"
+                role="tab" aria-selected="true" aria-controls="predstavlenie">Проекты 2026</button>
+        <button type="button" class="pp-knopka" data-vkl="rukovoditelyam"
+                role="tab" aria-selected="false" aria-controls="rukovoditelyam" tabindex="-1">Как это устроено</button>
       </div>
-      <section class="pp-vkl" id="rukovoditelyam" data-vkl="rukovoditelyam" role="tabpanel" aria-label="Руководителям">
+      <section class="pp-vkl" id="rukovoditelyam" data-vkl="rukovoditelyam" role="tabpanel" aria-label="Как это устроено" hidden>
       <div class="block">
         <div class="shapka">
           <p class="eyebrow">2026/27 · 10 класс · школа 179</p>
@@ -650,7 +664,12 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
               </ul>
             </div>
             <div class="zapros">
-              <p class="zov">Школе нужны руководители проектов на 2026/27 год</p>
+              <!-- 🔴 Строка «Школе нужны руководители проектов на 2026/27 год» СНЯТА
+                   владельцем 07.09, и причина не косметическая: «люди могут сказать,
+                   что это плохо для авторитета школы, как будто у школы какие-то
+                   проблемы». Плюс к сентябрю руководители уже набираются, и нужда
+                   в тексте перестала быть правдой. Заголовок не заменён другим:
+                   кнопка «Предложить задачу» говорит то же самое, не прося. -->
               <p class="cta">
                 <button type="button" class="knopka" id="anketa-otkryt"
                         aria-expanded="false" aria-controls="anketa-raskrytie">Предложить задачу</button>
@@ -664,7 +683,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           <details class="raskrytie" id="r-zash"><summary class="skrytoe">Что показывают на защите</summary><div class="rask-telo"><p>Доклад, из которого видно, что сделал каждый участник группы. Письменный текст формально не обязателен, но математическая работа его в любом случае предполагает. На предзащитах то же самое, только короче и без готового текста: важно, чтобы к декабрю было что предъявить</p></div></details>
           <details class="raskrytie" id="r-distant"><summary class="skrytoe">Про дистанционную работу</summary><div class="rask-telo"><p>Приезжать в школу не обязательно: группа и руководитель договариваются, как им удобнее — очно, по видеосвязи или вперемешку, в любое время. Обязательна регулярность, а не место встречи</p></div></details>
           <details class="raskrytie" id="r-shkola"><summary class="skrytoe">Что берёт на себя школа</summary><div class="rask-telo"><p>Расписание, сроки, отчётность, комиссии на предзащитах и защите, разговоры со школьниками о дисциплине. За руководителем остаётся содержание</p></div></details>
-          <details class="raskrytie" id="r-ref"><summary class="skrytoe">Референсы</summary><div class="rask-telo"><p>Ближайший образец жанра — проекты <a href="https://turgor.ru/lktg/">Летней конференции Турнира городов</a></p><p>Пример конкретной работы: Владимир Хацкевич под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника, она опубликована в «Математическом просвещении» (<a href="hackevich-mp37.pdf">PDF</a>)</p></div></details>
+          <details class="raskrytie" id="r-ref"><summary class="skrytoe">Референсы</summary><div class="rask-telo"><p>Ближайший образец жанра — проекты <a href="https://turgor.ru/lktg/">Летней конференции Турнира городов</a>. Что делали в 179-й в прошлом году — <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">каталог тем 2025/26</a></p><p>Пример конкретной работы: Владимир Хацкевич под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника, она опубликована в «Математическом просвещении» (<a href="hackevich-mp37.pdf">PDF</a>)</p></div></details>
           <details class="raskrytie raskrytie-anketa" id="anketa-raskrytie">
             <summary class="anketa-sammari">Предложить задачу</summary>
             <div class="rask-telo rask-telo-anketa">
@@ -679,7 +698,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </div>
       </div>
       </section>
-      <section class="pp-vkl" id="predstavlenie" data-vkl="predstavlenie" role="tabpanel" aria-label="Представление проектов" hidden>
+      <section class="pp-vkl" id="predstavlenie" data-vkl="predstavlenie" role="tabpanel" aria-label="Проекты 2026">
       <div class="block">
         <div class="shapka">
           <p class="eyebrow">2026/27 · 10 класс · школа 179</p>
@@ -699,7 +718,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </li>
             <li class="pp-punkt">
               <details class="pp-tema">
-                <summary><span class="pp-tema-kto">Александр Юран</span><span class="pp-tema-kogda">12 сентября</span><br>Подсолнух: как рассадить точки, чтобы они не слипались</summary>
+                <summary><span class="pp-tema-kto">Александр Юран</span><span class="pp-tema-kogda">12 сентября</span><br>Подсолнух / выпуклые многоугольники</summary>
                 <div class="pp-tema-telo">
                   <p>Семечки в подсолнухе сидят плотно и не слипаются: внутри круга радиуса R помещается порядка R² семечек, и любые две отстоят друг от друга не ближе некоторого расстояния</p>
                   <p>Можно ли так же рассадить точки на сфере? А внутри шара?</p>
@@ -708,7 +727,10 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
               </details>
             </li>
             <li class="pp-punkt">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Дмитрий Голубенко</span><span class="pp-tema-kogda">12 сентября</span><br>Разбиения на доминошки: когда одно получается из другого</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Дмитрий Голубенко</span><span class="pp-tema-kogda">12 сентября</span><br>Разбиения на домино</p>
+            </li>
+            <li class="pp-punkt">
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Владимир Медведев</span><span class="pp-tema-kogda">12 сентября</span><br>тема уточняется</p>
             </li>
             <li class="pp-punkt">
               <details class="pp-tema">
@@ -722,22 +744,19 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
                 </div>
               </details>
             </li>
-            <li class="pp-punkt">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Владимир Медведев</span><span class="pp-tema-kogda">12 сентября</span><br>тема уточняется</p>
-            </li>
             </ol>
           </div>
           <div class="pp-proza">
-            <p class="pp-lead">Проект по математике — это работа рядом со взрослым исследователем. Он находит открытую, но доступную школьникам проблему из своей области, часто связанную с тем, чем он занят прямо сейчас. Решения не знает никто. Подсказывать он не будет: скажет, в какую сторону идти, обсудит ближайший шаг, задаст вопрос, который наведёт вас на путь — тот самый, которого он и сам пока не видит</p>
-            <p>12, 19 и 26 сентября на субботней паре эти люди придут к вам сами. Каждый расскажет за пятнадцать минут, чем занимается. Так быстро математику не объяснить, поэтому в сентябре вы прежде всего знакомитесь с людьми и с областями, в которых они работают. Вы можете пообщаться с тем, кто вас зацепил, обсудить тему и решить, ваше это или нет</p>
-            <p>К концу сентября вы должны выбрать руководителя и тему, к 17 октября нужно определиться и коротко рассказать о том, чем конкретно вы планируете заниматься</p>
+            <p class="pp-lead">Проект по математике — это работа рядом со взрослым исследователем. Он находит открытую, но доступную школьникам проблему из своей области, часто связанную с тем, чем он занят прямо сейчас. <b>Решения не знает никто</b>. Подсказывать он не будет: скажет, в какую сторону идти, обсудит ближайший шаг, задаст вопрос, который наведёт вас на путь — тот самый, которого он и сам пока не видит</p>
+            <p><b>12, 19 и 26 сентября</b> на субботней паре эти люди придут к вам сами. Каждый расскажет за пятнадцать минут, чем занимается. Так быстро математику не объяснить, поэтому в сентябре вы прежде всего знакомитесь с людьми и с областями, в которых они работают. Вы можете пообщаться с тем, кто вас зацепил, обсудить тему и решить, ваше это или нет</p>
+            <p><b>К концу сентября</b> вы должны выбрать руководителя и тему, к 17 октября нужно определиться и коротко рассказать о том, чем конкретно вы планируете заниматься</p>
             <p>Дальше вы встречаетесь с руководителем каждую неделю, вживую или по видеосвязи. Начинается всё с известного: что-то прочитать, разобрать первые примеры, набрать технику на несложных упражнениях. Потом идут новые задачи. По ходу года вы делаете доклады о том, куда продвинулись, зимой и весной проходит предзащита, а в мае вы пишете текст и рассказываете финальную версию. Хорошую работу можно опубликовать</p>
             <p>Цель — получить опыт математического исследования. Получится результат или нет, заранее не знает никто, и это часть условий: настоящая работа так и устроена. Что останется в любом случае — год работы бок о бок с человеком, который занимается наукой</p>
           </div>
         </div>
         <div class="pp-podval">
-          <p class="pp-zov">Выбрать руководителя и тему нужно к 17 октября</p>
-          <p class="pp-konec">Узнать подробности можно <button type="button" class="pp-ssylka" data-vkl="rukovoditelyam">на странице</button> и <a href="https://t.me/projects179_bot">в боте</a> · если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
+          <p class="pp-zov">Выбрать руководителя и тему нужно к концу сентября</p>
+          <p class="pp-konec">Узнать подробности можно <button type="button" class="pp-ssylka" data-vkl="rukovoditelyam">на странице</button> и <a href="https://t.me/projects179_bot">в боте</a> · посмотреть <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">темы прошлого года</a> · если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
         </div>
       </div>
       </section>
@@ -745,16 +764,21 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
   </div>
   <!-- ===================== MOBILE ===================== -->
   <div class="mobile">
-    <div class="pp-perekl pp-perekl-m" role="tablist" aria-label="Кому эта страница">
-      <button type="button" class="pp-knopka pp-tekushchaya" data-vkl="rukovoditelyam"
-              role="tab" aria-selected="true" aria-controls="rukovoditelyam-m">Руководителям</button>
-      <button type="button" class="pp-knopka" data-vkl="predstavlenie"
-              role="tab" aria-selected="false" aria-controls="predstavlenie-m" tabindex="-1">Проекты 2026</button>
-    </div>
-    <section class="pp-vkl" id="rukovoditelyam-m" data-vkl="rukovoditelyam" role="tabpanel" aria-label="Руководителям">
+    <!-- Заголовок страницы стоит НАД переключателем и один на обе вкладки.
+         Раньше он лежал внутри каждой секции, то есть НИЖЕ названий вкладок,
+         и повторялся дословно дважды: две вкладки с одинаковым заголовком
+         читаются как ошибка, а не как одна страница. Теперь это шапка
+         страницы, а вкладки — её разделы. Правка владельца 07.09. -->
     <p class="m-eyebrow">2026/27 · 10 класс · школа 179</p>
     <h1 class="m-title">Исследовательские проекты по современной математике</h1>
     <div class="m-rule"></div>
+    <div class="pp-perekl pp-perekl-m" role="tablist" aria-label="Разделы страницы">
+      <button type="button" class="pp-knopka pp-tekushchaya" data-vkl="predstavlenie"
+              role="tab" aria-selected="true" aria-controls="predstavlenie-m">Проекты 2026</button>
+      <button type="button" class="pp-knopka" data-vkl="rukovoditelyam"
+              role="tab" aria-selected="false" aria-controls="rukovoditelyam-m" tabindex="-1">Как это устроено</button>
+    </div>
+    <section class="pp-vkl" id="rukovoditelyam-m" data-vkl="rukovoditelyam" role="tabpanel" aria-label="Как это устроено" hidden>
     <div class="m-text">
       <p>В <a href="https://ru.wikipedia.org/wiki/Школа_№_179_(Москва)">179-й школе</a> учится много будущих математиков. В школу идёт серьёзный отбор, среди учеников много победителей олимпиад. Выпускники поступают на математические факультеты главных российских вузов, и в каждом выпуске кто-то выбирает математику как профессию и остаётся в науке</p>
       <p>Важная часть учёбы — работа со взрослыми математиками и аспирантами. Это <span class="snoska" role="button" tabindex="0" data-cel="r-konst-m" aria-expanded="false">система Константинова</span>: на спецмате школьник идёт по листкам сам, задача за задачей, и разбирает <span class="snoska" role="button" tabindex="0" data-cel="r-razdely-m" aria-expanded="false">начальную часть высшей математики</span></p>
@@ -785,25 +809,22 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
     <h2 class="m-metka">Какая задача годится</h2>
     <div class="m-text">
       <p>Задача взята из <span class="snoska" role="button" tabindex="0" data-cel="r-ref-m" aria-expanded="false">живой области математики</span>, а не придумана для учебных целей. Область не обязана быть частью мейнстрима: важно, что в ней есть открытые вопросы и люди, которые ими заняты</p>
-      <details class="raskrytie" id="r-ref-m"><summary class="skrytoe">Референсы</summary><div class="rask-telo"><p>Ближайший образец жанра — проекты <a href="https://turgor.ru/lktg/">Летней конференции Турнира городов</a></p><p>Пример конкретной работы: Владимир Хацкевич под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника, она опубликована в «Математическом просвещении» (<a href="hackevich-mp37.pdf">PDF</a>)</p></div></details>
+      <details class="raskrytie" id="r-ref-m"><summary class="skrytoe">Референсы</summary><div class="rask-telo"><p>Ближайший образец жанра — проекты <a href="https://turgor.ru/lktg/">Летней конференции Турнира городов</a>. Что делали в 179-й в прошлом году — <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">каталог тем 2025/26</a></p><p>Пример конкретной работы: Владимир Хацкевич под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника, она опубликована в «Математическом просвещении» (<a href="hackevich-mp37.pdf">PDF</a>)</p></div></details>
       <p>У задачи есть вводная часть, которую руководитель видит сам: что прочитать, какие примеры разобрать, какие частные случаи посчитать — на уровне упражнений, чтобы к зиме был первый результат. Что будет дальше, заранее неизвестно никому</p>
       <p>Школьнику понятно, о каком объекте идёт речь и зачем им заниматься. Выучить по дороге что-то придётся, и это хорошо; желательно только, чтобы это не пересекалось с университетским курсом</p>
     </div>
     <div class="m-rule"></div>
-    <p class="m-zov">Школе нужны руководители проектов на 2026/27 год</p>
+    <!-- Та же строка, снята вместе с десктопной. См. комментарий в .zapros. -->
     <p class="m-cta">
       <a class="knopka" href="#anketa-raskrytie">Предложить задачу</a>
       <span class="podpis">Иван Яковлев → <a href="https://t.me/d1_d57">t.me/d1_d57</a></span>
     </p>
     </section>
-    <section class="pp-vkl" id="predstavlenie-m" data-vkl="predstavlenie" role="tabpanel" aria-label="Представление проектов" hidden>
-    <p class="m-eyebrow">2026/27 · 10 класс · школа 179</p>
-    <h1 class="m-title">Исследовательские проекты по современной математике</h1>
-    <div class="m-rule"></div>
+    <section class="pp-vkl" id="predstavlenie-m" data-vkl="predstavlenie" role="tabpanel" aria-label="Проекты 2026">
     <div class="m-text pp-proza-m">
-      <p class="pp-lead-m">Проект по математике — это работа рядом со взрослым исследователем. Он находит открытую, но доступную школьникам проблему из своей области, часто связанную с тем, чем он занят прямо сейчас. Решения не знает никто. Подсказывать он не будет: скажет, в какую сторону идти, обсудит ближайший шаг, задаст вопрос, который наведёт вас на путь — тот самый, которого он и сам пока не видит</p>
-      <p>12, 19 и 26 сентября на субботней паре эти люди придут к вам сами. Каждый расскажет за пятнадцать минут, чем занимается. Так быстро математику не объяснить, поэтому в сентябре вы прежде всего знакомитесь с людьми и с областями, в которых они работают. Вы можете пообщаться с тем, кто вас зацепил, обсудить тему и решить, ваше это или нет</p>
-      <p>К концу сентября вы должны выбрать руководителя и тему, к 17 октября нужно определиться и коротко рассказать о том, чем конкретно вы планируете заниматься</p>
+      <p class="pp-lead-m">Проект по математике — это работа рядом со взрослым исследователем. Он находит открытую, но доступную школьникам проблему из своей области, часто связанную с тем, чем он занят прямо сейчас. <b>Решения не знает никто</b>. Подсказывать он не будет: скажет, в какую сторону идти, обсудит ближайший шаг, задаст вопрос, который наведёт вас на путь — тот самый, которого он и сам пока не видит</p>
+      <p><b>12, 19 и 26 сентября</b> на субботней паре эти люди придут к вам сами. Каждый расскажет за пятнадцать минут, чем занимается. Так быстро математику не объяснить, поэтому в сентябре вы прежде всего знакомитесь с людьми и с областями, в которых они работают. Вы можете пообщаться с тем, кто вас зацепил, обсудить тему и решить, ваше это или нет</p>
+      <p><b>К концу сентября</b> вы должны выбрать руководителя и тему, к 17 октября нужно определиться и коротко рассказать о том, чем конкретно вы планируете заниматься</p>
       <p>Дальше вы встречаетесь с руководителем каждую неделю, вживую или по видеосвязи. Начинается всё с известного: что-то прочитать, разобрать первые примеры, набрать технику на несложных упражнениях. Потом идут новые задачи. По ходу года вы делаете доклады о том, куда продвинулись, зимой и весной проходит предзащита, а в мае вы пишете текст и рассказываете финальную версию. Хорошую работу можно опубликовать</p>
       <p>Цель — получить опыт математического исследования. Получится результат или нет, заранее не знает никто, и это часть условий: настоящая работа так и устроена. Что останется в любом случае — год работы бок о бок с человеком, который занимается наукой</p>
       <div class="pp-raspisanie-m">
@@ -819,7 +840,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </li>
         <li class="pp-punkt">
           <details class="pp-tema">
-            <summary><span class="pp-tema-kto">Александр Юран</span><span class="pp-tema-kogda">12 сентября</span><br>Подсолнух: как рассадить точки, чтобы они не слипались</summary>
+            <summary><span class="pp-tema-kto">Александр Юран</span><span class="pp-tema-kogda">12 сентября</span><br>Подсолнух / выпуклые многоугольники</summary>
             <div class="pp-tema-telo">
               <p>Семечки в подсолнухе сидят плотно и не слипаются: внутри круга радиуса R помещается порядка R² семечек, и любые две отстоят друг от друга не ближе некоторого расстояния</p>
               <p>Можно ли так же рассадить точки на сфере? А внутри шара?</p>
@@ -828,7 +849,10 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           </details>
         </li>
         <li class="pp-punkt">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Дмитрий Голубенко</span><span class="pp-tema-kogda">12 сентября</span><br>Разбиения на доминошки: когда одно получается из другого</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Дмитрий Голубенко</span><span class="pp-tema-kogda">12 сентября</span><br>Разбиения на домино</p>
+        </li>
+        <li class="pp-punkt">
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Владимир Медведев</span><span class="pp-tema-kogda">12 сентября</span><br>тема уточняется</p>
         </li>
         <li class="pp-punkt">
           <details class="pp-tema">
@@ -842,15 +866,13 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </div>
           </details>
         </li>
-        <li class="pp-punkt">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-kto">Владимир Медведев</span><span class="pp-tema-kogda">12 сентября</span><br>тема уточняется</p>
-        </li>
       </ol>
       </div>
     </div>
     <div class="pp-podval pp-podval-m">
-      <p class="pp-zov pp-zov-m">Выбрать руководителя и тему нужно к 17 октября</p>
+      <p class="pp-zov pp-zov-m">Выбрать руководителя и тему нужно к концу сентября</p>
       <p class="pp-konec">Узнать подробности можно <button type="button" class="pp-ssylka" data-vkl="rukovoditelyam">на странице</button> и <a href="https://t.me/projects179_bot">в боте</a></p>
+      <p class="pp-konec">Посмотреть <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">темы прошлого года</a></p>
       <p class="pp-konec">Если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
     </div>
     </section>
@@ -884,8 +906,8 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           /* Адрес правится ЗАМЕНОЙ, а не переходом: назад из второй вкладки
              должно вести на предыдущий сайт, а не листать вкладки. */
           history.replaceState(null, '', cel === 'predstavlenie'
-            ? '#predstavlenie'
-            : location.pathname + location.search);
+            ? location.pathname + location.search
+            : '#rukovoditelyam');
         }
       }
 
@@ -918,11 +940,18 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         });
       }
 
-      /* Якорь. #predstavlenie открывает вторую вкладку; любой другой якорь —
-         в том числе #anketa-raskrytie, которым бот шлёт на анкету, — оставляет
-         вкладку руководителей, иначе ссылка из бота привела бы в пустоту. */
+      /* Якорь. 🔴 УМОЛЧАНИЕ ПЕРЕВЁРНУТО 07.09 по решению владельца: голый адрес
+         открывает «Проекты 2026», а не «Как это устроено» — темы и есть то,
+         ради чего школьник заходит.
+         Условие написано «пусто ИЛИ #predstavlenie», а не «не равно
+         #predstavlenie», намеренно: ЛЮБОЙ другой якорь обязан вести на первую
+         вкладку, потому что весь её внутренний якорный аппарат живёт там —
+         и #anketa-raskrytie, которым бот шлёт на анкету, и раскрытия
+         #r-konst / #r-razdely. Простой переворот тернарника увёл бы бота
+         в пустоту: анкеты на вкладке с темами нет. */
       function poAdresu(){
-        pokazat(location.hash === '#predstavlenie' ? 'predstavlenie' : 'rukovoditelyam', false);
+        var h = location.hash;
+        pokazat((!h || h === '#predstavlenie') ? 'predstavlenie' : 'rukovoditelyam', false);
       }
       poAdresu();
       window.addEventListener('hashchange', poAdresu);
