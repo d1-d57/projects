@@ -522,13 +522,16 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 .pp-temy-lenta{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
 /* Пункты идут одной лентой по алфавиту фамилий (правка 09.09 — было «по
    поступлению»), без группировки по датам: дата — метка в строке с именем
-   (.pp-tema-kogda), не заголовок группы. Отступ между пунктами УЖАТ 09.09
-   с 14px до 8px — лента выросла с 7 до 14 пунктов, а сцена по-прежнему
-   1920×1080 без скролла страницы; у самой ленты (.pp-temy-lenta) остаётся
-   overflow-y:auto как страховка, если 8px всё равно не хватит на живом
-   рендере — эта правка сделана БЕЗ рендера, проверить на живом сайте. */
+   (.pp-tema-kogda), не заголовок группы. Отступ между пунктами УЖАТ ЕЩЁ РАЗ
+   09.09: 8px→3px, когда лента выросла с 14 до 15 пунктов (Арутюнов + пара
+   Кирова/Червов) и при прежних 8px обрезала Юрана снизу — проверено живым
+   замером в браузере (getBoundingClientRect), а не на глаз: при 3px плюс
+   line-height 1.3 и padding-bottom 4px у .pp-tema>summary /
+   .pp-tema-bez-raskrytiya остаётся ~33px запаса до низа колонки. У самой
+   ленты (.pp-temy-lenta) остаётся overflow-y:auto как страховка на случай
+   следующего пункта. */
 .pp-punkt{margin:0;}
-.pp-punkt+.pp-punkt{margin-top:8px;}
+.pp-punkt+.pp-punkt{margin-top:3px;}
 .pp-den{margin:5px 0 0;font-family:var(--sans);font-weight:600;font-size:13px;
   letter-spacing:.02em;text-transform:uppercase;color:var(--muted-strong);}
 /* «выступающие подтверждаются» — спокойная строка настоящего времени, а не
@@ -546,8 +549,8 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    поверх прозы, а здесь нужен обычный аккордеон в потоке. */
 .pp-tema{margin:0;}
 .pp-tema+.pp-tema{margin-top:14px;}
-.pp-tema>summary{list-style:none;cursor:pointer;font-size:19px;line-height:1.35;
-  color:var(--ink);border-bottom:1px solid var(--hair);padding-bottom:6px;
+.pp-tema>summary{list-style:none;cursor:pointer;font-size:19px;line-height:1.3;
+  color:var(--ink);border-bottom:1px solid var(--hair);padding-bottom:4px;
   transition:border-color .18s ease,color .18s ease;}
 .pp-tema>summary::-webkit-details-marker{display:none;}
 .pp-tema>summary::after{content:'+';float:right;margin-left:12px;color:var(--muted-strong);
@@ -584,8 +587,8 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    --muted, а не --ink: та же логика приглушённого тона, что у .pp-zhdem —
    состояние «уточняется», а не готовый факт. Margin сверху — 0: отступ от
    соседнего пункта ленты даёт .pp-punkt+.pp-punkt, не эта карточка сама. */
-.pp-tema-bez-raskrytiya{margin:0;font-size:19px;line-height:1.35;color:var(--muted);
-  border-bottom:1px solid var(--hair);padding-bottom:6px;}
+.pp-tema-bez-raskrytiya{margin:0;font-size:19px;line-height:1.3;color:var(--muted);
+  border-bottom:1px solid var(--hair);padding-bottom:4px;}
 
 @media (max-width:820px){
   /* Расписание на телефоне поднято под лид: «когда приходить» — главный
