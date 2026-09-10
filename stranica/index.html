@@ -567,8 +567,15 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    (в отличие от textContent) возвращает текст УЖЕ ПОСЛЕ CSS-трансформации
    регистра. С uppercase «Андрей Рябичев» рендерился бы как «АНДРЕЙ РЯБИЧЕВ»
    и проверка на «Рябичев» молча проваливалась бы, хотя данные верны. */
-.pp-tema-kto{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.02em;
-  color:var(--muted-strong);}
+/* 🔴 ФАМИЛИЯ — САМЫЙ ЯРКИЙ ЭЛЕМЕНТ КАРТОЧКИ. Правка 10.09, дефект назван
+   владельцем на живой странице точно: «ярче всего выглядят хэштеги, менее
+   всего заметны фамилии авторов. Должно быть наоборот» — «ярче всего должны
+   быть имена преподавателей — людей, которые дали задачу, потому что это
+   самое важное». Школьник выбирает ЧЕЛОВЕКА, а не рубрику.
+   Цвет --signal — тот же красный, которым на странице набраны ссылки; свой
+   тон под это не заводился. */
+.pp-tema-kto{font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:.02em;
+  color:var(--signal);}
 /* Дата 10.09 ПЕРЕЕХАЛА и стала кнопкой. Было — метка в потоке сразу за именем,
    со словом «Представление» и точкой-разделителем; слово снято совсем (правка
    владельца), а сама дата ушла margin-left:auto в ПРАВЫЙ край строки имени —
@@ -646,17 +653,22 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    background:var(--signal); color:var(--paper)). Рамка и голый текст
    запрещены владельцем дословно. Подпись — как в arka/TEGI.md, с решёткой и
    подчёркиванием: второй формы записи тега на странице не заводится. */
-/* Текст плашки — НЕ --paper, и это результат замера, а не вкуса: на десяти
-   заливках --paper давал контраст 3.43–5.16, то есть у семи тегов из десяти
-   ниже порога WCAG AA 4.5 для мелкого текста (худший — #динамика). Токен
-   ниже — тот же тон бумаги, взятый темнее; на всех десяти заливках он даёт
-   не меньше 5.44. Кегль при этом НЕ трогали: мельчить и укрупнять ради
-   читаемости одинаково запрещено, рычагом был цвет. */
-:root{ --teg-tekst:#1C3A34; }
+/* ОДИН ЦВЕТ НА ВСЕ ТЕГИ — правка 10.09, после того как владелец увидел живую
+   страницу: «ты сделал очень много цветов, у нас был стиль. Было стильно, а
+   сейчас не стильно». Десять переменных --teg-* и десять правил
+   .pp-teg[data-teg=…] сняты ЦЕЛИКОМ, мёртвого CSS не осталось.
+   Мятный не новый: им уже была набрана «Комбинаторика», и владелец указал
+   именно на неё — «чёрными на зелёном фоне, как сейчас „Комбинаторика"».
+   Гамма страницы остаётся трёхцветной, новых цветов не введено ни одного.
+   Тёмный текст --teg-tekst — не вкус, а замер: на мятном он даёт контраст
+   6.50 при пороге WCAG AA 4.5, тогда как --paper дал бы 3.86. Кегль не
+   трогали: рычагом был цвет. */
+:root{ --teg-fon:#8FC9AE; --teg-tekst:#1C3A34; }
 .pp-teg{border:0;cursor:pointer;font-family:var(--sans);font-weight:600;
   font-size:11.5px;line-height:1.25;letter-spacing:.01em;
-  padding:2px 6px;border-radius:2px;color:var(--teg-tekst);
-  transition:box-shadow .16s ease,opacity .16s ease;}
+  padding:2px 6px;border-radius:2px;
+  background:var(--teg-fon);color:var(--teg-tekst);
+  transition:background .16s ease,color .16s ease,box-shadow .16s ease;}
 .pp-teg:hover{box-shadow:0 0 0 2px rgba(234,241,236,.45);}
 .pp-teg:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
 /* Выбранный тег отличается ОБВОДКОЙ, а не другой заливкой: заливка уже занята
@@ -664,32 +676,6 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    Тёмный зазор между плашкой и светлым кольцом нужен, иначе на светлой плашке
    кольцо сливается с ней. */
 .pp-teg[aria-pressed="true"]{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink);}
-/* Десять цветов — НОВЫЕ сущности в палитре, и это вынужденно: у страницы два
-   акцента (--accent, --signal), а тегов десять. Тона приглушённые, светлые и
-   одной насыщенности — чтобы тёмный текст на всех читался одинаково, а лента
-   не превратилась в конфетти. #геометрия взял существующий --accent. */
-:root{
-  --teg-geometriya:#E4CE93;          /* песочный  = --accent */
-  --teg-kombinatorika:#8FC9AE;       /* мятный */
-  --teg-algebra:#EFA184;             /* лососевый, светлее --signal */
-  --teg-teoriya_chisel:#B0B6E2;      /* барвинок */
-  --teg-topologiya:#7FBCDF;          /* небесный */
-  --teg-dinamika:#E296B6;            /* розовый */
-  --teg-analiz:#CBDA8E;              /* лаймово-оливковый */
-  --teg-programmirovanie:#B6C1CA;    /* стальной */
-  --teg-mashinnoe_obuchenie:#C9A2DE; /* сиреневый */
-  --teg-logika:#E2B77C;              /* охра */
-}
-.pp-teg[data-teg="геометрия"]{background:var(--teg-geometriya);}
-.pp-teg[data-teg="комбинаторика"]{background:var(--teg-kombinatorika);}
-.pp-teg[data-teg="алгебра"]{background:var(--teg-algebra);}
-.pp-teg[data-teg="теория_чисел"]{background:var(--teg-teoriya_chisel);}
-.pp-teg[data-teg="топология"]{background:var(--teg-topologiya);}
-.pp-teg[data-teg="динамика"]{background:var(--teg-dinamika);}
-.pp-teg[data-teg="анализ"]{background:var(--teg-analiz);}
-.pp-teg[data-teg="программирование"]{background:var(--teg-programmirovanie);}
-.pp-teg[data-teg="машинное_обучение"]{background:var(--teg-mashinnoe_obuchenie);}
-.pp-teg[data-teg="логика"]{background:var(--teg-logika);}
 
 /* Дверь наружу из фильтра. Стоит ПЕРВЫМ пунктом ленты и появляется ТОЛЬКО при
    включённом фильтре: правило владельца 09.09 «в левой колонке — только
@@ -820,17 +806,24 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             <li class="pp-sbros" hidden><button type="button" class="pp-sbros-knopka">в ленте <span class="pp-sbros-n">15</span> из 15 · показать все</button></li>
             <li class="pp-pusto" hidden>Ни у одной темы нет выбранных тегов — снимите лишний тег или вернитесь ко всему списку.</li>
             <li class="pp-punkt" data-tegi="геометрия">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button></span>TBA</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>TBA</p>
             </li>
             <li class="pp-punkt" data-tegi="логика программирование">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Николай Васильев</span><button type="button" class="pp-teg" data-teg="логика" aria-pressed="false">#логика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">#программирование</button></span>Формализация в Lean</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Николай Васильев</span><button type="button" class="pp-teg" data-teg="логика" aria-pressed="false">логика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Формализация в Lean</p>
             </li>
-            <li class="pp-punkt" data-tegi="комбинаторика">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Дмитрий Голубенко</span><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>Разбиения на домино</p>
+            <li class="pp-punkt" data-tegi="комбинаторика топология теория_чисел алгебра">
+              <details class="pp-tema">
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Дмитрий Голубенко</span><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">топология</button><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button></span>Флипы замощений / задача Фробениуса</summary>
+                <div class="pp-tema-telo">
+                  <p><b>Достижимость замощений с помощью флипов.</b> Существует классическая задача подсчета количества замощений доминошками фигуры на клетчатой плоскости. Зададимся иным вопросом: какие замощения можно получать друг из друга данным набором операций над доминошками? Цель проекта — постараться ответить на этот и смежные с ним вопросы, пусть даже и в частных случаях.</p>
+                  <p>Начнем с простейшего из таковых. Определим флип как операцию, которая заменяет две смежные по длинной стороне горизонтально уложенные доминошки на вертикально уложенные и наоборот. Известно, что если фигура односвязная (то есть не имеет дырок), то любые замощения можно получить друг из друга последовательным применением флипов. В случае неодносвязной фигуры ответ может быть нетривиальным, и для его описания могут потребоваться топологические инварианты. Желающим участвовать в проекте, впрочем, можно не знать ничего из математики университетского уровня — ожидается, что все необходимые инструменты возникнут естественным образом по ходу исследования. Эта задача допускает много обобщений, рассмотрение которых может привести к написанию публикабельной научной статьи.</p>
+                  <p><b>Задача Фробениуса для евклидовых колец.</b> В качестве упражнения на индукцию школьникам часто дают задачу доказать, что любую сумму, начиная с 8 рублей, можно получить с помощью набора из некоторого количества монет номиналом в 3 рубля и 5 рублей. Естественным образом возникают обобщения данного вопроса, известные как задача Фробениуса. Известно, что если натуральные числа m и n взаимно просты, то любое натуральное число, не меньшее mn - m - n, выразимо в качестве линейной комбинации m и n с целыми неотрицательными коэффициентами. Можно изучать задачу Фробениуса для трех и более натуральных чисел; нас же интересует обобщение на числа вида, например, a + b√d, где d - фиксированное свободное от квадратов целое число, возможно, отрицательное. Желающим участвовать достаточно владеть алгеброй на школьном уровне.</p>
+                </div>
+              </details>
             </li>
             <li class="pp-punkt" data-tegi="геометрия комбинаторика">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Заславский</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>Разрезание выпуклых многоугольников</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Заславский</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Разрезание выпуклых многоугольников</summary>
                 <div class="pp-tema-telo">
                   <p>Выпуклый n-угольник разрезают на k выпуклых кусков так, чтобы число сторон у всех кусков было разным. При каких n и k это получается?</p>
                   <p>Полного ответа нет до сих пор. Известно, что для каждого k есть порог: начиная с некоторого числа сторон разрезать можно, до него нельзя. Верхнюю и нижнюю границы порога умеют считать рекуррентно, явной формулы нет. При k до 17 границы совпадают, и этого хватает, чтобы закрыть все n до 100. Совпадают ли они дальше — открытый вопрос</p>
@@ -841,28 +834,28 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
               </details>
             </li>
             <li class="pp-punkt" data-tegi="алгебра">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</p>
             </li>
             <li class="pp-punkt" data-tegi="теория_чисел алгебра">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Валентина Кириченко</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">#теория_чисел</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button></span>Эллиптические кривые и теория чисел</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Валентина Кириченко</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button></span>Эллиптические кривые и теория чисел</summary>
                 <div class="pp-tema-telo">
                   <p>В соцсетях периодически всплывает «детская задача» о яблоках-бананах-ананасах. Выписано несложное на вид уравнение и требуется определить, есть ли у него решения в натуральных числах. Однако для решения требуются идеи, выходящие за рамки школьной математики. Нужно использовать сложение точек на эллиптических кривых. Ещё один пример, где работают те же идеи, — известная задача Сергея Маркелова о треугольниках Шарыгина. Есть и множество других задач по алгебре и геометрии со школьными формулировками, которые удобно решать с помощью эллиптических кривых. Но, как часто бывает в теории чисел, решены далеко не все из этих элементарных на вид задач. А ещё можно двигаться в обратном направлении: использовать конкретную эллиптическую кривую для того, чтобы придумать и решить свою собственную интересную задачу по теории чисел.</p>
                 </div>
               </details>
             </li>
             <li class="pp-punkt" data-tegi="машинное_обучение программирование комбинаторика">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">#машинное_обучение</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">#программирование</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>TBA</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">ML</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>TBA</p>
             </li>
             <li class="pp-punkt" data-tegi="алгебра комбинаторика программирование">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Сергей Локтев</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">#программирование</button></span>Коды, исправляющие ошибки</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Сергей Локтев</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Коды, исправляющие ошибки</p>
             </li>
             <li class="pp-punkt" data-tegi="топология комбинаторика">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Василий Мантуров</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">#топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>TBA</p>
+              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Василий Мантуров</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Запрещённые миноры графов</p>
             </li>
             <li class="pp-punkt" data-tegi="геометрия анализ">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владимир Медведев</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="анализ" aria-pressed="false">#анализ</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Кривизна поверхностей / форма барабана</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владимир Медведев</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="анализ" aria-pressed="false">анализ</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Кривизна поверхностей / форма барабана</summary>
                 <div class="pp-tema-telo">
                   <p><b>Выжить на поверхности.</b> Можно ли перенести плоский объект на сферу или другую искривлённую поверхность, сохранив расстояния между его точками? Как жителю такого мира определить его кривизну, не выходя во внешнее пространство? Может ли он без рисков для своей жизни перемещаться между областями различной кривизны? В рамках проекта участники исследуют геодезические, треугольники, окружности и площади на искривлённых поверхностях. Они выяснят, как кривизна меняет привычные правила геометрии, почему лист бумаги можно без растяжения свернуть в цилиндр, но нельзя наложить на сферу, и почему невозможно построить совершенно точную плоскую карту Земли. Проект предполагает знакомство с доступными школьникам идеями неевклидовой, дифференциальной и сравнительной геометрии.</p>
                   <p><b>Форма барабана.</b> Можно ли определить форму барабана, зная только частоты его звучания? В проекте участники исследуют, как форма мембраны связана с её собственными частотами и картинами колебаний. На этом пути они познакомятся с волновым уравнением, собственными значениями и собственными функциями оператора Лапласа, а также с основными идеями спектральной геометрии. Участники выяснят, какую геометрическую информацию можно извлечь из звука и могут ли барабаны разной формы звучать совершенно одинаково.</p>
@@ -871,7 +864,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </li>
             <li class="pp-punkt" data-tegi="геометрия">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Фёдор Нилов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button></span>Понселе / велосипедисты в пространстве</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Фёдор Нилов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>Понселе / велосипедисты в пространстве</summary>
                 <div class="pp-tema-telo">
                   <p><b>Построение многоугольников Понселе.</b> Для каких n можно построить вписанно-описанные n-угольники, отличные от правильных, при помощи циркуля и линейки?</p>
                   <p><b>Велосипедисты в пространстве.</b> Как обобщить классическую задачу Шарыгина о велосипедистах для трёхмерного пространства?</p>
@@ -880,7 +873,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </li>
             <li class="pp-punkt" data-tegi="топология комбинаторика">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Андрей Рябичев</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">#топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Симплициальные отображения сфер</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Андрей Рябичев</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Симплициальные отображения сфер</summary>
                 <div class="pp-tema-telo">
                   <p>Триангуляция двумерной поверхности — разбиение её вложенным графом на треугольники. Аналогично, трёхмерные объекты можно разбивать на тетраэдры, но в больших размерностях представить себе это довольно трудно. Тем не менее, для триангуляции удобно задавать (линейное) отображение, просто указав образ каждой вершины. Так топология — область математики, изучающая непрерывные преобразования и их инварианты — оказывается связанной с комбинаторикой и теорией многогранников, а сложные топологические конструкции описываются в терминах раскрасок графов. Мы начнём с азов топологической комбинаторики и быстро сможем дойти до (пока) открытых проблем.</p>
                 </div>
@@ -888,7 +881,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </li>
             <li class="pp-punkt" data-tegi="динамика комбинаторика">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александра Скрипченко</span><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">#динамика</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>Знакомство с символической динамикой</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александра Скрипченко</span><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">динамика</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Знакомство с символической динамикой</summary>
                 <div class="pp-tema-telo">
                   <p>Символическая динамика — раздел теории динамических систем, в котором для описания динамики используются средства дискретной математики: состояния системы кодируются буквами некоторого конечного алфавита, а орбиты задаются словами, составленными из этих букв. В рамках проекта мы обсудим, как устроены такие языки для разных динамических систем, как по комбинаторным свойствам увидеть некоторые аналитические свойства, и какие функции могут быть функциями сложности для разных языков.</p>
                 </div>
@@ -896,7 +889,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </li>
             <li class="pp-punkt" data-tegi="геометрия динамика теория_чисел">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владлен Тиморин</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">#динамика</button><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">#теория_чисел</button></span>Равносоставленность / Мандельброт / цепные дроби / аттракторы</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владлен Тиморин</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">динамика</button><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button></span>Равносоставленность / Мандельброт / цепные дроби / аттракторы</summary>
                 <div class="pp-tema-telo">
                   <p>То, что приводится ниже — широкие темы для исследовательской деятельности, в которых можно выделить множество задач, в зависимости от индивидуального вкуса и подготовки школьника. Конкретную задачу лучше всего выбирать интерактивно, в процессе сотрудничества между учеником и руководителем, и в процессе освоения темы.</p>
                   <p><b>Равносоставленность многоугольников и многогранников.</b> Если один многоугольник можно разрезать на многоугольные куски и составить из этих кусков другой многоугольник, то эти два многоугольника, как говорят, равносоставленны. В эту общую схему вписывается много конкретных вариантов равносоставленности, в зависимости от того, какие ограничения накладывать на геометрию кусков, и какие ограничения — на те движения, которыми разрешается перемещать куски при составлении нового многоугольника. Основной вопрос в том, как проверить равносоставленность (какие числа надо посчитать и сравнить, чтобы убедиться в равносоставленности или неравносоставленности двух данных многоугольников). Если ограничений на куски нет, и двигать их можно как угодно, то достаточно сравнить площади: любой многоугольник равносоставлен любому другому многоугольнику той же площади. Однако при наличии ограничений ответ может меняться. С этим связано множество задач, некоторые из которых открыты.</p>
@@ -908,7 +901,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </li>
             <li class="pp-punkt" data-tegi="теория_чисел геометрия алгебра">
               <details class="pp-tema">
-                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александр Юран</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">#теория_чисел</button><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button></span>Спираль подсолнуха / бильярд / многоугольники</summary>
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александр Юран</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button></span>Спираль подсолнуха / бильярд / многоугольники</summary>
                 <div class="pp-tema-telo">
                   <p><b>Спираль подсолнуха.</b> Для расположения семян многих цветков (например, подсолнуха) имеется интересная математическая модель: полярные координаты семечки номер n равны (√n, n·b), где b — некоторый угол. При помощи этой модели мы будем изучать вопросы про взаимное расположение семечек. Например, где именно в цветке семечки сильнее всего прилегают друг к другу. В этом вопросе ключевую роль играет разложение числа b/2π в цепную дробь, поэтому изучать вопрос мы начнём с них.</p>
                   <p><b>Бильярд с гравитацией.</b> Расположим в плоскости две прямые y=ax, y=−ax. Внутри угла, образованного этими прямыми, запустим шарик, на который действует гравитация. Столкновения со стенками считаем абсолютно упругими. Наша задача — описать периодические траектории этого шарика. Для этого понадобится мощная алгебраическая техника (базисы Грёбнера) и компьютерные вычисления.</p>
@@ -1001,17 +994,24 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         <li class="pp-sbros" hidden><button type="button" class="pp-sbros-knopka">в ленте <span class="pp-sbros-n">15</span> из 15 · показать все</button></li>
             <li class="pp-pusto" hidden>Ни у одной темы нет выбранных тегов — снимите лишний тег или вернитесь ко всему списку.</li>
             <li class="pp-punkt" data-tegi="геометрия">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button></span>TBA</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>TBA</p>
         </li>
         <li class="pp-punkt" data-tegi="логика программирование">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Николай Васильев</span><button type="button" class="pp-teg" data-teg="логика" aria-pressed="false">#логика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">#программирование</button></span>Формализация в Lean</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Николай Васильев</span><button type="button" class="pp-teg" data-teg="логика" aria-pressed="false">логика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Формализация в Lean</p>
         </li>
-        <li class="pp-punkt" data-tegi="комбинаторика">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Дмитрий Голубенко</span><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>Разбиения на домино</p>
+        <li class="pp-punkt" data-tegi="комбинаторика топология теория_чисел алгебра">
+          <details class="pp-tema">
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Дмитрий Голубенко</span><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">топология</button><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button></span>Флипы замощений / задача Фробениуса</summary>
+            <div class="pp-tema-telo">
+              <p><b>Достижимость замощений с помощью флипов.</b> Существует классическая задача подсчета количества замощений доминошками фигуры на клетчатой плоскости. Зададимся иным вопросом: какие замощения можно получать друг из друга данным набором операций над доминошками? Цель проекта — постараться ответить на этот и смежные с ним вопросы, пусть даже и в частных случаях.</p>
+              <p>Начнем с простейшего из таковых. Определим флип как операцию, которая заменяет две смежные по длинной стороне горизонтально уложенные доминошки на вертикально уложенные и наоборот. Известно, что если фигура односвязная (то есть не имеет дырок), то любые замощения можно получить друг из друга последовательным применением флипов. В случае неодносвязной фигуры ответ может быть нетривиальным, и для его описания могут потребоваться топологические инварианты. Желающим участвовать в проекте, впрочем, можно не знать ничего из математики университетского уровня — ожидается, что все необходимые инструменты возникнут естественным образом по ходу исследования. Эта задача допускает много обобщений, рассмотрение которых может привести к написанию публикабельной научной статьи.</p>
+              <p><b>Задача Фробениуса для евклидовых колец.</b> В качестве упражнения на индукцию школьникам часто дают задачу доказать, что любую сумму, начиная с 8 рублей, можно получить с помощью набора из некоторого количества монет номиналом в 3 рубля и 5 рублей. Естественным образом возникают обобщения данного вопроса, известные как задача Фробениуса. Известно, что если натуральные числа m и n взаимно просты, то любое натуральное число, не меньшее mn - m - n, выразимо в качестве линейной комбинации m и n с целыми неотрицательными коэффициентами. Можно изучать задачу Фробениуса для трех и более натуральных чисел; нас же интересует обобщение на числа вида, например, a + b√d, где d - фиксированное свободное от квадратов целое число, возможно, отрицательное. Желающим участвовать достаточно владеть алгеброй на школьном уровне.</p>
+            </div>
+          </details>
         </li>
         <li class="pp-punkt" data-tegi="геометрия комбинаторика">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Заславский</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>Разрезание выпуклых многоугольников</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Заславский</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Разрезание выпуклых многоугольников</summary>
             <div class="pp-tema-telo">
               <p>Выпуклый n-угольник разрезают на k выпуклых кусков так, чтобы число сторон у всех кусков было разным. При каких n и k это получается?</p>
               <p>Полного ответа нет до сих пор. Известно, что для каждого k есть порог: начиная с некоторого числа сторон разрезать можно, до него нельзя. Верхнюю и нижнюю границы порога умеют считать рекуррентно, явной формулы нет. При k до 17 границы совпадают, и этого хватает, чтобы закрыть все n до 100. Совпадают ли они дальше — открытый вопрос</p>
@@ -1022,28 +1022,28 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           </details>
         </li>
         <li class="pp-punkt" data-tegi="алгебра">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</p>
         </li>
         <li class="pp-punkt" data-tegi="теория_чисел алгебра">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Валентина Кириченко</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">#теория_чисел</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button></span>Эллиптические кривые и теория чисел</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Валентина Кириченко</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button></span>Эллиптические кривые и теория чисел</summary>
             <div class="pp-tema-telo">
               <p>В соцсетях периодически всплывает «детская задача» о яблоках-бананах-ананасах. Выписано несложное на вид уравнение и требуется определить, есть ли у него решения в натуральных числах. Однако для решения требуются идеи, выходящие за рамки школьной математики. Нужно использовать сложение точек на эллиптических кривых. Ещё один пример, где работают те же идеи, — известная задача Сергея Маркелова о треугольниках Шарыгина. Есть и множество других задач по алгебре и геометрии со школьными формулировками, которые удобно решать с помощью эллиптических кривых. Но, как часто бывает в теории чисел, решены далеко не все из этих элементарных на вид задач. А ещё можно двигаться в обратном направлении: использовать конкретную эллиптическую кривую для того, чтобы придумать и решить свою собственную интересную задачу по теории чисел.</p>
             </div>
           </details>
         </li>
         <li class="pp-punkt" data-tegi="машинное_обучение программирование комбинаторика">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">#машинное_обучение</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">#программирование</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>TBA</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">ML</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>TBA</p>
         </li>
         <li class="pp-punkt" data-tegi="алгебра комбинаторика программирование">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Сергей Локтев</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">#программирование</button></span>Коды, исправляющие ошибки</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Сергей Локтев</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Коды, исправляющие ошибки</p>
         </li>
         <li class="pp-punkt" data-tegi="топология комбинаторика">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Василий Мантуров</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">#топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>TBA</p>
+          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Василий Мантуров</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Запрещённые миноры графов</p>
         </li>
         <li class="pp-punkt" data-tegi="геометрия анализ">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владимир Медведев</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="анализ" aria-pressed="false">#анализ</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Кривизна поверхностей / форма барабана</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владимир Медведев</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="анализ" aria-pressed="false">анализ</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Кривизна поверхностей / форма барабана</summary>
             <div class="pp-tema-telo">
               <p><b>Выжить на поверхности.</b> Можно ли перенести плоский объект на сферу или другую искривлённую поверхность, сохранив расстояния между его точками? Как жителю такого мира определить его кривизну, не выходя во внешнее пространство? Может ли он без рисков для своей жизни перемещаться между областями различной кривизны? В рамках проекта участники исследуют геодезические, треугольники, окружности и площади на искривлённых поверхностях. Они выяснят, как кривизна меняет привычные правила геометрии, почему лист бумаги можно без растяжения свернуть в цилиндр, но нельзя наложить на сферу, и почему невозможно построить совершенно точную плоскую карту Земли. Проект предполагает знакомство с доступными школьникам идеями неевклидовой, дифференциальной и сравнительной геометрии.</p>
               <p><b>Форма барабана.</b> Можно ли определить форму барабана, зная только частоты его звучания? В проекте участники исследуют, как форма мембраны связана с её собственными частотами и картинами колебаний. На этом пути они познакомятся с волновым уравнением, собственными значениями и собственными функциями оператора Лапласа, а также с основными идеями спектральной геометрии. Участники выяснят, какую геометрическую информацию можно извлечь из звука и могут ли барабаны разной формы звучать совершенно одинаково.</p>
@@ -1052,7 +1052,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </li>
         <li class="pp-punkt" data-tegi="геометрия">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Фёдор Нилов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button></span>Понселе / велосипедисты в пространстве</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Фёдор Нилов</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>Понселе / велосипедисты в пространстве</summary>
             <div class="pp-tema-telo">
               <p><b>Построение многоугольников Понселе.</b> Для каких n можно построить вписанно-описанные n-угольники, отличные от правильных, при помощи циркуля и линейки?</p>
               <p><b>Велосипедисты в пространстве.</b> Как обобщить классическую задачу Шарыгина о велосипедистах для трёхмерного пространства?</p>
@@ -1061,7 +1061,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </li>
         <li class="pp-punkt" data-tegi="топология комбинаторика">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Андрей Рябичев</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">#топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Симплициальные отображения сфер</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Андрей Рябичев</span><button type="button" class="pp-teg" data-teg="топология" aria-pressed="false">топология</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>Третий-четвёртый урок</span></span></span>Симплициальные отображения сфер</summary>
             <div class="pp-tema-telo">
               <p>Триангуляция двумерной поверхности — разбиение её вложенным графом на треугольники. Аналогично, трёхмерные объекты можно разбивать на тетраэдры, но в больших размерностях представить себе это довольно трудно. Тем не менее, для триангуляции удобно задавать (линейное) отображение, просто указав образ каждой вершины. Так топология — область математики, изучающая непрерывные преобразования и их инварианты — оказывается связанной с комбинаторикой и теорией многогранников, а сложные топологические конструкции описываются в терминах раскрасок графов. Мы начнём с азов топологической комбинаторики и быстро сможем дойти до (пока) открытых проблем.</p>
             </div>
@@ -1069,7 +1069,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </li>
         <li class="pp-punkt" data-tegi="динамика комбинаторика">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александра Скрипченко</span><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">#динамика</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">#комбинаторика</button></span>Знакомство с символической динамикой</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александра Скрипченко</span><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">динамика</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Знакомство с символической динамикой</summary>
             <div class="pp-tema-telo">
               <p>Символическая динамика — раздел теории динамических систем, в котором для описания динамики используются средства дискретной математики: состояния системы кодируются буквами некоторого конечного алфавита, а орбиты задаются словами, составленными из этих букв. В рамках проекта мы обсудим, как устроены такие языки для разных динамических систем, как по комбинаторным свойствам увидеть некоторые аналитические свойства, и какие функции могут быть функциями сложности для разных языков.</p>
             </div>
@@ -1077,7 +1077,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </li>
         <li class="pp-punkt" data-tegi="геометрия динамика теория_чисел">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владлен Тиморин</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">#динамика</button><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">#теория_чисел</button></span>Равносоставленность / Мандельброт / цепные дроби / аттракторы</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Владлен Тиморин</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="динамика" aria-pressed="false">динамика</button><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button></span>Равносоставленность / Мандельброт / цепные дроби / аттракторы</summary>
             <div class="pp-tema-telo">
               <p>То, что приводится ниже — широкие темы для исследовательской деятельности, в которых можно выделить множество задач, в зависимости от индивидуального вкуса и подготовки школьника. Конкретную задачу лучше всего выбирать интерактивно, в процессе сотрудничества между учеником и руководителем, и в процессе освоения темы.</p>
               <p><b>Равносоставленность многоугольников и многогранников.</b> Если один многоугольник можно разрезать на многоугольные куски и составить из этих кусков другой многоугольник, то эти два многоугольника, как говорят, равносоставленны. В эту общую схему вписывается много конкретных вариантов равносоставленности, в зависимости от того, какие ограничения накладывать на геометрию кусков, и какие ограничения — на те движения, которыми разрешается перемещать куски при составлении нового многоугольника. Основной вопрос в том, как проверить равносоставленность (какие числа надо посчитать и сравнить, чтобы убедиться в равносоставленности или неравносоставленности двух данных многоугольников). Если ограничений на куски нет, и двигать их можно как угодно, то достаточно сравнить площади: любой многоугольник равносоставлен любому другому многоугольнику той же площади. Однако при наличии ограничений ответ может меняться. С этим связано множество задач, некоторые из которых открыты.</p>
@@ -1089,7 +1089,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         </li>
         <li class="pp-punkt" data-tegi="теория_чисел геометрия алгебра">
           <details class="pp-tema">
-            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александр Юран</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">#теория_чисел</button><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">#геометрия</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">#алгебра</button></span>Спираль подсолнуха / бильярд / многоугольники</summary>
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Александр Юран</span><button type="button" class="pp-teg" data-teg="теория_чисел" aria-pressed="false">теория чисел</button><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button></span>Спираль подсолнуха / бильярд / многоугольники</summary>
             <div class="pp-tema-telo">
               <p><b>Спираль подсолнуха.</b> Для расположения семян многих цветков (например, подсолнуха) имеется интересная математическая модель: полярные координаты семечки номер n равны (√n, n·b), где b — некоторый угол. При помощи этой модели мы будем изучать вопросы про взаимное расположение семечек. Например, где именно в цветке семечки сильнее всего прилегают друг к другу. В этом вопросе ключевую роль играет разложение числа b/2π в цепную дробь, поэтому изучать вопрос мы начнём с них.</p>
               <p><b>Бильярд с гравитацией.</b> Расположим в плоскости две прямые y=ax, y=−ax. Внутри угла, образованного этими прямыми, запустим шарик, на который действует гравитация. Столкновения со стенками считаем абсолютно упругими. Наша задача — описать периодические траектории этого шарика. Для этого понадобится мощная алгебраическая техника (базисы Грёбнера) и компьютерные вычисления.</p>
