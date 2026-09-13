@@ -921,7 +921,15 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             <li class="pp-sbros" hidden><button type="button" class="pp-sbros-knopka">в ленте <span class="pp-sbros-n">15</span> из 15 · показать все</button></li>
             <li class="pp-pusto" hidden>Ни у одной темы нет выбранных тегов — снимите лишний тег или вернитесь ко всему списку.</li>
             <li class="pp-punkt" data-tegi="геометрия">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><span class="pp-tema-gde">ВШМ МФТИ</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>Безымянный проект по геометрии</p>
+              <details class="pp-tema">
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><span class="pp-tema-gde">ВШМ МФТИ</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>Треугольник в треугольнике</summary>
+                <div class="pp-tema-telo">
+                  <p>Есть два треугольника, один целиком внутри другого. Нужно построить третий: его вершины лежат на сторонах внешнего, а на его сторонах лежат вершины внутреннего</p>
+                  <p>Таких треугольников два, и есть простой итерационный способ их строить</p>
+                  <p>Задача скорее всего связана с математическими бильярдами и, возможно, с теоремой Понселе. Её интересно обобщить на многоугольники и на тетраэдры</p>
+                  <p>На входе достаточно школьной планиметрии</p>
+                </div>
+              </details>
             </li>
             <li class="pp-punkt" data-tegi="логика программирование">
               <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Николай Васильев</span><span class="pp-tema-gde">Formal Labs</span><button type="button" class="pp-teg" data-teg="логика" aria-pressed="false">логика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Формализация в Lean</p>
@@ -949,7 +957,16 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
               </details>
             </li>
             <li class="pp-punkt" data-tegi="алгебра">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><span class="pp-tema-gde">МФТИ</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>3–4 урок, 11:00–12:40, каб. 301</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</p>
+              <details class="pp-tema">
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><span class="pp-tema-gde">МФТИ</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>3–4 урок, 11:00–12:40, каб. 301</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</summary>
+                <div class="pp-tema-telo">
+                  <p>Корни квадратного уравнения выражаются через коэффициенты формулой с дискриминантом. Для третьей и четвёртой степени формулы тоже есть, для пятой их не существует: это теорема Абеля — Руффини</p>
+                  <p>У неё есть красивое топологическое доказательство. Коэффициенты — это параметры; корни непрерывно зависят от них, и если параметры провести по замкнутой петле, корни переставятся между собой. Разрешимость в радикалах оказывается свойством возникающей группы перестановок</p>
+                  <p>Первая часть проекта — разобрать это доказательство, а по дороге освоить комплексные числа, перестановки и монодромию. Вторая — те же вопросы для уравнений, которые алгебраическими не являются: вместо радикалов там элементарные и специальные функции, и что через что выражается, исследовано гораздо хуже</p>
+                  <p>На входе достаточно школьной алгебры и готовности много читать</p>
+                  <p>Литература: лекция 5 в «Математическом дивертисменте» Фукса и Табачникова, книга Алексеева «Теорема Абеля в задачах и решениях»</p>
+                </div>
+              </details>
             </li>
             <li class="pp-punkt" data-tegi="теория_чисел алгебра">
               <details class="pp-tema">
@@ -960,7 +977,16 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
               </details>
             </li>
             <li class="pp-punkt" data-tegi="машинное_обучение комбинаторика">
-              <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><span class="pp-tema-gde">МИФИ · МФТИ</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">ML</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Число Бога и CayleyPy / комбинаторика слов</p>
+              <details class="pp-tema">
+                <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><span class="pp-tema-gde">МИФИ · МФТИ</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">ML</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>3–4 урок, 11:00–12:40, каб. 301</span></span></span>Число Бога / математическая химия</summary>
+                <div class="pp-tema-telo">
+                  <p><b>Число Бога.</b> «Число Бога» головоломки — наименьшее число ходов, которого хватает, чтобы собрать её из любой позиции. В 2010 году это число нашли для классического кубика Рубика: оно равно двадцати. Для мегаминкса (додекаэдра вместо куба) и для кубика 4×4 точное значение до сих пор неизвестно, известны только оценки.</p>
+                  <p>Проект CayleyPy ищет короткие решения для таких головоломок методами машинного обучения: модель учится находить последовательность ходов, которая разбирает случайную позицию, и на практике такие последовательности получаются короче, чем найденные вручную.</p>
+                  <p>Задача проекта — разобраться в методе и попробовать продвинуть его дальше: обучить свою модель на одной из головоломок и попытаться улучшить лучшую известную оценку.</p>
+                  <p>Для входа достаточно знать Python или быть готовым его освоить</p>
+                  <p><b>Математическая химия.</b> Химическое соединение, чтобы работать с ним на компьютере, записывают строкой — словом из конечного алфавита. Способов записи несколько, и они не равносильны: одно и то же соединение получает разные слова. Как переводить одну запись в другую, что при этом теряется и какая запись лучше предсказывает свойства соединения по большим базам данных — вопросы, в которых математики больше, чем химии. Строго говоря, структура соединения — гиперграф, и кодировать надо именно его</p>
+                </div>
+              </details>
             </li>
             <li class="pp-punkt" data-tegi="алгебра комбинаторика программирование">
               <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Сергей Локтев</span><span class="pp-tema-gde">матфак ВШЭ</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Коды, исправляющие ошибки</p>
@@ -1110,7 +1136,15 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         <li class="pp-sbros" hidden><button type="button" class="pp-sbros-knopka">в ленте <span class="pp-sbros-n">15</span> из 15 · показать все</button></li>
             <li class="pp-pusto" hidden>Ни у одной темы нет выбранных тегов — снимите лишний тег или вернитесь ко всему списку.</li>
             <li class="pp-punkt" data-tegi="геометрия">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><span class="pp-tema-gde">ВШМ МФТИ</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>Безымянный проект по геометрии</p>
+          <details class="pp-tema">
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Андроник Арутюнов</span><span class="pp-tema-gde">ВШМ МФТИ</span><button type="button" class="pp-teg" data-teg="геометрия" aria-pressed="false">геометрия</button></span>Треугольник в треугольнике</summary>
+            <div class="pp-tema-telo">
+              <p>Есть два треугольника, один целиком внутри другого. Нужно построить третий: его вершины лежат на сторонах внешнего, а на его сторонах лежат вершины внутреннего</p>
+              <p>Таких треугольников два, и есть простой итерационный способ их строить</p>
+              <p>Задача скорее всего связана с математическими бильярдами и, возможно, с теоремой Понселе. Её интересно обобщить на многоугольники и на тетраэдры</p>
+              <p>На входе достаточно школьной планиметрии</p>
+            </div>
+          </details>
         </li>
         <li class="pp-punkt" data-tegi="логика программирование">
           <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Николай Васильев</span><span class="pp-tema-gde">Formal Labs</span><button type="button" class="pp-teg" data-teg="логика" aria-pressed="false">логика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Формализация в Lean</p>
@@ -1138,7 +1172,16 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           </details>
         </li>
         <li class="pp-punkt" data-tegi="алгебра">
-          <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><span class="pp-tema-gde">МФТИ</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>3–4 урок, 11:00–12:40, каб. 301</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</p>
+          <details class="pp-tema">
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Алексей Канель-Белов</span><span class="pp-tema-gde">МФТИ</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>3–4 урок, 11:00–12:40, каб. 301</span></span></span>Теорема Абеля — Руффини для уравнений с параметром</summary>
+            <div class="pp-tema-telo">
+              <p>Корни квадратного уравнения выражаются через коэффициенты формулой с дискриминантом. Для третьей и четвёртой степени формулы тоже есть, для пятой их не существует: это теорема Абеля — Руффини</p>
+              <p>У неё есть красивое топологическое доказательство. Коэффициенты — это параметры; корни непрерывно зависят от них, и если параметры провести по замкнутой петле, корни переставятся между собой. Разрешимость в радикалах оказывается свойством возникающей группы перестановок</p>
+              <p>Первая часть проекта — разобрать это доказательство, а по дороге освоить комплексные числа, перестановки и монодромию. Вторая — те же вопросы для уравнений, которые алгебраическими не являются: вместо радикалов там элементарные и специальные функции, и что через что выражается, исследовано гораздо хуже</p>
+              <p>На входе достаточно школьной алгебры и готовности много читать</p>
+              <p>Литература: лекция 5 в «Математическом дивертисменте» Фукса и Табачникова, книга Алексеева «Теорема Абеля в задачах и решениях»</p>
+            </div>
+          </details>
         </li>
         <li class="pp-punkt" data-tegi="теория_чисел алгебра">
           <details class="pp-tema">
@@ -1148,7 +1191,17 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
             </div>
           </details>
         </li>
-        <li class="pp-punkt" data-tegi="машиннdata-tegi="машинное_обучение комбинаторика"ass="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><span class="pp-tema-gde">МИФИ · МФТИ</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">ML</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button></span>Число Бога и CayleyPy / комбинаторика слов</p>
+        <li class="pp-punkt" data-tegi="машинное_обучение комбинаторика">
+          <details class="pp-tema">
+            <summary><span class="pp-tema-shapka"><span class="pp-tema-kto">Валерия Кирова, Александр Червов</span><span class="pp-tema-gde">МИФИ · МФТИ</span><button type="button" class="pp-teg" data-teg="машинное_обучение" aria-pressed="false">ML</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><span class="pp-kogda-gnezdo"><button type="button" class="pp-tema-kogda" aria-expanded="false">12 сентября</button><span class="pp-podskazka" hidden>3–4 урок, 11:00–12:40, каб. 301</span></span></span>Число Бога / математическая химия</summary>
+            <div class="pp-tema-telo">
+              <p><b>Число Бога.</b> «Число Бога» головоломки — наименьшее число ходов, которого хватает, чтобы собрать её из любой позиции. В 2010 году это число нашли для классического кубика Рубика: оно равно двадцати. Для мегаминкса (додекаэдра вместо куба) и для кубика 4×4 точное значение до сих пор неизвестно, известны только оценки.</p>
+              <p>Проект CayleyPy ищет короткие решения для таких головоломок методами машинного обучения: модель учится находить последовательность ходов, которая разбирает случайную позицию, и на практике такие последовательности получаются короче, чем найденные вручную.</p>
+              <p>Задача проекта — разобраться в методе и попробовать продвинуть его дальше: обучить свою модель на одной из головоломок и попытаться улучшить лучшую известную оценку.</p>
+              <p>Для входа достаточно знать Python или быть готовым его освоить</p>
+              <p><b>Математическая химия.</b> Химическое соединение, чтобы работать с ним на компьютере, записывают строкой — словом из конечного алфавита. Способов записи несколько, и они не равносильны: одно и то же соединение получает разные слова. Как переводить одну запись в другую, что при этом теряется и какая запись лучше предсказывает свойства соединения по большим базам данных — вопросы, в которых математики больше, чем химии. Строго говоря, структура соединения — гиперграф, и кодировать надо именно его</p>
+            </div>
+          </details>
         </li>
         <li class="pp-punkt" data-tegi="алгебра комбинаторика программирование">
           <p class="pp-tema-bez-raskrytiya"><span class="pp-tema-shapka"><span class="pp-tema-kto">Сергей Локтев</span><span class="pp-tema-gde">матфак ВШЭ</span><button type="button" class="pp-teg" data-teg="алгебра" aria-pressed="false">алгебра</button><button type="button" class="pp-teg" data-teg="комбинаторика" aria-pressed="false">комбинаторика</button><button type="button" class="pp-teg" data-teg="программирование" aria-pressed="false">программирование</button></span>Коды, исправляющие ошибки</p>
