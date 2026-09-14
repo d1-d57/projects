@@ -404,6 +404,18 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
    в потоке сдвинула бы её и сорвала попиксельную сверку с эталоном. */
 .pp-perekl{display:flex;gap:22px;align-items:baseline;font-family:var(--sans);}
 .pp-perekl-d{position:absolute;top:24px;right:48px;z-index:4;}
+/* Канал — тем же приёмом, что переключатель выше: absolute в углу сцены, вне потока,
+   чтобы не тронуть попиксельную сверку. Нижний правый угол свободен — `.pp-nizhnyaya`
+   слева внизу текст не дотягивает до правого края (кончается к x≈1029 из 1920), это
+   измерено в браузере, не на глаз. */
+.pp-kanal{position:absolute;right:48px;bottom:42px;z-index:4;text-align:right;}
+.pp-kanal-labl{display:block;margin:0 0 2px;font-family:var(--sans);font-weight:600;
+  font-size:14px;letter-spacing:.03em;color:var(--muted);}
+.pp-kanal-lnk{display:block;font-family:var(--sans);font-weight:700;font-size:44px;
+  line-height:1;color:var(--signal);text-decoration:none;
+  border-bottom:2px solid rgba(239,106,75,.45);padding-bottom:3px;
+  transition:border-color .18s ease;}
+.pp-kanal-lnk:hover{border-bottom-color:var(--signal);}
 /* 🔴 ВКЛАДКИ СТАЛИ ЯВНЫМИ — ЭТО ТЕПЕРЬ ЕДИНСТВЕННАЯ ДВЕРЬ К ПОДРОБНОСТЯМ.
    Из нижней полосы снята фраза «Узнать подробности можно на странице и в боте»:
    владелец забраковал её как лишнюю — «эти подробности и так есть, вот здесь
@@ -478,6 +490,15 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 @media (max-width:820px){
   .pp-proza-m .pp-lead-m{font-size:19px;line-height:1.45;}
   .pp-proza-m .pp-konec{color:var(--muted);font-size:15px;line-height:1.55;}
+  /* Мобильная лента — обычный поток, не absolute-сцена: бейдж канала идёт
+     тем же .pp-kanal, но статичным блоком внизу колонки, а не углом сцены. */
+  .pp-kanal{position:static;text-align:right;margin:22px 0 0;}
+  /* 375px viewport, 28px боковые поля: колонка 319px. Строка "t.me/math_proekt_179" —
+     один неразрывный токен (браузер не переносит по «/» и «_»), поэтому кегль подобран
+     так, чтобы ПОМЕЩАТЬСЯ в одну строку целиком: замерено в браузере — при 32px
+     собственная ширина строки 353.9px, шире колонки, и хвост обрезался за экраном.
+     break-word — подстраховка на более узких экранах, не основной механизм. */
+  .pp-kanal-lnk{font-size:26px;overflow-wrap:break-word;}
 }
 
 /* ── КАЛЕНДАРЬ ТРЁХ СУББОТ ──────────────────────────────────────────────────
@@ -1094,6 +1115,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         <p class="pp-nizhnyaya">Посмотреть <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">темы прошлого года</a> · если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
       </div>
       </section>
+      <p class="pp-kanal"><span class="pp-kanal-labl">телеграм-канал проекта</span><a class="pp-kanal-lnk" href="https://t.me/math_proekt_179">t.me/math_proekt_179</a></p>
     </div>
   </div>
   <!-- ===================== MOBILE ===================== -->
@@ -1326,6 +1348,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       <p><b>Выбрать руководителя и тему нужно к концу сентября.</b></p>
       <p class="pp-konec">Посмотреть <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">темы прошлого года</a></p>
       <p class="pp-konec">Если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
+      <p class="pp-kanal"><span class="pp-kanal-labl">телеграм-канал проекта</span><a class="pp-kanal-lnk" href="https://t.me/math_proekt_179">t.me/math_proekt_179</a></p>
     </div>
     </section>
   </div>
