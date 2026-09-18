@@ -129,7 +129,6 @@ h1{margin:0;font-weight:600;line-height:1.06;letter-spacing:-.014em;font-size:52
   border-bottom:1px solid var(--hair);transition:border-color .18s ease;}
 .cta .podpis a:hover{border-bottom-color:var(--signal);}
 
-#anketa:empty{display:none;}
 .raskrytiya{display:none;}
 
 /* --- Слой справок: у всех четырёх одна геометрия — карточка в правой колонке
@@ -165,7 +164,6 @@ h1{margin:0;font-weight:600;line-height:1.06;letter-spacing:-.014em;font-size:52
   transition:color .18s ease,background .18s ease;}
 .rask-krestik:hover{color:var(--signal);background:rgba(234,241,236,.08);}
 .rask-krestik:focus-visible{outline:2px solid var(--signal);outline-offset:2px;}
-.rask-telo-anketa .rask-krestik{display:none;}
 /* ===================== MOBILE: отдельная разметка, одна колонка ===================== */
 .mobile{display:none;}
 @media (max-width:820px){
@@ -242,100 +240,69 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 .snoska[aria-expanded="true"]{border-bottom-color:var(--signal);}
 .snoska:focus-visible{outline:2px solid var(--signal);outline-offset:2px;}
 
-.anketa-sammari{display:none;}
-/* Опора панели — текстовая зона: заголовок и линейка года остаются видны,
-   и открытая анкета читается как та же страница, а не как другая. */
+/* Опора слоя справок — текстовая зона: заголовок и линейка года остаются видны,
+   и раскрытая справка читается как та же страница, а не как другая. */
 .body{position:relative;}
-/* Закрытая панель не просто невидима, а отсутствует: абсолютный блок поверх
-   прозы перехватывал бы клики по ссылкам и раскрытиям. */
-.raskrytie-anketa{position:absolute;inset:0;z-index:6;}
-.raskrytie-anketa:not([open]){display:none;}
-/* Подложка, рамка и тень достаются от .rask-telo; переопределяем только
-   геометрию — раскрытия открываются полосой вверх, анкете нужна вся зона.
-   Тело тоже абсолютное, а не height:100%: Chrome заворачивает содержимое
-   <details> в ::details-content, у той обёртки высота auto, и процент от неё
-   не разрешается — панель схлопывалась до высоты формы (поймано рендером). */
-/* Панель прижата к НИЗУ текстовой зоны и высотой равна своему содержимому — тем же
-   приёмом, что и панели справок. При inset:0 она растягивалась на всю зону (875px),
-   форма занимала верхние две трети, и под кнопкой «Отправить» стояла пустая полоса
-   в треть панели — то самое «пустое место как остаток», за которое отклоняли страницу. */
-.rask-telo-anketa{
-  position:absolute;left:0;right:0;bottom:0;top:auto;width:auto;max-height:100%;margin:0;
-  overflow:auto;padding:30px 36px 34px;
-  display:flex;flex-direction:column;gap:20px;
-  font-size:19px;line-height:1.4;
-}
-.rask-telo-anketa #anketa{flex:1 1 auto;min-height:0;}
-.anketa-shapka{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex:0 0 auto;}
-/* Тот же кегль и тот же золотой, что у меток страницы, — панель одного с ней рода. */
-.anketa-titul{margin:0;font-weight:600;color:var(--accent);
+
+/* ── ЗАЯВКА ШКОЛЬНИКА ───────────────────────────────────────────────────────
+   Кнопка и форма живут на вкладке «Проекты 2026». Сцена 1920×1080 заполнена
+   до низа обеими колонками — свободного места в потоке нет, замерено; поэтому
+   кнопка стоит absolute в нижней полосе сцены, между строкой «Темы прошлого
+   года · Напишите мне» (её текст кончается к x≈1029) и подписью канала справа,
+   а панель накрывает рабочую зону вкладки — тем же приёмом, каким это делала
+   снятая анкета руководителей. Мобильная копия — обычный поток. */
+.zayavka-panel{display:flex;flex-direction:column;gap:18px;}
+/* 🔴 Класс с `display:flex` СИЛЬНЕЕ браузерного правила `[hidden]{display:none}` —
+   без этой строки закрытая панель видна с загрузки страницы (поймано рендером). */
+.zayavka-panel[hidden]{display:none;}
+.viewport .zayavka-otkryt{position:absolute;left:1088px;bottom:22px;z-index:5;
+  display:inline-block;font-weight:700;font-size:13px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--paper);background:var(--signal);
+  padding:15px 32px;border-radius:2px;white-space:nowrap;
+  transition:filter .18s ease,transform .18s ease;}
+.viewport .zayavka-otkryt:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.zayavka-otkryt:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+.viewport .zayavka-panel{position:absolute;left:0;right:0;bottom:74px;top:auto;
+  max-height:calc(100% - 140px);z-index:6;
+  overflow:auto;margin:0;padding:30px 36px 34px;
+  background:#22463F;border:1px solid var(--hair);border-radius:3px;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);}
+.zayavka-shapka{display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+  flex:0 0 auto;}
+.zayavka-titul{margin:0;font-family:var(--sans);font-weight:600;color:var(--accent);
   font-size:32px;line-height:1.08;letter-spacing:-.008em;}
-/* Крестик — единственная видимая дверь наружу (вторая, Escape, невидима),
-   поэтому он крупный и с явной областью нажатия, а не значок в углу. */
-.anketa-krestik{flex:0 0 auto;border:0;background:transparent;cursor:pointer;
+.zayavka-krestik{flex:0 0 auto;border:0;background:transparent;cursor:pointer;
   font-family:var(--sans);font-size:30px;line-height:1;color:var(--ink);
   width:52px;height:52px;padding:0;margin:-8px -10px 0 0;border-radius:2px;
   transition:color .18s ease,background .18s ease;}
-.anketa-krestik:hover{color:var(--signal);background:rgba(234,241,236,.08);}
-.anketa-krestik:focus-visible{outline:2px solid var(--signal);outline-offset:2px;}
-/* Цвета анкеты — токенами страницы. Свои у неё двух видов, и оба на тёмно-зелёном
-   не читаются: #b3261e (ошибка) и #1b6b3a (успех) уходят в фон почти нацело. */
-.rask-telo-anketa .anketa-root{
-  height:100%;font-family:var(--sans);
-  --anketa-tekst:var(--ink);
-  --anketa-tishe:var(--muted-strong);
-  --anketa-ramka:var(--hair);
-  --anketa-ramka-fokus:var(--signal);
-  --anketa-ploxo:var(--signal);
-  --anketa-horosho:var(--accent);
-}
-/* Раскладка формы. Детей рисует скрипт анкеты, их порядок фиксирован и задан там:
-   1 имя · 2 контакт · 3 тема · 4 сколько школьников · 5 кто ведёт ·
-   6 о чём задача · 7 галочки · 8 приманка (вне потока) · 9 кнопка · 10 статус.
-   Три колонки — чтобы восемь полей и четыре галочки влезли в один экран без
-   прокрутки: столбец в 1080 их не вмещает, а прокрутка внутри панели — запасной
-   исход, а не замысел. */
-.rask-telo-anketa .anketa-form{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  column-gap:52px;row-gap:16px;align-content:start;
-}
-/* Порядок детей задан скриптом анкеты и с 30.08 такой: 1 имя · 2 кто вы · 3 место ·
-   4 контакт · 5 тема · 6 как работать · 7 кто ведёт · 8 о чём задача · 9 галочки ·
-   10 приманка (вне потока) · 11 кнопка · 12 статус. Первая колонка — кто подаёт,
-   вторая — про задачу, третья — её описание и самопроверка. */
-.rask-telo-anketa .anketa-form>*:nth-child(1){grid-area:1/1;}
-.rask-telo-anketa .anketa-form>*:nth-child(2){grid-area:2/1;}
-.rask-telo-anketa .anketa-form>*:nth-child(3){grid-area:3/1;}
-.rask-telo-anketa .anketa-form>*:nth-child(4){grid-area:4/1;}
-.rask-telo-anketa .anketa-form>*:nth-child(5){grid-area:1/2;}
-.rask-telo-anketa .anketa-form>*:nth-child(6){grid-area:2/2;}
-.rask-telo-anketa .anketa-form>*:nth-child(7){grid-area:3/2;}
-.rask-telo-anketa .anketa-form>*:nth-child(8){grid-area:1/3/span 3/4;}
-.rask-telo-anketa .anketa-form>*:nth-child(9){grid-area:4/2/auto/4;}
-.rask-telo-anketa .anketa-niz{grid-area:5/1;}
-.rask-telo-anketa .anketa-status{grid-area:5/2/auto/4;align-self:center;}
-.rask-telo-anketa .anketa-pole{align-self:start;}
-/* Блок галочек занимает всю высоту третьей колонки сетки, и flex-дети в нём
-   сжимались: третья галочка теряла вторую строку (поймано рендером). */
-.rask-telo-anketa .anketa-galochka{flex:0 0 auto;}
-.rask-telo-anketa .anketa-podpis{color:var(--ink);}
-.rask-telo-anketa .anketa-variant-tekst,
-.rask-telo-anketa .anketa-galochka-tekst{color:var(--ink);}
-/* Скругление на странице везде 2px — 4px у формы выдавали бы чужую вставку. */
-.rask-telo-anketa .anketa-vvod{border-radius:2px;}
-.rask-telo-anketa .anketa-vvod-mnogostrochnyj{min-height:7.6em;}
-/* Подпись под кнопкой свисает ниже .body: панель накрывает прозу, а этот
-   хвост оставался бы видимым под ней. Пока анкета открыта — гасим. */
-.stage.anketa-otkryta .cta{visibility:hidden;}
-.rask-telo-anketa .anketa-radio,
-.rask-telo-anketa .anketa-checkbox{accent-color:var(--signal);width:16px;height:16px;}
-/* Кнопка отправки — та же сплошная кнопка, что и «Предложить задачу» на странице. */
-.rask-telo-anketa .anketa-knopka{
-  background:var(--signal);color:var(--paper);border:0;border-radius:2px;
-  font-weight:700;letter-spacing:.02em;padding:.7em 1.7em;
-  transition:filter .18s ease,transform .18s ease;
-}
-.rask-telo-anketa .anketa-knopka:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);}
+.zayavka-krestik:hover{color:var(--signal);background:rgba(234,241,236,.08);}
+.zayavka-krestik:focus-visible{outline:2px solid var(--signal);outline-offset:2px;}
+/* Семь полей в три колонки — столбец в один ряд по высоте сцены не встаёт,
+   а прокрутка внутри панели тут запасной исход, а не замысел. */
+.zayavka-form{display:grid;grid-template-columns:repeat(3,1fr);
+  column-gap:52px;row-gap:16px;align-content:start;font-family:var(--sans);
+  font-size:19px;line-height:1.4;}
+.zayavka-pole{display:flex;flex-direction:column;gap:6px;align-self:start;min-width:0;}
+.zayavka-podpis{font-weight:600;color:var(--ink);font-size:17px;}
+.zayavka-zvezda{color:var(--signal);}
+.zayavka-vvod{font:inherit;color:var(--ink);background:rgba(0,0,0,.18);
+  border:1px solid var(--hair);border-radius:2px;padding:.5em .6em;width:100%;
+  transition:border-color .18s ease;}
+.zayavka-vvod:focus{outline:none;border-color:var(--signal);}
+.zayavka-vvod-mnogostrochnyj{min-height:5.2em;resize:vertical;}
+.zayavka-pole-ploxo .zayavka-vvod{border-color:var(--signal);}
+/* Приманка уводится за экран, а не display:none: часть ботов заполняет только
+   то, что видит в DOM. Имя website Worker знает — не переименовывать. */
+.zayavka-primanka{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+.zayavka-niz{grid-column:1/-1;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.zayavka-knopka{background:var(--signal);color:var(--paper);border:0;border-radius:2px;
+  font-weight:700;letter-spacing:.02em;padding:.7em 1.7em;font-size:17px;
+  transition:filter .18s ease,transform .18s ease;}
+.zayavka-knopka:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);}
+.zayavka-knopka:disabled{opacity:.6;cursor:default;}
+.zayavka-status{font-family:var(--sans);font-size:17px;line-height:1.35;color:var(--muted-strong);}
+.zayavka-status-oshibka{color:var(--signal);}
+.zayavka-status-otpravleno{color:var(--accent);}
 
 /* ============================================================================
    РАСКЛАДКА ПОСЛЕ ПЕРЕСБОРКИ 30.08.
@@ -407,11 +374,22 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 /* Канал — тем же приёмом, что переключатель выше: absolute в углу сцены, вне потока,
    чтобы не тронуть попиксельную сверку. Нижний правый угол свободен — `.pp-nizhnyaya`
    слева внизу текст не дотягивает до правого края (кончается к x≈1029 из 1920), это
-   измерено в браузере, не на глаз. */
-.pp-kanal{position:absolute;right:48px;bottom:42px;z-index:4;text-align:right;}
-.pp-kanal-labl{display:block;margin:0 0 2px;font-family:var(--sans);font-weight:600;
-  font-size:14px;letter-spacing:.03em;color:var(--muted);}
-.pp-kanal-lnk{display:block;font-family:var(--sans);font-weight:700;font-size:44px;
+   измерено в браузере, не на глаз.
+   🔴 18.09 БЛОК СТАЛ ПОДПИСЬЮ В ОДНУ СТРОКУ, И ЭТО НЕ ВКУСОВЩИНА, А ГЕОМЕТРИЯ.
+   Владелец потребовал двух вещей сразу: кликабельной становится НАДПИСЬ с названием
+   канала (голый URL со страницы уходит), и блок опускается так, чтобы линия под ним
+   встала вровень с линией под «Темы прошлого года · Напишите мне». Второе на вкладке
+   «Как это устроено» несовместимо с прежней высотой блока: замер в chromium дал под
+   последним пунктом «Какая задача годится» полосу в 41px сцены до нижней линии, а
+   прежний блок (метка 14px строкой + адрес 44px строкой) занимал 69px и наезжал на
+   этот пункт — это и был дефект, который владелец увидел глазами. Обе строки сведены
+   в одну подпись: 31px, в полосу помещается. Свободного угла на той вкладке нет —
+   обе колонки сцены 1920×1080 заполнены до низа, это тоже замер, а не предположение.
+   `bottom` подобран под нижнюю линию соседней вкладки, значение проверяется замером. */
+.pp-kanal{position:absolute;right:48px;bottom:21px;margin:0;z-index:4;text-align:right;
+  font-family:var(--sans);line-height:1;}
+.pp-kanal-labl{font-weight:600;font-size:16px;letter-spacing:.03em;color:var(--muted);}
+.pp-kanal-lnk{display:inline-block;margin-left:12px;font-weight:700;font-size:26px;
   line-height:1;color:var(--signal);text-decoration:none;
   border-bottom:2px solid rgba(239,106,75,.45);padding-bottom:3px;
   transition:border-color .18s ease;}
@@ -493,12 +471,22 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
   /* Мобильная лента — обычный поток, не absolute-сцена: бейдж канала идёт
      тем же .pp-kanal, но статичным блоком внизу колонки, а не углом сцены. */
   .pp-kanal{position:static;text-align:right;margin:22px 0 0;}
-  /* 375px viewport, 28px боковые поля: колонка 319px. Строка "t.me/math_proekt_179" —
-     один неразрывный токен (браузер не переносит по «/» и «_»), поэтому кегль подобран
-     так, чтобы ПОМЕЩАТЬСЯ в одну строку целиком: замерено в браузере — при 32px
-     собственная ширина строки 353.9px, шире колонки, и хвост обрезался за экраном.
+  /* 375px viewport, 28px боковые поля: колонка 319px. Имя канала — один неразрывный
+     токен (браузер не переносит по «_»), поэтому кегль подобран так, чтобы метка и имя
+     ПОМЕЩАЛИСЬ в одну строку целиком; значение проверяется замером в браузере.
      break-word — подстраховка на более узких экранах, не основной механизм. */
-  .pp-kanal-lnk{font-size:26px;overflow-wrap:break-word;}
+  /* Мобильная заявка — обычный поток: кнопка во всю колонку, панель под ней. */
+  .mobile .zayavka{margin:26px 0 0;}
+  .mobile .zayavka-otkryt{display:block;width:100%;font-weight:700;font-size:17px;
+    color:var(--paper);background:var(--signal);padding:.85em 1.2em;border-radius:2px;
+    text-align:center;line-height:1.2;}
+  .mobile .zayavka-panel{margin:18px 0 0;padding:20px 18px 22px;
+    background:rgba(0,0,0,.18);border:1px solid var(--hair);border-radius:2px;}
+  .mobile .zayavka-form{grid-template-columns:1fr;row-gap:14px;font-size:16px;}
+  .mobile .zayavka-titul{font-size:22px;}
+  .mobile .zayavka-krestik{width:40px;height:40px;font-size:26px;}
+  .pp-kanal-labl{font-size:14px;}
+  .pp-kanal-lnk{font-size:19px;margin-left:8px;overflow-wrap:break-word;}
 }
 
 /* ── КАЛЕНДАРЬ ТРЁХ СУББОТ ──────────────────────────────────────────────────
@@ -855,9 +843,6 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
 }
 
 </style>
-<!-- Оформление анкеты идёт ПОСЛЕ стиля страницы: иначе общие правила страницы
-     перекрыли бы оформление формы. Файл лежит рядом с index.html и публикуется вместе с ним. -->
-<link rel="stylesheet" href="anketa.css">
 </head>
 <body>
   <!-- ===================== DESKTOP ===================== -->
@@ -914,11 +899,12 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
                    владельцем 07.09, и причина не косметическая: «люди могут сказать,
                    что это плохо для авторитета школы, как будто у школы какие-то
                    проблемы». Плюс к сентябрю руководители уже набираются, и нужда
-                   в тексте перестала быть правдой. Заголовок не заменён другим:
-                   кнопка «Предложить задачу» говорит то же самое, не прося. -->
+                   в тексте перестала быть правдой. Заголовок не заменён другим.
+                   🔴 Кнопка запроса задачи и анкета руководителя СНЯТЫ владельцем
+                   18.09: страница перестала набирать руководителей и начала набирать
+                   школьников. Сам текст «Какая задача годится» владелец оставил дословно
+                   («он важный и полезный»), а от блока запроса остался контакт. -->
               <p class="cta">
-                <button type="button" class="knopka" id="anketa-otkryt"
-                        aria-expanded="false" aria-controls="anketa-raskrytie">Предложить задачу</button>
                 <span class="podpis">Иван Яковлев → <a href="https://t.me/d1_d57">t.me/d1_d57</a></span>
               </p>
             </div>
@@ -930,17 +916,6 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           <details class="raskrytie" id="r-distant"><summary class="skrytoe">Про дистанционную работу</summary><div class="rask-telo"><p>Приезжать в школу не обязательно: группа и руководитель договариваются, как им удобнее — очно, по видеосвязи или вперемешку, в любое время. Обязательна регулярность, а не место встречи</p></div></details>
           <details class="raskrytie" id="r-shkola"><summary class="skrytoe">Что берёт на себя школа</summary><div class="rask-telo"><p>Расписание, сроки, отчётность, комиссии на предзащитах и защите, разговоры со школьниками о дисциплине. За руководителем остаётся содержание</p></div></details>
           <details class="raskrytie" id="r-ref"><summary class="skrytoe">Референсы</summary><div class="rask-telo"><p>Ближайший образец жанра — проекты <a href="https://turgor.ru/lktg/">Летней конференции Турнира городов</a>. Что делали в 179-й в прошлом году — <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">каталог тем 2025/26</a></p><p>Пример конкретной работы: Владимир Хацкевич под руководством Алексея Канель-Белова разобрал задачу о соединении вершин выпуклого многоугольника, она опубликована в «Математическом просвещении» (<a href="hackevich-mp37.pdf">PDF</a>)</p></div></details>
-          <details class="raskrytie raskrytie-anketa" id="anketa-raskrytie">
-            <summary class="anketa-sammari">Предложить задачу</summary>
-            <div class="rask-telo rask-telo-anketa">
-              <div class="anketa-shapka">
-                <p class="anketa-titul">Предложить задачу</p>
-                <button type="button" class="anketa-krestik" id="anketa-zakryt"
-                        aria-label="Закрыть анкету">&times;</button>
-              </div>
-              <div id="anketa"></div>
-            </div>
-          </details>
         </div>
       </div>
       </section>
@@ -1123,9 +1098,12 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
           </div>
         </div>
         <p class="pp-nizhnyaya">Посмотреть <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">темы прошлого года</a> · если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
+        <!-- Кнопка и форма школьника. Разметку рисует build.py, а не шаблон: она нужна
+             в двух копиях, а подписи полей и слова кнопки — в ОДНОМ месте источника. -->
+<div class="zayavka"><button type="button" class="knopka zayavka-otkryt" id="zayavka-d-otkryt" aria-expanded="false" aria-controls="zayavka-d-panel">Записаться на проект</button><div class="zayavka-panel" id="zayavka-d-panel" hidden><div class="zayavka-shapka"><p class="zayavka-titul">Записаться на проект</p><button type="button" class="zayavka-krestik" id="zayavka-d-zakryt" aria-label="Закрыть форму">&times;</button></div><form class="zayavka-form" novalidate data-form-id="shkolniki-2026" data-otpravka="https://ankety-worker.ankety.workers.dev/submit" data-uspeh="Заявка отправлена. Мы напишем вам в телеграм."><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-imya">Имя и фамилия<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-d-imya" name="imya" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-tg">Телеграм<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-d-tg" name="tg" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-klass">Класс<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-d-klass" name="klass" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-shkola">Школа<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-d-shkola" name="shkola" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-kurator">Учитель или куратор в школе — необязательно</label><input class="zayavka-vvod" type="text" id="zayavka-d-kurator" name="kurator"><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-tema_id">Тема<span class="zayavka-zvezda"> *</span></label><select class="zayavka-vvod" id="zayavka-d-tema_id" name="tema_id" required><option value="">— выберите тему —</option><optgroup label="Андроник Арутюнов"><option value="arutyunov-1" data-tema="Треугольник в треугольнике" data-rukovoditel="Андроник Арутюнов">Треугольник в треугольнике</option></optgroup><optgroup label="Николай Васильев"><option value="vasilev-1" data-tema="Формализация в Lean" data-rukovoditel="Николай Васильев">Формализация в Lean</option></optgroup><optgroup label="Дмитрий Голубенко"><option value="golubenko-1" data-tema="Достижимость замощений с помощью флипов" data-rukovoditel="Дмитрий Голубенко">Достижимость замощений с помощью флипов</option><option value="golubenko-2" data-tema="Задача Фробениуса для евклидовых колец" data-rukovoditel="Дмитрий Голубенко">Задача Фробениуса для евклидовых колец</option><option value="golubenko-3" data-tema="Алгоритмы и геометрические построения" data-rukovoditel="Дмитрий Голубенко">Алгоритмы и геометрические построения</option></optgroup><optgroup label="Алексей Заславский"><option value="zaslavsky-1" data-tema="Разрезание выпуклых многоугольников" data-rukovoditel="Алексей Заславский">Разрезание выпуклых многоугольников</option></optgroup><optgroup label="Алексей Канель-Белов"><option value="kanel-belov-1" data-tema="Теорема Абеля — Руффини для уравнений с параметром" data-rukovoditel="Алексей Канель-Белов">Теорема Абеля — Руффини для уравнений с параметром</option></optgroup><optgroup label="Валентина Кириченко"><option value="kirichenko-1" data-tema="Эллиптические кривые и теория чисел" data-rukovoditel="Валентина Кириченко">Эллиптические кривые и теория чисел</option></optgroup><optgroup label="Валерия Кирова"><option value="kirova-1" data-tema="Математическая химия" data-rukovoditel="Валерия Кирова">Математическая химия</option></optgroup><optgroup label="Сергей Локтев"><option value="loktev-1" data-tema="Коды, исправляющие ошибки" data-rukovoditel="Сергей Локтев">Коды, исправляющие ошибки</option></optgroup><optgroup label="Василий Мантуров"><option value="manturov-1" data-tema="Запрещённые миноры графов" data-rukovoditel="Василий Мантуров">Запрещённые миноры графов</option></optgroup><optgroup label="Владимир Медведев"><option value="medvedev-1" data-tema="Выжить на поверхности" data-rukovoditel="Владимир Медведев">Выжить на поверхности</option><option value="medvedev-2" data-tema="Форма барабана" data-rukovoditel="Владимир Медведев">Форма барабана</option></optgroup><optgroup label="Фёдор Нилов"><option value="nilov-1" data-tema="Построение многоугольников Понселе" data-rukovoditel="Фёдор Нилов">Построение многоугольников Понселе</option><option value="nilov-2" data-tema="Велосипедисты в пространстве" data-rukovoditel="Фёдор Нилов">Велосипедисты в пространстве</option></optgroup><optgroup label="Андрей Рябичев"><option value="ryabichev-1" data-tema="Симплициальные отображения сфер" data-rukovoditel="Андрей Рябичев">Симплициальные отображения сфер</option></optgroup><optgroup label="Александра Скрипченко"><option value="skripchenko-1" data-tema="Знакомство с символической динамикой" data-rukovoditel="Александра Скрипченко">Знакомство с символической динамикой</option></optgroup><optgroup label="Владлен Тиморин"><option value="timorin-1" data-tema="Равносоставленность многоугольников и многогранников" data-rukovoditel="Владлен Тиморин">Равносоставленность многоугольников и многогранников</option><option value="timorin-2" data-tema="Геометрия и арифметика множества Мандельброта" data-rukovoditel="Владлен Тиморин">Геометрия и арифметика множества Мандельброта</option><option value="timorin-3" data-tema="Периодические цепные дроби и законы композиции" data-rukovoditel="Владлен Тиморин">Периодические цепные дроби и законы композиции</option><option value="timorin-4" data-tema="Самоподобные аттракторы в динамических системах" data-rukovoditel="Владлен Тиморин">Самоподобные аттракторы в динамических системах</option></optgroup><optgroup label="Александр Червов"><option value="chervov-1" data-tema="Число Бога и CayleyPy" data-rukovoditel="Александр Червов">Число Бога и CayleyPy</option></optgroup><optgroup label="Александр Юран"><option value="yuran-1" data-tema="Спираль подсолнуха" data-rukovoditel="Александр Юран">Спираль подсолнуха</option><option value="yuran-2" data-tema="Бильярд с гравитацией" data-rukovoditel="Александр Юран">Бильярд с гравитацией</option><option value="yuran-3" data-tema="Многоугольники" data-rukovoditel="Александр Юран">Многоугольники</option></optgroup></select><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-d-zametka">Пара слов о себе или вопрос — необязательно</label><textarea class="zayavka-vvod zayavka-vvod-mnogostrochnyj" id="zayavka-d-zametka" name="zametka" rows="3"></textarea><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-primanka" aria-hidden="true"><label for="zayavka-d-website">Не заполняйте это поле</label><input type="text" id="zayavka-d-website" name="website" tabindex="-1" autocomplete="off"></div><div class="zayavka-niz"><button type="submit" class="knopka zayavka-knopka">Отправить</button><div class="zayavka-status" role="status" aria-live="polite"></div></div></form></div></div>
       </div>
       </section>
-      <p class="pp-kanal"><span class="pp-kanal-labl">телеграм-канал проекта</span><a class="pp-kanal-lnk" href="https://t.me/math_proekt_179">t.me/math_proekt_179</a></p>
+      <p class="pp-kanal"><span class="pp-kanal-labl">телеграм-канал проекта</span><a class="pp-kanal-lnk" href="https://t.me/math_proekt_179">@math_proekt_179</a></p>
     </div>
   </div>
   <!-- ===================== MOBILE ===================== -->
@@ -1182,7 +1160,6 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
     <div class="m-rule"></div>
     <!-- Та же строка, снята вместе с десктопной. См. комментарий в .zapros. -->
     <p class="m-cta">
-      <a class="knopka" href="#anketa-raskrytie">Предложить задачу</a>
       <span class="podpis">Иван Яковлев → <a href="https://t.me/d1_d57">t.me/d1_d57</a></span>
     </p>
     </section>
@@ -1356,9 +1333,10 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       </ol>
       </div>
       <p><b>Выбрать руководителя и тему нужно к концу сентября.</b></p>
+<div class="zayavka"><button type="button" class="knopka zayavka-otkryt" id="zayavka-m-otkryt" aria-expanded="false" aria-controls="zayavka-m-panel">Записаться на проект</button><div class="zayavka-panel" id="zayavka-m-panel" hidden><div class="zayavka-shapka"><p class="zayavka-titul">Записаться на проект</p><button type="button" class="zayavka-krestik" id="zayavka-m-zakryt" aria-label="Закрыть форму">&times;</button></div><form class="zayavka-form" novalidate data-form-id="shkolniki-2026" data-otpravka="https://ankety-worker.ankety.workers.dev/submit" data-uspeh="Заявка отправлена. Мы напишем вам в телеграм."><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-imya">Имя и фамилия<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-m-imya" name="imya" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-tg">Телеграм<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-m-tg" name="tg" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-klass">Класс<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-m-klass" name="klass" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-shkola">Школа<span class="zayavka-zvezda"> *</span></label><input class="zayavka-vvod" type="text" id="zayavka-m-shkola" name="shkola" required><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-kurator">Учитель или куратор в школе — необязательно</label><input class="zayavka-vvod" type="text" id="zayavka-m-kurator" name="kurator"><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-tema_id">Тема<span class="zayavka-zvezda"> *</span></label><select class="zayavka-vvod" id="zayavka-m-tema_id" name="tema_id" required><option value="">— выберите тему —</option><optgroup label="Андроник Арутюнов"><option value="arutyunov-1" data-tema="Треугольник в треугольнике" data-rukovoditel="Андроник Арутюнов">Треугольник в треугольнике</option></optgroup><optgroup label="Николай Васильев"><option value="vasilev-1" data-tema="Формализация в Lean" data-rukovoditel="Николай Васильев">Формализация в Lean</option></optgroup><optgroup label="Дмитрий Голубенко"><option value="golubenko-1" data-tema="Достижимость замощений с помощью флипов" data-rukovoditel="Дмитрий Голубенко">Достижимость замощений с помощью флипов</option><option value="golubenko-2" data-tema="Задача Фробениуса для евклидовых колец" data-rukovoditel="Дмитрий Голубенко">Задача Фробениуса для евклидовых колец</option><option value="golubenko-3" data-tema="Алгоритмы и геометрические построения" data-rukovoditel="Дмитрий Голубенко">Алгоритмы и геометрические построения</option></optgroup><optgroup label="Алексей Заславский"><option value="zaslavsky-1" data-tema="Разрезание выпуклых многоугольников" data-rukovoditel="Алексей Заславский">Разрезание выпуклых многоугольников</option></optgroup><optgroup label="Алексей Канель-Белов"><option value="kanel-belov-1" data-tema="Теорема Абеля — Руффини для уравнений с параметром" data-rukovoditel="Алексей Канель-Белов">Теорема Абеля — Руффини для уравнений с параметром</option></optgroup><optgroup label="Валентина Кириченко"><option value="kirichenko-1" data-tema="Эллиптические кривые и теория чисел" data-rukovoditel="Валентина Кириченко">Эллиптические кривые и теория чисел</option></optgroup><optgroup label="Валерия Кирова"><option value="kirova-1" data-tema="Математическая химия" data-rukovoditel="Валерия Кирова">Математическая химия</option></optgroup><optgroup label="Сергей Локтев"><option value="loktev-1" data-tema="Коды, исправляющие ошибки" data-rukovoditel="Сергей Локтев">Коды, исправляющие ошибки</option></optgroup><optgroup label="Василий Мантуров"><option value="manturov-1" data-tema="Запрещённые миноры графов" data-rukovoditel="Василий Мантуров">Запрещённые миноры графов</option></optgroup><optgroup label="Владимир Медведев"><option value="medvedev-1" data-tema="Выжить на поверхности" data-rukovoditel="Владимир Медведев">Выжить на поверхности</option><option value="medvedev-2" data-tema="Форма барабана" data-rukovoditel="Владимир Медведев">Форма барабана</option></optgroup><optgroup label="Фёдор Нилов"><option value="nilov-1" data-tema="Построение многоугольников Понселе" data-rukovoditel="Фёдор Нилов">Построение многоугольников Понселе</option><option value="nilov-2" data-tema="Велосипедисты в пространстве" data-rukovoditel="Фёдор Нилов">Велосипедисты в пространстве</option></optgroup><optgroup label="Андрей Рябичев"><option value="ryabichev-1" data-tema="Симплициальные отображения сфер" data-rukovoditel="Андрей Рябичев">Симплициальные отображения сфер</option></optgroup><optgroup label="Александра Скрипченко"><option value="skripchenko-1" data-tema="Знакомство с символической динамикой" data-rukovoditel="Александра Скрипченко">Знакомство с символической динамикой</option></optgroup><optgroup label="Владлен Тиморин"><option value="timorin-1" data-tema="Равносоставленность многоугольников и многогранников" data-rukovoditel="Владлен Тиморин">Равносоставленность многоугольников и многогранников</option><option value="timorin-2" data-tema="Геометрия и арифметика множества Мандельброта" data-rukovoditel="Владлен Тиморин">Геометрия и арифметика множества Мандельброта</option><option value="timorin-3" data-tema="Периодические цепные дроби и законы композиции" data-rukovoditel="Владлен Тиморин">Периодические цепные дроби и законы композиции</option><option value="timorin-4" data-tema="Самоподобные аттракторы в динамических системах" data-rukovoditel="Владлен Тиморин">Самоподобные аттракторы в динамических системах</option></optgroup><optgroup label="Александр Червов"><option value="chervov-1" data-tema="Число Бога и CayleyPy" data-rukovoditel="Александр Червов">Число Бога и CayleyPy</option></optgroup><optgroup label="Александр Юран"><option value="yuran-1" data-tema="Спираль подсолнуха" data-rukovoditel="Александр Юран">Спираль подсолнуха</option><option value="yuran-2" data-tema="Бильярд с гравитацией" data-rukovoditel="Александр Юран">Бильярд с гравитацией</option><option value="yuran-3" data-tema="Многоугольники" data-rukovoditel="Александр Юран">Многоугольники</option></optgroup></select><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-pole"><label class="zayavka-podpis" for="zayavka-m-zametka">Пара слов о себе или вопрос — необязательно</label><textarea class="zayavka-vvod zayavka-vvod-mnogostrochnyj" id="zayavka-m-zametka" name="zametka" rows="3"></textarea><div class="zayavka-oshibka-polya"></div></div><div class="zayavka-primanka" aria-hidden="true"><label for="zayavka-m-website">Не заполняйте это поле</label><input type="text" id="zayavka-m-website" name="website" tabindex="-1" autocomplete="off"></div><div class="zayavka-niz"><button type="submit" class="knopka zayavka-knopka">Отправить</button><div class="zayavka-status" role="status" aria-live="polite"></div></div></form></div></div>
       <p class="pp-konec">Посмотреть <a href="https://server.179.ru/wiki/?page=Matematika/Proekty_25_26/math">темы прошлого года</a></p>
       <p class="pp-konec">Если есть пожелания по темам, <a href="https://t.me/d1_d57">напишите мне</a></p>
-      <p class="pp-kanal"><span class="pp-kanal-labl">телеграм-канал проекта</span><a class="pp-kanal-lnk" href="https://t.me/math_proekt_179">t.me/math_proekt_179</a></p>
+      <p class="pp-kanal"><span class="pp-kanal-labl">телеграм-канал проекта</span><a class="pp-kanal-lnk" href="https://t.me/math_proekt_179">@math_proekt_179</a></p>
     </div>
     </section>
   </div>
@@ -1409,7 +1387,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
         knopki_i_ssylki[k].addEventListener('click', function(){
           pokazat(this.getAttribute('data-vkl'), true);
           var stage = document.getElementById('stage');
-          if(stage) stage.classList.remove('raskryto','anketa-otkryta');
+          if(stage) stage.classList.remove('raskryto');
           window.scrollTo(0,0);
         });
       }
@@ -1431,10 +1409,8 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
          ради чего школьник заходит.
          Условие написано «пусто ИЛИ #predstavlenie», а не «не равно
          #predstavlenie», намеренно: ЛЮБОЙ другой якорь обязан вести на первую
-         вкладку, потому что весь её внутренний якорный аппарат живёт там —
-         и #anketa-raskrytie, которым бот шлёт на анкету, и раскрытия
-         #r-konst / #r-razdely. Простой переворот тернарника увёл бы бота
-         в пустоту: анкеты на вкладке с темами нет. */
+         вкладку, потому что весь её внутренний якорный аппарат живёт там:
+         раскрытия #r-konst / #r-razdely. */
       function poAdresu(){
         var h = location.hash;
         pokazat((!h || h === '#predstavlenie') ? 'predstavlenie' : 'rukovoditelyam', false);
@@ -1505,7 +1481,7 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
        затемнено, и найти его глазами не удаётся: владелец 30.08 вышел перезагрузкой
        вкладки. Кнопка ставится скриптом, чтобы не дублировать её в шести панелях. */
     (function(){
-      var tela=document.querySelectorAll('.rask-telo:not(.rask-telo-anketa)');
+      var tela=document.querySelectorAll('.rask-telo');
       for(var i=0;i<tela.length;i++){
         (function(telo){
           var panel=telo.closest('details');
@@ -1526,39 +1502,8 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
       /* Клик мимо панели тоже закрывает: на затемнённой прозе это первое, что пробуют. */
       document.addEventListener('click',function(e){
         if(e.target.closest('.rask-telo')||e.target.closest('.snoska')) return;
-        var vse=document.querySelectorAll('.viewport .raskrytie:not(.raskrytie-anketa)');
+        var vse=document.querySelectorAll('.viewport .raskrytie');
         for(var j=0;j<vse.length;j++){ vse[j].open=false; }
-      });
-    })();
-
-    /* Анкета. Открывает её главная кнопка «Предложить задачу»: сам <details>
-       управляется программно, его summary скрыт. Закрытие — крестиком и Escape,
-       фокус возвращается на кнопку, иначе после закрытия он остаётся в никуда. */
-    (function(){
-      var panel=document.getElementById('anketa-raskrytie');
-      var otkryt=document.getElementById('anketa-otkryt');
-      var zakryt=document.getElementById('anketa-zakryt');
-      if(!panel||!otkryt) return;
-      /* Открытие по якорю: бот шлёт сюда кнопкой web_app с #anketa-raskrytie в адресе,
-         сам якорь <details> не раскрывает — раскрываем явно, дальше её подхватывает
-         тот же 'toggle', что и обычный клик по кнопке. */
-      if(location.hash==='#anketa-raskrytie') panel.open=true;
-      otkryt.addEventListener('click',function(){ panel.open=!panel.open; });
-      if(zakryt) zakryt.addEventListener('click',function(){ panel.open=false; otkryt.focus(); });
-      document.addEventListener('keydown',function(e){
-        if((e.key==='Escape'||e.key==='Esc')&&panel.open){ panel.open=false; otkryt.focus(); }
-      });
-      var stage=document.getElementById('stage');
-      panel.addEventListener('toggle',function(){
-        otkryt.setAttribute('aria-expanded', panel.open?'true':'false');
-        /* .cta свисает ниже .body (подпись выходит за последний ряд сетки) и
-           торчала бы из-под панели полоской текста — гасим её на время анкеты. */
-        if(stage) stage.classList.toggle('anketa-otkryta', panel.open);
-        if(!panel.open) return;
-        var telo=panel.querySelector('.rask-telo-anketa');
-        if(telo) telo.scrollTop=0;
-        var pervoe=panel.querySelector('.anketa-vvod');
-        if(pervoe) pervoe.focus();
       });
     })();
     /* ── ФИЛЬТР ПО ТЕГАМ (заход tegi-na-sajte, 10.09) ────────────────────────
@@ -1679,6 +1624,6 @@ button.knopka{border:0;margin:0;cursor:pointer;font-family:var(--sans);}
     })();
 
   </script>
-  <script src="anketa.js" defer></script>
+  <script src="shkolniki.js" defer></script>
 </body>
 </html>
