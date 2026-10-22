@@ -345,11 +345,18 @@ main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:ce
 body.str-ustr .zag{margin-top:-.18em}   /* cap line of the big title on the line of the small-caps heads */
 .otdelno{margin-top:var(--o5)}
 .ssylki-niz{margin:var(--o6) 0 0;font:400 var(--k-r)/22px var(--sans);color:var(--muted)}
-.ssylki-niz a{color:color-mix(in srgb,var(--accent) 80%,var(--muted))}
 .ssylki-niz .ik{width:13px;height:13px;vertical-align:-1px}
 
 /* Inner pages: the cover's gold grout, muted — the same tile on every page. */
 body:not(.oblozhka)::before{background-image:url(../uzor-oblozhka.svg);opacity:.55}
+
+/* ── Final round 23.10. Strip: the Telegram icon sits on the text line, the height of lower-case. */
+.polosa-kanal .ik{width:16px;height:16px;transform:translateY(1px)}
+.polosa-kanal{margin-left:calc(-1 * var(--o2))}
+/* Small links live in the poster, under the main control of the page. */
+.afisha .ssylki-niz{margin-top:var(--o5);font-size:15px}
+.ssylki-niz a{color:var(--muted)}
+.ssylki-niz a:hover{color:var(--accent)}
 
 </style><style data-masshtab>@media (min-width:1200px){:root{--m:1.125}@media (min-width:1440px){:root{--m:1.25}}@media (min-width:1680px){:root{--m:1.375}}@media (min-width:1920px){:root{--m:1.5}}@media (min-width:2560px){:root{--m:1.75}}html{font-size:calc(100% * var(--m))}
 
@@ -670,11 +677,18 @@ main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:ce
 body.str-ustr .zag{margin-top:-.18em}   
 .otdelno{margin-top:var(--o5)}
 .ssylki-niz{margin:var(--o6) 0 0;font:400 var(--k-r)/calc(22px * var(--m)) var(--sans);color:var(--muted)}
-.ssylki-niz a{color:color-mix(in srgb,var(--accent) 80%,var(--muted))}
 .ssylki-niz .ik{width:calc(13px * var(--m));height:calc(13px * var(--m));vertical-align:calc(-1px * var(--m))}
 
 
 body:not(.oblozhka)::before{background-image:url(../uzor-oblozhka.svg);opacity:.55}
+
+
+.polosa-kanal .ik{width:calc(16px * var(--m));height:calc(16px * var(--m));transform:translateY(calc(1px * var(--m)))}
+.polosa-kanal{margin-left:calc(-1 * var(--o2))}
+
+.afisha .ssylki-niz{margin-top:var(--o5);font-size:calc(15px * var(--m))}
+.ssylki-niz a{color:var(--muted)}
+.ssylki-niz a:hover{color:var(--accent)}
 
 }</style>
 </head>
