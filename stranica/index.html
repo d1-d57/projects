@@ -291,8 +291,9 @@ body.otbor .sbros:hover{color:var(--accent)}
 .kn-glav:hover{background:color-mix(in srgb,var(--accent) 85%,var(--text))}
 .kn-glav .ik{width:18px;height:18px}
 /* Two columns of sections on a wide window: the page reads in one screen. */
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{max-width:none;column-count:2;column-gap:var(--o7)}
+@media(min-width:900px){
+  body.str-ustr .lenta-telo{max-width:none}
+  body.str-ustr .kolonki{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--o6);align-items:start}
   body.str-ustr .razdel{break-inside:avoid;margin:0 0 var(--o6)}
   body.str-ustr .razdel+.razdel{margin-top:0}
   body.str-ustr .razdel details.raskr>summary{font-size:20px;line-height:27px}
@@ -305,12 +306,11 @@ body.otbor .sbros:hover{color:var(--accent)}
 }
 /* Round 23.10: tags in three lines; «Как устроено» — the feed takes two thirds. */
 .filtr button{padding:0 9px;font-size:15px}
-@media(min-width:1200px){
+@media(min-width:900px){
   body.str-ustr .razvorot{grid-template-columns:1fr 2fr}
   body.str-ustr .vnesh{font-size:20px;line-height:27px;margin-top:var(--o2)}
 }
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{column-gap:var(--o6)}
+@media(min-width:900px){
   body.str-ustr .razdel details.raskr>summary{font-size:19px;line-height:26px}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
@@ -583,8 +583,9 @@ body.otbor .sbros:hover{color:var(--accent)}
 .kn-glav:hover{background:color-mix(in srgb,var(--accent) 85%,var(--text))}
 .kn-glav .ik{width:calc(18px * var(--m));height:calc(18px * var(--m))}
 
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{max-width:none;column-count:2;column-gap:var(--o7)}
+@media(min-width:900px){
+  body.str-ustr .lenta-telo{max-width:none}
+  body.str-ustr .kolonki{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--o6);align-items:start}
   body.str-ustr .razdel{break-inside:avoid;margin:0 0 var(--o6)}
   body.str-ustr .razdel+.razdel{margin-top:0}
   body.str-ustr .razdel details.raskr>summary{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m))}
@@ -597,20 +598,40 @@ body.otbor .sbros:hover{color:var(--accent)}
 }
 
 .filtr button{padding:0 calc(9px * var(--m));font-size:calc(15px * var(--m))}
-@media(min-width:1200px){
+@media(min-width:900px){
   body.str-ustr .razvorot{grid-template-columns:1fr 2fr}
   body.str-ustr .vnesh{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m));margin-top:var(--o2)}
 }
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{column-gap:var(--o6)}
+@media(min-width:900px){
   body.str-ustr .razdel details.raskr>summary{font-size:calc(19px * var(--m));line-height:calc(26px * var(--m))}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
 
 }</style>
 </head>
-<body class="oblozhka">
+<body class="oblozhka vlezt">
 <header class="polosa"><a class="polosa-dom" href="./" aria-current="page">Математические проекты · школа 179</a><a href="proekty/">Проекты</a><a href="temy/">Темы</a><a href="kak-ustroeno/">Как устроено</a><details class="polosa-tel"><summary>Матпроекты 179</summary><nav><a href="./" aria-current="page">Матпроекты 179</a><a href="proekty/">Проекты</a><a href="temy/">Темы</a><a href="kak-ustroeno/">Как устроено</a></nav></details><a class="polosa-kanal" href="https://t.me/math_proekt_179" target="_blank" rel="noopener" aria-label="Телеграм-канал" title="Телеграм-канал"><svg class="ik" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></a></header>
 <main class="razvorot"><section class="afisha"><div class="podl"><h1 class="zag glav-zag">Исследовательские проекты по&nbsp;математике</h1><p class="pod">школа № 179 · 10 класс · 2026/27</p></div></section><section class="lenta"><div class="lenta-telo podl"><ul class="vhody"><li><a href="proekty/">Проекты</a></li><li><a href="temy/">Темы</a></li><li><a href="kak-ustroeno/">Как устроено</a></li></ul><script>(function(){var h=location.hash,k={'#predstavlenie':'temy/','#predstavlenie-m':'temy/','#rukovoditelyam':'kak-ustroeno/'}[h];if(k)location.replace(k);})();</script></div></section></main>
-</body>
+<script>
+(function(){
+  if(!document.body.classList.contains('vlezt'))return;
+  var bloki=[].slice.call(document.querySelectorAll('.afisha>.podl,.lenta>.lenta-telo'));
+  function podognat(){
+    bloki.forEach(function(b){b.style.zoom='';});
+    if(!matchMedia('(min-width:900px)').matches)return;
+    bloki.forEach(function(b){
+      var r=b.parentNode;
+      for(var i=0;i<4;i++){
+        var cs=getComputedStyle(r),mesto=r.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+        var z=parseFloat(b.style.zoom||1),nado=b.getBoundingClientRect().height;
+        if(nado<=mesto+1)break;
+        b.style.zoom=Math.max(.6,z*mesto/nado*.995);
+      }
+    });
+  }
+  podognat();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(podognat);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(podognat,80);});
+})();
+</script></body>
 </html>

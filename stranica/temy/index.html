@@ -291,8 +291,9 @@ body.otbor .sbros:hover{color:var(--accent)}
 .kn-glav:hover{background:color-mix(in srgb,var(--accent) 85%,var(--text))}
 .kn-glav .ik{width:18px;height:18px}
 /* Two columns of sections on a wide window: the page reads in one screen. */
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{max-width:none;column-count:2;column-gap:var(--o7)}
+@media(min-width:900px){
+  body.str-ustr .lenta-telo{max-width:none}
+  body.str-ustr .kolonki{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--o6);align-items:start}
   body.str-ustr .razdel{break-inside:avoid;margin:0 0 var(--o6)}
   body.str-ustr .razdel+.razdel{margin-top:0}
   body.str-ustr .razdel details.raskr>summary{font-size:20px;line-height:27px}
@@ -305,12 +306,11 @@ body.otbor .sbros:hover{color:var(--accent)}
 }
 /* Round 23.10: tags in three lines; «Как устроено» — the feed takes two thirds. */
 .filtr button{padding:0 9px;font-size:15px}
-@media(min-width:1200px){
+@media(min-width:900px){
   body.str-ustr .razvorot{grid-template-columns:1fr 2fr}
   body.str-ustr .vnesh{font-size:20px;line-height:27px;margin-top:var(--o2)}
 }
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{column-gap:var(--o6)}
+@media(min-width:900px){
   body.str-ustr .razdel details.raskr>summary{font-size:19px;line-height:26px}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
@@ -583,8 +583,9 @@ body.otbor .sbros:hover{color:var(--accent)}
 .kn-glav:hover{background:color-mix(in srgb,var(--accent) 85%,var(--text))}
 .kn-glav .ik{width:calc(18px * var(--m));height:calc(18px * var(--m))}
 
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{max-width:none;column-count:2;column-gap:var(--o7)}
+@media(min-width:900px){
+  body.str-ustr .lenta-telo{max-width:none}
+  body.str-ustr .kolonki{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--o6);align-items:start}
   body.str-ustr .razdel{break-inside:avoid;margin:0 0 var(--o6)}
   body.str-ustr .razdel+.razdel{margin-top:0}
   body.str-ustr .razdel details.raskr>summary{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m))}
@@ -597,12 +598,11 @@ body.otbor .sbros:hover{color:var(--accent)}
 }
 
 .filtr button{padding:0 calc(9px * var(--m));font-size:calc(15px * var(--m))}
-@media(min-width:1200px){
+@media(min-width:900px){
   body.str-ustr .razvorot{grid-template-columns:1fr 2fr}
   body.str-ustr .vnesh{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m));margin-top:var(--o2)}
 }
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{column-gap:var(--o6)}
+@media(min-width:900px){
   body.str-ustr .razdel details.raskr>summary{font-size:calc(19px * var(--m));line-height:calc(26px * var(--m))}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
@@ -628,5 +628,26 @@ body.otbor .sbros:hover{color:var(--accent)}
   var t=new URL(location.href).searchParams.get('teg'); if(t)vybrat(t);
 })();
 </script></div></section></main>
-</body>
+<script>
+(function(){
+  if(!document.body.classList.contains('vlezt'))return;
+  var bloki=[].slice.call(document.querySelectorAll('.afisha>.podl,.lenta>.lenta-telo'));
+  function podognat(){
+    bloki.forEach(function(b){b.style.zoom='';});
+    if(!matchMedia('(min-width:900px)').matches)return;
+    bloki.forEach(function(b){
+      var r=b.parentNode;
+      for(var i=0;i<4;i++){
+        var cs=getComputedStyle(r),mesto=r.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+        var z=parseFloat(b.style.zoom||1),nado=b.getBoundingClientRect().height;
+        if(nado<=mesto+1)break;
+        b.style.zoom=Math.max(.6,z*mesto/nado*.995);
+      }
+    });
+  }
+  podognat();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(podognat);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(podognat,80);});
+})();
+</script></body>
 </html>

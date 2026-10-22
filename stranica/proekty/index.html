@@ -291,8 +291,9 @@ body.otbor .sbros:hover{color:var(--accent)}
 .kn-glav:hover{background:color-mix(in srgb,var(--accent) 85%,var(--text))}
 .kn-glav .ik{width:18px;height:18px}
 /* Two columns of sections on a wide window: the page reads in one screen. */
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{max-width:none;column-count:2;column-gap:var(--o7)}
+@media(min-width:900px){
+  body.str-ustr .lenta-telo{max-width:none}
+  body.str-ustr .kolonki{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--o6);align-items:start}
   body.str-ustr .razdel{break-inside:avoid;margin:0 0 var(--o6)}
   body.str-ustr .razdel+.razdel{margin-top:0}
   body.str-ustr .razdel details.raskr>summary{font-size:20px;line-height:27px}
@@ -305,12 +306,11 @@ body.otbor .sbros:hover{color:var(--accent)}
 }
 /* Round 23.10: tags in three lines; «Как устроено» — the feed takes two thirds. */
 .filtr button{padding:0 9px;font-size:15px}
-@media(min-width:1200px){
+@media(min-width:900px){
   body.str-ustr .razvorot{grid-template-columns:1fr 2fr}
   body.str-ustr .vnesh{font-size:20px;line-height:27px;margin-top:var(--o2)}
 }
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{column-gap:var(--o6)}
+@media(min-width:900px){
   body.str-ustr .razdel details.raskr>summary{font-size:19px;line-height:26px}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
@@ -583,8 +583,9 @@ body.otbor .sbros:hover{color:var(--accent)}
 .kn-glav:hover{background:color-mix(in srgb,var(--accent) 85%,var(--text))}
 .kn-glav .ik{width:calc(18px * var(--m));height:calc(18px * var(--m))}
 
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{max-width:none;column-count:2;column-gap:var(--o7)}
+@media(min-width:900px){
+  body.str-ustr .lenta-telo{max-width:none}
+  body.str-ustr .kolonki{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--o6);align-items:start}
   body.str-ustr .razdel{break-inside:avoid;margin:0 0 var(--o6)}
   body.str-ustr .razdel+.razdel{margin-top:0}
   body.str-ustr .razdel details.raskr>summary{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m))}
@@ -597,20 +598,40 @@ body.otbor .sbros:hover{color:var(--accent)}
 }
 
 .filtr button{padding:0 calc(9px * var(--m));font-size:calc(15px * var(--m))}
-@media(min-width:1200px){
+@media(min-width:900px){
   body.str-ustr .razvorot{grid-template-columns:1fr 2fr}
   body.str-ustr .vnesh{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m));margin-top:var(--o2)}
 }
-@media(min-width:1200px){
-  body.str-ustr .lenta-telo{column-gap:var(--o6)}
+@media(min-width:900px){
   body.str-ustr .razdel details.raskr>summary{font-size:calc(19px * var(--m));line-height:calc(26px * var(--m))}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
 
 }</style>
 </head>
-<body class="">
+<body class="vlezt">
 <header class="polosa"><a class="polosa-dom" href="../">Математические проекты · школа 179</a><a href="../proekty/" aria-current="page">Проекты</a><a href="../temy/">Темы</a><a href="../kak-ustroeno/">Как устроено</a><details class="polosa-tel"><summary>Проекты</summary><nav><a href="../">Матпроекты 179</a><a href="../proekty/" aria-current="page">Проекты</a><a href="../temy/">Темы</a><a href="../kak-ustroeno/">Как устроено</a></nav></details><a class="polosa-kanal" href="https://t.me/math_proekt_179" target="_blank" rel="noopener" aria-label="Телеграм-канал" title="Телеграм-канал"><svg class="ik" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></a></header>
 <main class="razvorot"><section class="afisha"><div class="podl"><h1 class="zag">Проекты 2026/27</h1><ol class="god" aria-label="Год"><li class="proshlo" tabindex="0"><span class="et">✓&nbsp;знакомство</span><span class="kogda">12–26 сентября</span><span class="pods">Математики рассказывают о своих задачах, по пятнадцать минут каждый</span></li><li class="proshlo" tabindex="0"><span class="et">✓&nbsp;выбор темы</span><span class="kogda">30 сентября</span><span class="pods">Школьник выбирает руководителя и задачу</span></li><li class="sejchas" tabindex="0"><span class="et">доклад о теме</span><span class="kogda">17 и 24 октября</span><span class="pods">Школьники рассказывают о задаче и о том, как собираются её решать</span></li><li class="budet" tabindex="0"><span class="et">предзащита</span><span class="kogda">декабрь</span><span class="pods">Короткий доклад о первых результатах</span></li><li class="budet" tabindex="0"><span class="et">предзащита</span><span class="kogda">март</span><span class="pods">Короткий доклад о сделанном</span></li><li class="budet" tabindex="0"><span class="et">защита</span><span class="kogda">май</span><span class="pods">Доклад, из которого видно, что сделал каждый</span></li></ol></div></section><section class="lenta"><div class="lenta-telo podl"><article class="kartochka proekt" id="задача-фробениуса"><details class="raskr"><summary><span class="nazv">Задача Фробениуса</span><span class="lyudi"><span class="shk">Артём А.</span><span>рук. <a href="../temy/#golubenko">Дмитрий Голубенко</a></span></span></summary><div class="tekst"><p>Монетами по 3 и 5 рублей можно набрать любую сумму начиная с 8 рублей. Задача Фробениуса — найти наибольшую сумму, которую набрать нельзя, для любых номиналов. В проекте её обобщают на числа вида <span class="f"><i>a</i> + <i>b</i>√<i>d</i></span></p></div><ol class="etapy"><li class="proshlo">✓ доклад о теме 17.10</li><li class="budet">предзащита — декабрь</li><li class="budet">предзащита — март</li><li class="budet">защита — май</li></ol></details></article><article class="kartochka proekt" id="равносоставленность-многоугольников"><details class="raskr"><summary><span class="nazv">Равносоставленность многоугольников</span><span class="lyudi"><span class="shk">Владимир Ш.</span><span>рук. <a href="../temy/#timorin">Владлен Тиморин</a></span></span></summary><div class="tekst"><p>Если многоугольник разрезать на куски и сложить из них другой, многоугольники называют равносоставленными. Когда двигать куски можно как угодно, достаточно сравнить площади: любые два многоугольника одной площади равносоставлены (теорема Бойяи — Гервина). В проекте правила строже. Выбираются n направлений под углами 2πk/n, резать разрешено только вдоль них, а куски можно лишь сдвигать, без поворотов. Многоугольники берутся со сторонами вдоль этих направлений, и при разрезании такими и остаются. Какие числа нужно посчитать и сравнить, чтобы понять, можно ли так перекроить один многоугольник в другой, — вопрос проекта</p></div><ol class="etapy"><li class="proshlo">✓ доклад о теме 17.10</li><li class="budet">предзащита — декабрь</li><li class="budet">предзащита — март</li><li class="budet">защита — май</li></ol></details></article><article class="kartochka proekt" id="теорема-абеля-руффини-для-уравнений-с-параметром"><details class="raskr"><summary><span class="nazv">Теорема Абеля — Руффини для уравнений с параметром</span><span class="lyudi"><span class="shk">Даниэль С.</span><span>рук. <a href="../temy/#kanel-belov">Алексей Канель-Белов</a></span></span></summary><div class="tekst"><p>Корни уравнения пятой степени не выражаются через коэффициенты в радикалах — это теорема Абеля — Руффини. У неё есть топологическое доказательство Арнольда: если вести коэффициенты по петле, корни переставляются и получаются все 120 перестановок, а формула в радикалах допускала бы только часть из них. Тот же приём работает для уравнений вроде <span class="f">tg <i>x</i> − <i>x</i> = <i>a</i></span>: в 2020 году Канель-Белов с соавторами доказал, что его корни не выражаются через экспоненту и логарифм. Даниэль расскажет это доказательство и задачи, которые здесь открыты</p></div><ol class="etapy"><li class="proshlo">✓ доклад о теме 17.10</li><li class="budet">предзащита — декабрь</li><li class="budet">предзащита — март</li><li class="budet">защита — май</li></ol></details></article><article class="kartochka proekt" id="геометрия-с-верёвочкой"><details class="raskr"><summary><span class="nazv">Геометрия с верёвочкой</span><span class="lyudi"><span class="shk">Олег П. · Иван К.</span><span>рук. <a href="../temy/#arutyunov">Андроник Арутюнов</a></span></span></summary><div class="tekst"><p>Эллипс рисуют верёвкой, привязанной к двум гвоздям. Что получится, если закрепить верёвку в двух вершинах многоугольника, который ей мешает?</p></div><ol class="etapy"><li class="sejchas">доклад о теме 24.10</li><li class="budet">предзащита — декабрь</li><li class="budet">предзащита — март</li><li class="budet">защита — май</li></ol></details></article><article class="kartochka proekt" id="форма-барабана"><details class="raskr"><summary><span class="nazv">Форма барабана</span><span class="lyudi"><span class="shk">Тимур Ч. · Давид Т.</span><span>рук. <a href="../temy/#medvedev">Владимир Медведев</a></span></span></summary><div class="tekst"><p>Можно ли определить форму барабана, зная только частоты его звучания? Участники изучат, как форма мембраны связана с её собственными частотами, и выяснят, могут ли барабаны разной формы звучать одинаково</p></div><ol class="etapy"><li class="sejchas">доклад о теме 24.10</li><li class="budet">предзащита — декабрь</li><li class="budet">предзащита — март</li><li class="budet">защита — май</li></ol></details></article><article class="kartochka proekt" id="четырёхвалентные-графы"><details class="raskr"><summary><span class="nazv">Четырёхвалентные графы</span><span class="lyudi"><span class="shk">Иван Г. · Саша Ц.</span><span>рук. <a href="../temy/#manturov">Василий Мантуров</a></span></span></summary><div class="tekst"><p>Граф планарен, если в нём нет двух определённых графов, — теорема Понтрягина — Куратовского, и доказывается она непросто. Для оснащённых четырёхвалентных графов список запрещённых миноров короткий, а теорема о них простая, и из неё выводится теорема Понтрягина — Куратовского</p></div><ol class="etapy"><li class="sejchas">доклад о теме 24.10</li><li class="budet">предзащита — декабрь</li><li class="budet">предзащита — март</li><li class="budet">защита — май</li></ol></details></article></div></section></main>
-</body>
+<script>
+(function(){
+  if(!document.body.classList.contains('vlezt'))return;
+  var bloki=[].slice.call(document.querySelectorAll('.afisha>.podl,.lenta>.lenta-telo'));
+  function podognat(){
+    bloki.forEach(function(b){b.style.zoom='';});
+    if(!matchMedia('(min-width:900px)').matches)return;
+    bloki.forEach(function(b){
+      var r=b.parentNode;
+      for(var i=0;i<4;i++){
+        var cs=getComputedStyle(r),mesto=r.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+        var z=parseFloat(b.style.zoom||1),nado=b.getBoundingClientRect().height;
+        if(nado<=mesto+1)break;
+        b.style.zoom=Math.max(.6,z*mesto/nado*.995);
+      }
+    });
+  }
+  podognat();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(podognat);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(podognat,80);});
+})();
+</script></body>
 </html>
