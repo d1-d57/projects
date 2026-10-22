@@ -333,6 +333,24 @@ main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:ce
 .polosa{border-bottom-color:color-mix(in srgb,var(--accent) 28%,var(--rule))}
 .polosa a[aria-current]{border-bottom-width:1px}
 
+/* ── Round 23.10 «Как устроено»: the poster and both columns start on one line, the whole spread
+   is centred in the window; the school sits apart under the third section; two small links below. */
+@media(min-width:900px){
+  body.str-ustr .razvorot{align-content:center;align-items:start}
+  body.str-ustr .afisha,body.str-ustr .lenta{height:auto;padding-top:0;padding-bottom:0;justify-content:flex-start}
+  /* opened folds scroll inside the feed, never past the window */
+  body.str-ustr .lenta{overflow-y:auto;max-height:calc(100dvh - var(--h-polosa) - var(--o6))}
+  body.str-ustr .afisha>.podl{margin-top:0}
+}
+body.str-ustr .zag{margin-top:-.18em}   /* cap line of the big title on the line of the small-caps heads */
+.otdelno{margin-top:var(--o5)}
+.ssylki-niz{margin:var(--o6) 0 0;font:400 var(--k-r)/22px var(--sans);color:var(--muted)}
+.ssylki-niz a{color:color-mix(in srgb,var(--accent) 80%,var(--muted))}
+.ssylki-niz .ik{width:13px;height:13px;vertical-align:-1px}
+
+/* Inner pages: the cover's gold grout, muted — the same tile on every page. */
+body:not(.oblozhka)::before{background-image:url(uzor-oblozhka.svg);opacity:.55}
+
 </style><style data-masshtab>@media (min-width:1200px){:root{--m:1.125}@media (min-width:1440px){:root{--m:1.25}}@media (min-width:1680px){:root{--m:1.375}}@media (min-width:1920px){:root{--m:1.5}}@media (min-width:2560px){:root{--m:1.75}}html{font-size:calc(100% * var(--m))}
 
 
@@ -640,6 +658,23 @@ main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:ce
 .afisha .zag::after{content:"";display:block;width:2.4em;height:calc(1px * var(--m));margin-top:.32em;background:var(--accent);opacity:.8}
 .polosa{border-bottom-color:color-mix(in srgb,var(--accent) 28%,var(--rule))}
 .polosa a[aria-current]{border-bottom-width:calc(1px * var(--m))}
+
+
+@media(min-width:900px){
+  body.str-ustr .razvorot{align-content:center;align-items:start}
+  body.str-ustr .afisha,body.str-ustr .lenta{height:auto;padding-top:0;padding-bottom:0;justify-content:flex-start}
+  
+  body.str-ustr .lenta{overflow-y:auto;max-height:calc(100dvh - var(--h-polosa) - var(--o6))}
+  body.str-ustr .afisha>.podl{margin-top:0}
+}
+body.str-ustr .zag{margin-top:-.18em}   
+.otdelno{margin-top:var(--o5)}
+.ssylki-niz{margin:var(--o6) 0 0;font:400 var(--k-r)/calc(22px * var(--m)) var(--sans);color:var(--muted)}
+.ssylki-niz a{color:color-mix(in srgb,var(--accent) 80%,var(--muted))}
+.ssylki-niz .ik{width:calc(13px * var(--m));height:calc(13px * var(--m));vertical-align:calc(-1px * var(--m))}
+
+
+body:not(.oblozhka)::before{background-image:url(uzor-oblozhka.svg);opacity:.55}
 
 }</style>
 </head>
