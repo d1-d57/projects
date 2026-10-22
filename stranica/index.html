@@ -336,7 +336,8 @@ main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:ce
 /* ── Round 23.10 «Как устроено»: the poster and both columns start on one line, the whole spread
    is centred in the window; the school sits apart under the third section; two small links below. */
 @media(min-width:900px){
-  body.str-ustr .razvorot{align-content:center;align-items:start}
+  /* owner 23.10: the two columns are shorter than the poster — centred against it */
+  body.str-ustr .razvorot{align-content:center;align-items:center}
   body.str-ustr .afisha,body.str-ustr .lenta{height:auto;padding-top:0;padding-bottom:0;justify-content:flex-start}
   /* opened folds scroll inside the feed, never past the window */
   body.str-ustr .lenta{overflow-y:auto;max-height:calc(100dvh - var(--h-polosa) - var(--o6))}
@@ -668,7 +669,8 @@ main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:ce
 
 
 @media(min-width:900px){
-  body.str-ustr .razvorot{align-content:center;align-items:start}
+  
+  body.str-ustr .razvorot{align-content:center;align-items:center}
   body.str-ustr .afisha,body.str-ustr .lenta{height:auto;padding-top:0;padding-bottom:0;justify-content:flex-start}
   
   body.str-ustr .lenta{overflow-y:auto;max-height:calc(100dvh - var(--h-polosa) - var(--o6))}
