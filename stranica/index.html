@@ -359,6 +359,25 @@ body:not(.oblozhka)::before{background-image:url(uzor-oblozhka.svg);opacity:.55}
 .ssylki-niz a{color:var(--muted)}
 .ssylki-niz a:hover{color:var(--accent)}
 
+/* ═══ TYPE SCALE — the whole site (final audit 23.10). Four families, each with a fixed set:
+   CMU Serif   — poster (cover title) · 44 page title · 24 title of a topic/project · 20 thesis
+   CM Kapitel  — one size 1.1rem, spacing .1em: cover subtitle and section heads
+   Source Serif 4 — 18 text and people · 20 poster facts; 600 only for a leader's name
+   Source Sans 3  — 16 interface · 15 service (tags, small links); 600 only for the one button
+   Phone: 22 titles, 20 theses; everything else as above. Rules below win over earlier ones. */
+.titul-zag,.zag{letter-spacing:-.005em}
+.titul-pod,.razdel-zag,.pod,.podzag{font-size:1.1rem;letter-spacing:.1em}
+details.raskr>summary,.proekt>details.raskr>summary{font-size:24px;line-height:30px}
+@media(min-width:900px){.proekt>details.raskr>summary{font-size:24px;line-height:30px}}
+.razdel details.raskr>summary,body.str-ustr .razdel details.raskr>summary{font-size:20px;line-height:27px}
+.lyudi{font-size:18px;line-height:26px}
+.razobrano dt{font-weight:400}
+@media(max-width:760px){
+  details.raskr>summary,.proekt>details.raskr>summary{font-size:22px;line-height:28px}
+  .razdel details.raskr>summary{font-size:20px;line-height:27px}
+  .titul-pod{font-size:1rem;letter-spacing:.1em}
+}
+
 </style><style data-masshtab>@media (min-width:1200px){:root{--m:1.125}@media (min-width:1440px){:root{--m:1.25}}@media (min-width:1680px){:root{--m:1.375}}@media (min-width:1920px){:root{--m:1.5}}@media (min-width:2560px){:root{--m:1.75}}html{font-size:calc(100% * var(--m))}
 
 
@@ -691,6 +710,20 @@ body:not(.oblozhka)::before{background-image:url(uzor-oblozhka.svg);opacity:.55}
 .afisha .ssylki-niz{margin-top:var(--o5);font-size:calc(15px * var(--m))}
 .ssylki-niz a{color:var(--muted)}
 .ssylki-niz a:hover{color:var(--accent)}
+
+
+.titul-zag,.zag{letter-spacing:-.005em}
+.titul-pod,.razdel-zag,.pod,.podzag{font-size:1.1rem;letter-spacing:.1em}
+details.raskr>summary,.proekt>details.raskr>summary{font-size:calc(24px * var(--m));line-height:calc(30px * var(--m))}
+@media(min-width:900px){.proekt>details.raskr>summary{font-size:calc(24px * var(--m));line-height:calc(30px * var(--m))}}
+.razdel details.raskr>summary,body.str-ustr .razdel details.raskr>summary{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m))}
+.lyudi{font-size:calc(18px * var(--m));line-height:calc(26px * var(--m))}
+.razobrano dt{font-weight:400}
+@media(max-width:760px){
+  details.raskr>summary,.proekt>details.raskr>summary{font-size:calc(22px * var(--m));line-height:calc(28px * var(--m))}
+  .razdel details.raskr>summary{font-size:calc(20px * var(--m));line-height:calc(27px * var(--m))}
+  .titul-pod{font-size:1rem;letter-spacing:.1em}
+}
 
 }</style>
 </head>
