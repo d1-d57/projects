@@ -315,6 +315,24 @@ body.otbor .sbros:hover{color:var(--accent)}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
 
+/* ── Round 23.10 «Изразец». The main page is a title page on the gold-grout tile (uzor.py →
+   uzor-oblozhka.svg); the other pages take two of its devices: the gold rule under the title
+   and a hairline gold edge of the strip. */
+body.oblozhka::before{background-image:url(../uzor-oblozhka.svg);filter:none;-webkit-mask-image:none;mask-image:none;opacity:1}
+body.oblozhka::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 50% 38% at 50% 52%,var(--bg) 0,color-mix(in srgb,var(--bg) 80%,transparent) 50%,transparent 100%)}
+main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:center;padding:var(--o6) var(--pole);text-align:center}
+@media(min-width:900px){body.oblozhka{height:100dvh;overflow:hidden}}
+.titul-zag{margin:0;font:400 clamp(2.4rem,min(6.4vw,10vh),6.6rem)/1.02 var(--tex);letter-spacing:-.01em;color:var(--text)}
+.titul-linejka{width:min(100%,34em);height:1px;margin:clamp(14px,2.4vh,26px) auto;background:var(--accent);opacity:.85}
+.titul-pod{font:400 clamp(1rem,1.5vw,1.45rem)/1.3 'CM Kapitel',var(--tex);letter-spacing:.14em;color:var(--muted)}
+@media(max-width:760px){.titul-zag{font-size:2.2rem}.titul-pod{font-size:.95rem;letter-spacing:.1em}}
+
+/* Inner pages: the title gets the cover's gold rule; the strip a gold hairline edge. */
+.afisha .zag::after{content:"";display:block;width:2.4em;height:1px;margin-top:.32em;background:var(--accent);opacity:.8}
+.polosa{border-bottom-color:color-mix(in srgb,var(--accent) 28%,var(--rule))}
+.polosa a[aria-current]{border-bottom-width:1px}
+
 </style><style data-masshtab>@media (min-width:1200px){:root{--m:1.125}@media (min-width:1440px){:root{--m:1.25}}@media (min-width:1680px){:root{--m:1.375}}@media (min-width:1920px){:root{--m:1.5}}@media (min-width:2560px){:root{--m:1.75}}html{font-size:calc(100% * var(--m))}
 
 
@@ -606,6 +624,22 @@ body.otbor .sbros:hover{color:var(--accent)}
   body.str-ustr .razdel details.raskr>summary{font-size:calc(19px * var(--m));line-height:calc(26px * var(--m))}
   body.str-ustr .razdel details.raskr .nazv{text-wrap:pretty}
 }
+
+
+body.oblozhka::before{background-image:url(../uzor-oblozhka.svg);filter:none;-webkit-mask-image:none;mask-image:none;opacity:1}
+body.oblozhka::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 50% 38% at 50% 52%,var(--bg) 0,color-mix(in srgb,var(--bg) 80%,transparent) 50%,transparent 100%)}
+main.titul{min-height:calc(100dvh - var(--h-polosa));display:grid;place-items:center;padding:var(--o6) var(--pole);text-align:center}
+@media(min-width:900px){body.oblozhka{height:100dvh;overflow:hidden}}
+.titul-zag{margin:0;font:400 clamp(2.4rem,min(6.4vw,10vh),6.6rem)/1.02 var(--tex);letter-spacing:-.01em;color:var(--text)}
+.titul-linejka{width:min(100%,34em);height:calc(1px * var(--m));margin:clamp(calc(14px * var(--m)),2.4vh,calc(26px * var(--m))) auto;background:var(--accent);opacity:.85}
+.titul-pod{font:400 clamp(1rem,1.5vw,1.45rem)/1.3 'CM Kapitel',var(--tex);letter-spacing:.14em;color:var(--muted)}
+@media(max-width:760px){.titul-zag{font-size:2.2rem}.titul-pod{font-size:.95rem;letter-spacing:.1em}}
+
+
+.afisha .zag::after{content:"";display:block;width:2.4em;height:calc(1px * var(--m));margin-top:.32em;background:var(--accent);opacity:.8}
+.polosa{border-bottom-color:color-mix(in srgb,var(--accent) 28%,var(--rule))}
+.polosa a[aria-current]{border-bottom-width:calc(1px * var(--m))}
 
 }</style>
 </head>
