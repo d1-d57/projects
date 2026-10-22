@@ -1,0 +1,12 @@
+CM Kapitel (veb/static/shrifty/cm-kapitel.woff2) — подмножество шрифта sfcc1000 (капитель Computer Modern
+с кириллицей) из пакета cm-super (Vladimir Volovich, http://www.ctan.org/tex-archive/fonts/ps-type1/cm-super/).
+Собран tools/shrift_kapitel.py (fontTools: Type1 → CFF → WOFF2, только латиница, цифры, кириллица, №, «», тире).
+Исходный шрифт и его исходники — пакет cm-super на CTAN. Лицензия пакета (Debian copyright cm-super):
+
+Files: *
+Copyright: 2001, 2002 Vladimir Volovich <vvv@vsu.ru>.
+License: GPL-2+ or GPL_Font_exception
+
+Files: debian/*
+Copyright: 2003 Szabó Péter <pts@fazekas.hu>
+           2004 - 2018 Norbert Preining <preining@debian.org>
